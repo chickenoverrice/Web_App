@@ -41,6 +41,14 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="firstName" Type="nvarchar(max)" Nullable="false" />
     <Property Name="lastName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="email" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="sessionId" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="address" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="phone" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="city" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="state" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="zip" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="sessionExpiration" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="Rooms">
     <Key>
@@ -64,6 +72,7 @@
     <Property Name="checkIn" Type="nvarchar(max)" Nullable="true" />
     <Property Name="checkOut" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="bill" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Room_Id" Type="int" Nullable="false" />
     <Property Name="Customers_Id" Type="int" Nullable="false" />
   </EntityType>
@@ -78,16 +87,17 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="email" Type="nvarchar(max)" Nullable="false" />
     <Property Name="expirationDate" Type="nvarchar(max)" Nullable="false" />
     <Property Name="member" Type="bit" Nullable="false" />
     <Property Name="lastExpirationDate" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="password" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="People_Staff">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
+    <Property Name="password" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Id" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="RoomTypeRoom">
@@ -262,6 +272,14 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="firstName" ColumnName="firstName" />
           <ScalarProperty Name="lastName" ColumnName="lastName" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="sessionId" ColumnName="sessionId" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="phone" ColumnName="phone" />
+          <ScalarProperty Name="city" ColumnName="city" />
+          <ScalarProperty Name="state" ColumnName="state" />
+          <ScalarProperty Name="zip" ColumnName="zip" />
+          <ScalarProperty Name="sessionExpiration" ColumnName="sessionExpiration" />
         </MappingFragment>
       </EntityTypeMapping>
       <EntityTypeMapping TypeName="IsTypeOf(HotelDatabase.Customer)">
@@ -270,11 +288,13 @@
           <ScalarProperty Name="expirationDate" ColumnName="expirationDate" />
           <ScalarProperty Name="member" ColumnName="member" />
           <ScalarProperty Name="lastExpirationDate" ColumnName="lastExpirationDate" />
+          <ScalarProperty Name="password" ColumnName="password" />
         </MappingFragment>
       </EntityTypeMapping>
       <EntityTypeMapping TypeName="IsTypeOf(HotelDatabase.Staff)">
         <MappingFragment StoreEntitySet="People_Staff">
           <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="password" ColumnName="password" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -300,6 +320,7 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="checkIn" ColumnName="checkIn" />
           <ScalarProperty Name="checkOut" ColumnName="checkOut" />
+          <ScalarProperty Name="bill" ColumnName="bill" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

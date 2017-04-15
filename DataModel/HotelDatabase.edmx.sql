@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/15/2017 12:48:23
+-- Date Created: 04/15/2017 16:36:17
 -- Generated from EDMX file: C:\Users\Hassan Zaidi\documents\visual studio 2015\Projects\BizLogic\DataModel\HotelDatabase.edmx
 -- --------------------------------------------------
 
@@ -21,7 +21,7 @@ IF OBJECT_ID(N'[dbo].[FK_RoomTypeRoom]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Rooms] DROP CONSTRAINT [FK_RoomTypeRoom];
 GO
 IF OBJECT_ID(N'[dbo].[FK_RoomReservation]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Rooms] DROP CONSTRAINT [FK_RoomReservation];
+    ALTER TABLE [dbo].[Reservations] DROP CONSTRAINT [FK_RoomReservation];
 GO
 IF OBJECT_ID(N'[dbo].[FK_ReservationCustomer]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Reservations] DROP CONSTRAINT [FK_ReservationCustomer];
@@ -49,6 +49,9 @@ GO
 IF OBJECT_ID(N'[dbo].[Reservations]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Reservations];
 GO
+IF OBJECT_ID(N'[dbo].[CurrentDateTimes]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[CurrentDateTimes];
+GO
 IF OBJECT_ID(N'[dbo].[People_Customer]', 'U') IS NOT NULL
     DROP TABLE [dbo].[People_Customer];
 GO
@@ -64,7 +67,15 @@ GO
 CREATE TABLE [dbo].[People] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [firstName] nvarchar(max)  NOT NULL,
-    [lastName] nvarchar(max)  NOT NULL
+    [lastName] nvarchar(max)  NOT NULL,
+    [email] nvarchar(max)  NOT NULL,
+    [sessionId] nvarchar(max)  NOT NULL,
+    [address] nvarchar(max)  NULL,
+    [phone] nvarchar(max)  NULL,
+    [city] nvarchar(max)  NULL,
+    [state] nvarchar(max)  NULL,
+    [zip] nvarchar(max)  NULL,
+    [sessionExpiration] nvarchar(max)  NOT NULL
 );
 GO
 
@@ -88,6 +99,7 @@ CREATE TABLE [dbo].[Reservations] (
     [checkIn] nvarchar(max)  NULL,
     [checkOut] nvarchar(max)  NULL,
     [Id] int IDENTITY(1,1) NOT NULL,
+    [bill] nvarchar(max)  NULL,
     [Room_Id] int  NOT NULL,
     [Customers_Id] int  NOT NULL
 );
@@ -102,16 +114,17 @@ GO
 
 -- Creating table 'People_Customer'
 CREATE TABLE [dbo].[People_Customer] (
-    [email] nvarchar(max)  NOT NULL,
     [expirationDate] nvarchar(max)  NOT NULL,
     [member] bit  NOT NULL,
     [lastExpirationDate] nvarchar(max)  NOT NULL,
+    [password] nvarchar(max)  NOT NULL,
     [Id] int  NOT NULL
 );
 GO
 
 -- Creating table 'People_Staff'
 CREATE TABLE [dbo].[People_Staff] (
+    [password] nvarchar(max)  NOT NULL,
     [Id] int  NOT NULL
 );
 GO
