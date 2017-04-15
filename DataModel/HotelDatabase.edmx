@@ -10,6 +10,7 @@
     <EntitySet Name="Rooms" EntityType="HotelDatabase.Store.Rooms" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="RoomTypes" EntityType="HotelDatabase.Store.RoomTypes" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Reservations" EntityType="HotelDatabase.Store.Reservations" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CurrentDateTimes" EntityType="HotelDatabase.Store.CurrentDateTimes" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="People_Customer" EntityType="HotelDatabase.Store.People_Customer" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="People_Staff" EntityType="HotelDatabase.Store.People_Staff" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="RoomTypeRoom" Association="HotelDatabase.Store.RoomTypeRoom">
@@ -47,7 +48,6 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="RoomType_Id" Type="int" Nullable="false" />
-    <Property Name="Reservations_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="RoomTypes">
     <Key>
@@ -55,7 +55,7 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="type" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="basePrice" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="basePrice" Type="int" Nullable="true" DefaultValue="0" />
   </EntityType>
   <EntityType Name="Reservations">
     <Key>
@@ -64,7 +64,15 @@
     <Property Name="checkIn" Type="nvarchar(max)" Nullable="true" />
     <Property Name="checkOut" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Room_Id" Type="int" Nullable="false" />
     <Property Name="Customers_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CurrentDateTimes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="time" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="People_Customer">
     <Key>
@@ -95,14 +103,14 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="RoomReservation">
-    <End Role="Room" Type="HotelDatabase.Store.Rooms" Multiplicity="*" />
-    <End Role="Reservation" Type="HotelDatabase.Store.Reservations" Multiplicity="1" />
+    <End Role="Room" Type="HotelDatabase.Store.Rooms" Multiplicity="1" />
+    <End Role="Reservation" Type="HotelDatabase.Store.Reservations" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="Reservation">
+      <Principal Role="Room">
         <PropertyRef Name="Id" />
       </Principal>
-      <Dependent Role="Room">
-        <PropertyRef Name="Reservations_Id" />
+      <Dependent Role="Reservation">
+        <PropertyRef Name="Room_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -200,7 +208,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="type" Type="String" Nullable="false" />
-          <Property Name="basePrice" Type="Int32" Nullable="false" />
+          <Property Name="basePrice" Type="Int32" Nullable="true" DefaultValue="0" />
           <NavigationProperty Name="Rooms" Relationship="HotelDatabase.RoomTypeRoom" FromRole="RoomType" ToRole="Room" />
         </EntityType>
         <Association Name="RoomTypeRoom">
@@ -286,6 +294,14 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="CurrentDateTimes">
+      <EntityTypeMapping TypeName="IsTypeOf(HotelDatabase.CurrentDateTime)">
+        <MappingFragment StoreEntitySet="CurrentDateTimes">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="time" ColumnName="time" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <AssociationSetMapping Name="RoomTypeRoom" TypeName="HotelDatabase.RoomTypeRoom" StoreEntitySet="Rooms">
       <EndProperty Name="RoomType">
         <ScalarProperty Name="Id" ColumnName="RoomType_Id" />
@@ -294,11 +310,11 @@
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
     </AssociationSetMapping>
-    <AssociationSetMapping Name="RoomReservation" TypeName="HotelDatabase.RoomReservation" StoreEntitySet="Rooms">
-      <EndProperty Name="Reservation">
-        <ScalarProperty Name="Id" ColumnName="Reservations_Id" />
-      </EndProperty>
+    <AssociationSetMapping Name="RoomReservation" TypeName="HotelDatabase.RoomReservation" StoreEntitySet="Reservations">
       <EndProperty Name="Room">
+        <ScalarProperty Name="Id" ColumnName="Room_Id" />
+      </EndProperty>
+      <EndProperty Name="Reservation">
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
     </AssociationSetMapping>

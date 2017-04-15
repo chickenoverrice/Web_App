@@ -14,9 +14,9 @@ namespace BizLogic
             type.basePrice = newPrice;
         }
 
-        public static void fastForward(CurrentDateTime current, DateTime now)
+        public static void fastForward(CurrentDateTime current, DateTime future)
         {
-            current.time = now.ToString();
+            current.time = future.ToString();
         }
     }
 }
