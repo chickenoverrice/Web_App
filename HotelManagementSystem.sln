@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BizLogic", "BizLogic\BizLogic.csproj", "{14E1018C-A0A7-47B5-AC36-20814AF3D0A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataModel", "DataModel\DataModel.csproj", "{295C75A0-4480-497D-BDD2-E425CE332574}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsole", "TestConsole\TestConsole.csproj", "{AC2F7650-31B0-40EE-84BA-49EA6612D491}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{14E1018C-A0A7-47B5-AC36-20814AF3D0A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14E1018C-A0A7-47B5-AC36-20814AF3D0A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14E1018C-A0A7-47B5-AC36-20814AF3D0A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14E1018C-A0A7-47B5-AC36-20814AF3D0A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{295C75A0-4480-497D-BDD2-E425CE332574}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{295C75A0-4480-497D-BDD2-E425CE332574}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{295C75A0-4480-497D-BDD2-E425CE332574}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{295C75A0-4480-497D-BDD2-E425CE332574}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC2F7650-31B0-40EE-84BA-49EA6612D491}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC2F7650-31B0-40EE-84BA-49EA6612D491}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC2F7650-31B0-40EE-84BA-49EA6612D491}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC2F7650-31B0-40EE-84BA-49EA6612D491}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,335 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="HotelDatabase.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="HotelDatabaseStoreContainer">
+    <EntitySet Name="People" EntityType="HotelDatabase.Store.People" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Rooms" EntityType="HotelDatabase.Store.Rooms" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="RoomTypes" EntityType="HotelDatabase.Store.RoomTypes" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Reservations" EntityType="HotelDatabase.Store.Reservations" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="People_Customer" EntityType="HotelDatabase.Store.People_Customer" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="People_Staff" EntityType="HotelDatabase.Store.People_Staff" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="RoomTypeRoom" Association="HotelDatabase.Store.RoomTypeRoom">
+      <End Role="RoomType" EntitySet="RoomTypes" />
+      <End Role="Room" EntitySet="Rooms" />
+    </AssociationSet>
+    <AssociationSet Name="RoomReservation" Association="HotelDatabase.Store.RoomReservation">
+      <End Role="Room" EntitySet="Rooms" />
+      <End Role="Reservation" EntitySet="Reservations" />
+    </AssociationSet>
+    <AssociationSet Name="ReservationCustomer" Association="HotelDatabase.Store.ReservationCustomer">
+      <End Role="Reservation" EntitySet="Reservations" />
+      <End Role="Customer" EntitySet="People_Customer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Customer_inherits_Person" Association="HotelDatabase.Store.FK_Customer_inherits_Person">
+      <End Role="Person" EntitySet="People" />
+      <End Role="Customer" EntitySet="People_Customer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Staff_inherits_Person" Association="HotelDatabase.Store.FK_Staff_inherits_Person">
+      <End Role="Person" EntitySet="People" />
+      <End Role="Staff" EntitySet="People_Staff" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="People">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="firstName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="lastName" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Rooms">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RoomType_Id" Type="int" Nullable="false" />
+    <Property Name="Reservations_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="RoomTypes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="type" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="basePrice" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Reservations">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="checkIn" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="checkOut" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Customers_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="People_Customer">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="email" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="expirationDate" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="member" Type="bit" Nullable="false" />
+    <Property Name="lastExpirationDate" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="People_Staff">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="RoomTypeRoom">
+    <End Role="RoomType" Type="HotelDatabase.Store.RoomTypes" Multiplicity="1" />
+    <End Role="Room" Type="HotelDatabase.Store.Rooms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RoomType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Room">
+        <PropertyRef Name="RoomType_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RoomReservation">
+    <End Role="Room" Type="HotelDatabase.Store.Rooms" Multiplicity="*" />
+    <End Role="Reservation" Type="HotelDatabase.Store.Reservations" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Reservation">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Room">
+        <PropertyRef Name="Reservations_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ReservationCustomer">
+    <End Role="Reservation" Type="HotelDatabase.Store.Reservations" Multiplicity="*" />
+    <End Role="Customer" Type="HotelDatabase.Store.People_Customer" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Reservation">
+        <PropertyRef Name="Customers_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Customer_inherits_Person">
+    <End Role="Person" Type="HotelDatabase.Store.People" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Customer" Type="HotelDatabase.Store.People_Customer" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Person">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Customer">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Staff_inherits_Person">
+    <End Role="Person" Type="HotelDatabase.Store.People" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Staff" Type="HotelDatabase.Store.People_Staff" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Person">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Staff">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="HotelDatabase" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="HotelDatabaseContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="People" EntityType="HotelDatabase.Person" />
+          <EntitySet Name="Rooms" EntityType="HotelDatabase.Room" />
+          <EntitySet Name="RoomTypes" EntityType="HotelDatabase.RoomType" />
+          <AssociationSet Name="RoomTypeRoom" Association="HotelDatabase.RoomTypeRoom">
+            <End Role="RoomType" EntitySet="RoomTypes" />
+            <End Role="Room" EntitySet="Rooms" />
+          </AssociationSet>
+          <EntitySet Name="Reservations" EntityType="HotelDatabase.Reservation" />
+          <AssociationSet Name="RoomReservation" Association="HotelDatabase.RoomReservation">
+            <End Role="Room" EntitySet="Rooms" />
+            <End Role="Reservation" EntitySet="Reservations" />
+          </AssociationSet>
+          <AssociationSet Name="ReservationCustomer" Association="HotelDatabase.ReservationCustomer">
+            <End Role="Reservation" EntitySet="Reservations" />
+            <End Role="Customer" EntitySet="People" />
+          </AssociationSet>
+          <EntitySet Name="CurrentDateTimes" EntityType="HotelDatabase.CurrentDateTime" />
+          </EntityContainer>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="firstName" Type="String" Nullable="false" />
+          <Property Name="lastName" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Customer" BaseType="HotelDatabase.Person">
+          <Property Name="email" Type="String" Nullable="false" />
+          <Property Name="expirationDate" Type="String" Nullable="false" />
+          <Property Name="member" Type="Boolean" Nullable="false" />
+          <Property Name="lastExpirationDate" Type="String" Nullable="false" />
+          <NavigationProperty Name="Reservation" Relationship="HotelDatabase.ReservationCustomer" FromRole="Customer" ToRole="Reservation" />
+        </EntityType>
+        <EntityType Name="Staff" BaseType="HotelDatabase.Person">
+          </EntityType>
+        <EntityType Name="Room">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="RoomType" Relationship="HotelDatabase.RoomTypeRoom" FromRole="Room" ToRole="RoomType" />
+          <NavigationProperty Name="Reservations" Relationship="HotelDatabase.RoomReservation" FromRole="Room" ToRole="Reservation" />
+        </EntityType>
+        <EntityType Name="RoomType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="type" Type="String" Nullable="false" />
+          <Property Name="basePrice" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Rooms" Relationship="HotelDatabase.RoomTypeRoom" FromRole="RoomType" ToRole="Room" />
+        </EntityType>
+        <Association Name="RoomTypeRoom">
+          <End Type="HotelDatabase.RoomType" Role="RoomType" Multiplicity="1" />
+          <End Type="HotelDatabase.Room" Role="Room" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Reservation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <NavigationProperty Name="Room" Relationship="HotelDatabase.RoomReservation" FromRole="Reservation" ToRole="Room" />
+          <NavigationProperty Name="Customers" Relationship="HotelDatabase.ReservationCustomer" FromRole="Reservation" ToRole="Customer" />
+          <Property Name="checkIn" Type="String" Nullable="true" />
+          <Property Name="checkOut" Type="String" Nullable="true" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <Association Name="RoomReservation">
+          <End Type="HotelDatabase.Room" Role="Room" Multiplicity="1" />
+          <End Type="HotelDatabase.Reservation" Role="Reservation" Multiplicity="*" />
+        </Association>
+        <Association Name="ReservationCustomer">
+          <End Type="HotelDatabase.Reservation" Role="Reservation" Multiplicity="*" />
+          <End Type="HotelDatabase.Customer" Role="Customer" Multiplicity="1" />
+        </Association>
+        <EntityType Name="CurrentDateTime">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="time" Type="String" Nullable="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="HotelDatabaseStoreContainer" CdmEntityContainer="HotelDatabaseContainer">
+    <EntitySetMapping Name="People">
+      <EntityTypeMapping TypeName="IsTypeOf(HotelDatabase.Person)">
+        <MappingFragment StoreEntitySet="People">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="firstName" ColumnName="firstName" />
+          <ScalarProperty Name="lastName" ColumnName="lastName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(HotelDatabase.Customer)">
+        <MappingFragment StoreEntitySet="People_Customer">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="expirationDate" ColumnName="expirationDate" />
+          <ScalarProperty Name="member" ColumnName="member" />
+          <ScalarProperty Name="lastExpirationDate" ColumnName="lastExpirationDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(HotelDatabase.Staff)">
+        <MappingFragment StoreEntitySet="People_Staff">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Rooms">
+      <EntityTypeMapping TypeName="IsTypeOf(HotelDatabase.Room)">
+        <MappingFragment StoreEntitySet="Rooms">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RoomTypes">
+      <EntityTypeMapping TypeName="IsTypeOf(HotelDatabase.RoomType)">
+        <MappingFragment StoreEntitySet="RoomTypes">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="basePrice" ColumnName="basePrice" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Reservations">
+      <EntityTypeMapping TypeName="IsTypeOf(HotelDatabase.Reservation)">
+        <MappingFragment StoreEntitySet="Reservations">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="checkIn" ColumnName="checkIn" />
+          <ScalarProperty Name="checkOut" ColumnName="checkOut" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="RoomTypeRoom" TypeName="HotelDatabase.RoomTypeRoom" StoreEntitySet="Rooms">
+      <EndProperty Name="RoomType">
+        <ScalarProperty Name="Id" ColumnName="RoomType_Id" />
+      </EndProperty>
+      <EndProperty Name="Room">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="RoomReservation" TypeName="HotelDatabase.RoomReservation" StoreEntitySet="Rooms">
+      <EndProperty Name="Reservation">
+        <ScalarProperty Name="Id" ColumnName="Reservations_Id" />
+      </EndProperty>
+      <EndProperty Name="Room">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ReservationCustomer" TypeName="HotelDatabase.ReservationCustomer" StoreEntitySet="Reservations">
+      <EndProperty Name="Customer">
+        <ScalarProperty Name="Id" ColumnName="Customers_Id" />
+      </EndProperty>
+      <EndProperty Name="Reservation">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
