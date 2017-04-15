@@ -5,18 +5,18 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="4a18baa07d6e4c2a9703da1df4379cc0" Name="Diagram1" >
-        <EntityTypeShape EntityType="HotelDatabase.Person" Width="1.5" PointX="7.125" PointY="0.5" />
-        <EntityTypeShape EntityType="HotelDatabase.Customer" Width="1.5" PointX="6.25" PointY="3" />
+        <EntityTypeShape EntityType="HotelDatabase.Person" Width="1.5" PointX="6.625" PointY="0.5" />
+        <EntityTypeShape EntityType="HotelDatabase.Customer" Width="1.5" PointX="4.625" PointY="3" />
         <EntityTypeShape EntityType="HotelDatabase.Staff" Width="1.5" PointX="8.625" PointY="3" />
         <InheritanceConnector EntityType="HotelDatabase.Customer" />
         <InheritanceConnector EntityType="HotelDatabase.Staff" />
-        <EntityTypeShape EntityType="HotelDatabase.Room" Width="1.5" PointX="4" PointY="0.5" />
-        <EntityTypeShape EntityType="HotelDatabase.RoomType" Width="1.5" PointX="1.375" PointY="0.5" />
+        <EntityTypeShape EntityType="HotelDatabase.Room" Width="1.5" PointX="2.75" PointY="0.5" />
+        <EntityTypeShape EntityType="HotelDatabase.RoomType" Width="1.5" PointX="0.5" PointY="0.5" />
         <AssociationConnector Association="HotelDatabase.RoomTypeRoom" />
-        <EntityTypeShape EntityType="HotelDatabase.Reservation" Width="1.5" PointX="4" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="HotelDatabase.Reservation" Width="1.5" PointX="2.5" PointY="3" IsExpanded="true" />
         <AssociationConnector Association="HotelDatabase.RoomReservation" />
         <AssociationConnector Association="HotelDatabase.ReservationCustomer" />
-        <EntityTypeShape EntityType="HotelDatabase.CurrentDateTime" Width="1.5" PointX="1.25" PointY="3" />
+        <EntityTypeShape EntityType="HotelDatabase.CurrentDateTime" Width="1.5" PointX="0.5" PointY="3" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

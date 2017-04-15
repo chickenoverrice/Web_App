@@ -17,6 +17,7 @@ namespace DataModel
         public string checkIn { get; set; }
         public string checkOut { get; set; }
         public int Id { get; set; }
+        public string bill { get; set; }
     
         public virtual Room Room { get; set; }
         public virtual Customer Customers { get; set; }

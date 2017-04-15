@@ -20,10 +20,10 @@ namespace DataModel
             this.Reservation = new HashSet<Reservation>();
         }
     
-        public string email { get; set; }
         public string expirationDate { get; set; }
         public bool member { get; set; }
         public string lastExpirationDate { get; set; }
+        public string password { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Reservation> Reservation { get; set; }
