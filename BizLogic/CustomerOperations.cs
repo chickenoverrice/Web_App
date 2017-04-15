@@ -7,7 +7,7 @@ using DataModel;
 
 namespace BizLogic
 {
-    public static class CustomerFunctions
+    public static class CustomerOperations
     {
         public static void setLoyalty(Customer customer)
         {
