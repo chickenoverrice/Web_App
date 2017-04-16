@@ -15,6 +15,6 @@ namespace DataModel
     public partial class CurrentDateTime
     {
         public int Id { get; set; }
-        public string time { get; set; }
+        public System.DateTime time { get; set; }
     }
 }

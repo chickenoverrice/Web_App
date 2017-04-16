@@ -13,7 +13,7 @@ namespace BizLogic
         {
             if (!customer.member)
             {
-                ICollection<Reservation> reservations = customer.Reservation;
+                ICollection<Reservation> reservations = customer.Reservations;
                 int stays = 0;
                 int currentYear = 0;
 
