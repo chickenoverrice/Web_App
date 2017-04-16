@@ -35,8 +35,7 @@ namespace TestConsole
                 CurrentDateTime now = new CurrentDateTime { time = System.DateTime.Now };
                 context.CurrentDateTimes.Add(now);
 
-                CustomerOperations.setLoyalty(customer);
-                System.Console.WriteLine(customer.member);
+                CustomerOperations.setLoyalty(customer, now);
                 for (int i = 1; i < 6; i++)
                 {
                     Reservation reservation = new Reservation
@@ -45,18 +44,27 @@ namespace TestConsole
                         People = { customer },
                         Room = room,
                         checkIn = now.time,
-                        checkOut = Convert.ToDateTime(now.time).AddDays(2)
+                        checkOut = Convert.ToDateTime(now.time).AddDays(3)
                     };
+
+                    if (customer.lastStay != null && customer.lastStay.Value.Year == now.time.Year)
+                        customer.stays++;
+                    else
+                        customer.stays = 0;
+
                     context.Reservations.Add(reservation);
+                    customer.stays++; 
+                    customer.lastStay = reservation.checkOut;
                     Utilities.fastForward(now, Convert.ToDateTime(now.time).AddDays(3));
                 }
 
-                CustomerOperations.setLoyalty(customer);
+                CustomerOperations.setLoyalty(customer, now);
 
                 try
                 {
                     context.SaveChanges();
                     Debug.WriteLine("Success");
+                    Debug.WriteLine("Loyalty: " + customer.member);
                 } 
                 catch (DbEntityValidationException e)
                 {
@@ -72,8 +80,6 @@ namespace TestConsole
                 {
                     Debug.WriteLine(e.Message);
                 }
-
-                System.Console.WriteLine(customer.member);
 
                 //Cleanup
                 context.RoomTypes.Remove(type);

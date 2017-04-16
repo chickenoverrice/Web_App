@@ -96,10 +96,12 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="expirationDate" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="expirationDate" Type="datetime" Nullable="true" />
     <Property Name="member" Type="bit" Nullable="false" DefaultValue="false" />
     <Property Name="password" Type="nvarchar(max)" Nullable="false" />
     <Property Name="loyaltyNum" Type="int" Nullable="true" />
+    <Property Name="stays" Type="int" Nullable="false" DefaultValue="0" />
+    <Property Name="lastStay" Type="datetime" Nullable="true" />
     <Property Name="Id" Type="int" Nullable="false" />
     <Property Name="RoomPref_Id" Type="int" Nullable="true" />
   </EntityType>
@@ -251,7 +253,7 @@
           <NavigationProperty Name="Reservations" Relationship="HotelDatabase.ReservationPerson" FromRole="Person" ToRole="Reservation" />
         </EntityType>
         <EntityType Name="Customer" BaseType="HotelDatabase.Person">
-          <Property Name="expirationDate" Type="String" Nullable="true" />
+          <Property Name="expirationDate" Type="DateTime" Nullable="true" />
           <Property Name="member" Type="Boolean" Nullable="false" DefaultValue="false" />
           <Property Name="password" Type="String" Nullable="false" />
           <Property Name="loyaltyNum" Type="Int32" Nullable="true" />
@@ -343,6 +345,8 @@
           <ScalarProperty Name="member" ColumnName="member" />
           <ScalarProperty Name="password" ColumnName="password" />
           <ScalarProperty Name="loyaltyNum" ColumnName="loyaltyNum" />
+          <ScalarProperty Name="stays" ColumnName="stays" />
+          <ScalarProperty Name="lastStay" ColumnName="lastStay" />
         </MappingFragment>
       </EntityTypeMapping>
       <EntityTypeMapping TypeName="IsTypeOf(HotelDatabase.Staff)">
