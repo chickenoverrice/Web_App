@@ -42,7 +42,7 @@ namespace TestConsole
                     Reservation reservation = new Reservation
                     {
                         Id = i,
-                        People = { customer },
+                        People = customer,
                         Room = room,
                         checkIn = now.time,
                         checkOut = Convert.ToDateTime(now.time).AddDays(2)

@@ -13,7 +13,6 @@
     <EntitySet Name="CurrentDateTimes" EntityType="HotelDatabase.Store.CurrentDateTimes" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="People_Customer" EntityType="HotelDatabase.Store.People_Customer" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="People_Staff" EntityType="HotelDatabase.Store.People_Staff" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="ReservationPerson" EntityType="HotelDatabase.Store.ReservationPerson" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="RoomTypeRoom" Association="HotelDatabase.Store.RoomTypeRoom">
       <End Role="RoomType" EntitySet="RoomTypes" />
       <End Role="Room" EntitySet="Rooms" />
@@ -26,13 +25,9 @@
       <End Role="Customer" EntitySet="People_Customer" />
       <End Role="RoomType" EntitySet="RoomTypes" />
     </AssociationSet>
-    <AssociationSet Name="FK_ReservationPerson_Reservation" Association="HotelDatabase.Store.FK_ReservationPerson_Reservation">
+    <AssociationSet Name="ReservationPerson" Association="HotelDatabase.Store.ReservationPerson">
       <End Role="Reservation" EntitySet="Reservations" />
-      <End Role="ReservationPerson" EntitySet="ReservationPerson" />
-    </AssociationSet>
-    <AssociationSet Name="FK_ReservationPerson_Person" Association="HotelDatabase.Store.FK_ReservationPerson_Person">
       <End Role="Person" EntitySet="People" />
-      <End Role="ReservationPerson" EntitySet="ReservationPerson" />
     </AssociationSet>
     <AssociationSet Name="FK_Customer_inherits_Person" Association="HotelDatabase.Store.FK_Customer_inherits_Person">
       <End Role="Person" EntitySet="People" />
@@ -74,6 +69,7 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="type" Type="nvarchar(max)" Nullable="false" />
     <Property Name="basePrice" Type="float" Nullable="false" DefaultValue="0" />
+    <Property Name="maxGuests" Type="int" Nullable="false" DefaultValue="2" />
   </EntityType>
   <EntityType Name="Reservations">
     <Key>
@@ -83,7 +79,9 @@
     <Property Name="checkOut" Type="datetime" Nullable="false" />
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="bill" Type="float" Nullable="false" />
+    <Property Name="guestsInfo" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Room_Id" Type="int" Nullable="false" />
+    <Property Name="People_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="CurrentDateTimes">
     <Key>
@@ -100,6 +98,8 @@
     <Property Name="member" Type="bit" Nullable="false" DefaultValue="false" />
     <Property Name="password" Type="nvarchar(max)" Nullable="false" />
     <Property Name="loyaltyNum" Type="int" Nullable="true" />
+    <Property Name="stays" Type="int" Nullable="false" DefaultValue="0" />
+    <Property Name="lastStay" Type="datetime" Nullable="true" />
     <Property Name="Id" Type="int" Nullable="false" />
     <Property Name="RoomPref_Id" Type="int" Nullable="true" />
   </EntityType>
@@ -109,14 +109,6 @@
     </Key>
     <Property Name="password" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Id" Type="int" Nullable="false" />
-  </EntityType>
-  <EntityType Name="ReservationPerson">
-    <Key>
-      <PropertyRef Name="Reservations_Id" />
-      <PropertyRef Name="People_Id" />
-    </Key>
-    <Property Name="Reservations_Id" Type="int" Nullable="false" />
-    <Property Name="People_Id" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="RoomTypeRoom">
     <End Role="RoomType" Type="HotelDatabase.Store.RoomTypes" Multiplicity="1" />
@@ -154,26 +146,14 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_ReservationPerson_Reservation">
-    <End Role="Reservation" Type="HotelDatabase.Store.Reservations" Multiplicity="1" />
-    <End Role="ReservationPerson" Type="HotelDatabase.Store.ReservationPerson" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Reservation">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="ReservationPerson">
-        <PropertyRef Name="Reservations_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_ReservationPerson_Person">
-    <End Role="ReservationPerson" Type="HotelDatabase.Store.ReservationPerson" Multiplicity="*" />
+  <Association Name="ReservationPerson">
+    <End Role="Reservation" Type="HotelDatabase.Store.Reservations" Multiplicity="*" />
     <End Role="Person" Type="HotelDatabase.Store.People" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="Person">
         <PropertyRef Name="Id" />
       </Principal>
-      <Dependent Role="ReservationPerson">
+      <Dependent Role="Reservation">
         <PropertyRef Name="People_Id" />
       </Dependent>
     </ReferentialConstraint>
@@ -279,6 +259,7 @@
           <Property Name="type" Type="String" Nullable="false" />
           <Property Name="basePrice" Nullable="false" Type="Double" DefaultValue="0.0" />
           <NavigationProperty Name="Rooms" Relationship="HotelDatabase.RoomTypeRoom" FromRole="RoomType" ToRole="Room" />
+          <Property Name="maxGuests" Type="Int32" Nullable="false" DefaultValue="2" />
         </EntityType>
         <Association Name="RoomTypeRoom">
           <End Type="HotelDatabase.RoomType" Role="RoomType" Multiplicity="1" />
@@ -294,6 +275,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="bill" Type="Double" Nullable="false" />
           <NavigationProperty Name="People" Relationship="HotelDatabase.ReservationPerson" FromRole="Reservation" ToRole="Person" />
+          <Property Name="guestsInfo" Type="String" Nullable="true" />
         </EntityType>
         <Association Name="RoomReservation">
           <End Type="HotelDatabase.Room" Role="Room" Multiplicity="1" />
@@ -311,8 +293,10 @@
           <End Type="HotelDatabase.RoomType" Role="RoomType" Multiplicity="0..1" />
         </Association>
         <Association Name="ReservationPerson">
-          <End Type="HotelDatabase.Reservation" Role="Reservation" Multiplicity="*" />
-          <End Type="HotelDatabase.Person" Role="Person" Multiplicity="*" />
+          <End Type="HotelDatabase.Reservation" Role="Reservation" Multiplicity="*" >
+          </End>
+          <End Type="HotelDatabase.Person" Role="Person" Multiplicity="1" >
+          </End>
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -343,6 +327,8 @@
           <ScalarProperty Name="member" ColumnName="member" />
           <ScalarProperty Name="password" ColumnName="password" />
           <ScalarProperty Name="loyaltyNum" ColumnName="loyaltyNum" />
+          <ScalarProperty Name="stays" ColumnName="stays" />
+          <ScalarProperty Name="lastStay" ColumnName="lastStay" />
         </MappingFragment>
       </EntityTypeMapping>
       <EntityTypeMapping TypeName="IsTypeOf(HotelDatabase.Staff)">
@@ -366,6 +352,7 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="type" ColumnName="type" />
           <ScalarProperty Name="basePrice" ColumnName="basePrice" />
+          <ScalarProperty Name="maxGuests" ColumnName="maxGuests" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -376,6 +363,7 @@
           <ScalarProperty Name="checkIn" ColumnName="checkIn" />
           <ScalarProperty Name="checkOut" ColumnName="checkOut" />
           <ScalarProperty Name="bill" ColumnName="bill" />
+          <ScalarProperty Name="guestsInfo" ColumnName="guestsInfo" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -412,12 +400,12 @@
       </EndProperty>
       <Condition ColumnName="RoomPref_Id" IsNull="false" />
     </AssociationSetMapping>
-    <AssociationSetMapping Name="ReservationPerson" TypeName="HotelDatabase.ReservationPerson" StoreEntitySet="ReservationPerson">
-      <EndProperty Name="Reservation">
-        <ScalarProperty Name="Id" ColumnName="Reservations_Id" />
-      </EndProperty>
+    <AssociationSetMapping Name="ReservationPerson" TypeName="HotelDatabase.ReservationPerson" StoreEntitySet="Reservations">
       <EndProperty Name="Person">
         <ScalarProperty Name="Id" ColumnName="People_Id" />
+      </EndProperty>
+      <EndProperty Name="Reservation">
+        <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
     </AssociationSetMapping>
   </EntityContainerMapping>
