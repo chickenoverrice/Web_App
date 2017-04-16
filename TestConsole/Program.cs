@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using DataModel;
 using BizLogic;
+using System.Diagnostics;
+using System.Data.Entity.Validation;
 
 namespace TestConsole
 {
@@ -20,21 +22,16 @@ namespace TestConsole
                     firstName = "Jon",
                     lastName = "Doe",
                     email = "jd@gmail.com",
-                    member = false,
-                    expirationDate = "",
-                    lastExpirationDate = ""
+                    password = "badpass"
+                    //member = false //Defaults to False
                 };
                 context.People.Add((Person)customer);
 
-                CustomerOperations.ChangeAccount(ref customer, email:"jg@yahoo.com");
-                //Console.WriteLine(customer.firstName + " " + customer.lastName + " " + customer.email);
-                
-                RoomType type = new RoomType { Id = 1, type = "single", basePrice = 100 };
-                Room room = new Room { Id = 1, RoomType = type };
+                RoomType type = new RoomType { type = "hmz224_single", basePrice = 100.0 };
+                Room room = new Room { RoomType = type };
                 context.RoomTypes.Add(type);
                 context.Rooms.Add(room);
-                //Console.WriteLine(CustomerOperations.ViewRoom(type));
-                
+
                 CurrentDateTime now = new CurrentDateTime { time = System.DateTime.Now.ToString() };
                 context.CurrentDateTimes.Add(now);
                 DateTime start = new DateTime(2017, 5, 10);
@@ -55,27 +52,59 @@ namespace TestConsole
                     Reservation reservation = new Reservation
                     {
                         Id = i,
-                        Customers = customer,
+                        People = { customer },
                         Room = room,
                         checkIn = now.time,
-                        checkOut = Convert.ToDateTime(now.time).AddDays(2).ToString()
+                        checkOut = Convert.ToDateTime(now.time).AddDays(2)
                     };
                     context.Reservations.Add(reservation);
                     Utilities.fastForward(now, Convert.ToDateTime(now.time).AddDays(3));
                 }
 
                 CustomerOperations.setLoyalty(customer);
+
+                try
+                {
+                    context.SaveChanges();
+                    Debug.WriteLine("Success");
+                } 
+                catch (DbEntityValidationException e)
+                {
+                    foreach (DbEntityValidationResult err in e.EntityValidationErrors)
+                    {
+                        foreach (DbValidationError valerr in err.ValidationErrors)
+                        {
+                            Debug.WriteLine(valerr.ErrorMessage);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                }
+
+                System.Console.WriteLine(customer.member);
+
+                //Cleanup
+                context.RoomTypes.Remove(type);
+                context.Rooms.Remove(room);
+                context.People.Remove((Person)customer);
+                context.CurrentDateTimes.Remove(now);
+                foreach (var entity in context.Reservations)
+                    context.Reservations.Remove(entity);
+
                 try
                 {
                     context.SaveChanges();
                 }
                 catch (Exception e)
                 {
-
+                    Debug.WriteLine(e.Message);
                 }
-
-                System.Console.WriteLine(customer.member);
             }
+
+            //Run Staff Tests
+            StaffTests.runTests();
         }
     }
 }

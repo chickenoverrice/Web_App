@@ -17,15 +17,17 @@ namespace DataModel
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Customer()
         {
-            this.Reservation = new HashSet<Reservation>();
+            this.member = false;
+            this.stays = 0;
         }
     
         public string expirationDate { get; set; }
         public bool member { get; set; }
-        public string lastExpirationDate { get; set; }
         public string password { get; set; }
+        public Nullable<int> loyaltyNum { get; set; }
+        public int stays { get; set; }
+        public Nullable<System.DateTime> lastStay { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Reservation> Reservation { get; set; }
+        public virtual RoomType RoomPref { get; set; }
     }
 }

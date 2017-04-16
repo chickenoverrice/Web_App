@@ -17,6 +17,7 @@ namespace DataModel
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Room()
         {
+            this.occupied = false;
             this.Reservations = new HashSet<Reservation>();
         }
     

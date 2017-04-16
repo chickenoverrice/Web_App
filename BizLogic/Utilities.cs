@@ -16,7 +16,7 @@ namespace BizLogic
 
         public static void fastForward(CurrentDateTime current, DateTime future)
         {
-            current.time = future.ToString();
+            current.time = future;
         }
     }
 }
