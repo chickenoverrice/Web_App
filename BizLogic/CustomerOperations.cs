@@ -174,26 +174,14 @@ namespace BizLogic
         //this method is wrong. should not count the reservation!
         public static void setLoyalty(Customer customer)
         {
-            if (!customer.member)
+            if (!customer.member && customer.lastStay != null)
             {
-                ICollection<Reservation> reservations = customer.Reservations;
-                int stays = 0;
-                int currentYear = 0;
-
-                foreach (Reservation r in reservations)
+                if (customer.lastStay.Value.Year == now.time.Year)
                 {
-                    int year = Convert.ToDateTime(r.checkIn).Year;
-                    if (year != currentYear)
-                    {
-                        stays = 0;
-                        currentYear = year;
-                    }
-                    stays++;
-
-                    if (stays >= 5)
+                    if (customer.stays >= 5)
                     {
                         customer.member = true;
-                        return;
+                        customer.expirationDate = new DateTime(now.time.Year, 12, 31);
                     }
                 }
             }

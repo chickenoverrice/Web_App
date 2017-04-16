@@ -21,7 +21,7 @@ namespace DataModel
             this.stays = 0;
         }
     
-        public string expirationDate { get; set; }
+        public Nullable<System.DateTime> expirationDate { get; set; }
         public bool member { get; set; }
         public string password { get; set; }
         public Nullable<int> loyaltyNum { get; set; }
