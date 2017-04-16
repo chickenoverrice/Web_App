@@ -14,19 +14,13 @@ namespace DataModel
     
     public partial class Reservation
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Reservation()
-        {
-            this.People = new HashSet<Person>();
-        }
-    
         public System.DateTime checkIn { get; set; }
         public System.DateTime checkOut { get; set; }
         public int Id { get; set; }
         public double bill { get; set; }
+        public string guestsInfo { get; set; }
     
         public virtual Room Room { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Person> People { get; set; }
+        public virtual Person People { get; set; }
     }
 }

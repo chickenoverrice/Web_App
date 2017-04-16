@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/16/2017 17:44:47
--- Generated from EDMX file: C:\Users\Hassan Zaidi\documents\visual studio 2015\Projects\BizLogic\DataModel\HotelDatabase.edmx
+-- Date Created: 04/16/2017 16:10:38
+-- Generated from EDMX file: C:\Users\PatYuen\Source\Repos\hotelmanagementsystem\DataModel\HotelDatabase.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -100,7 +100,8 @@ GO
 CREATE TABLE [dbo].[RoomTypes] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [type] nvarchar(max)  NOT NULL,
-    [basePrice] float  NOT NULL
+    [basePrice] float  NOT NULL,
+    [maxGuests] int  NOT NULL
 );
 GO
 
@@ -110,7 +111,9 @@ CREATE TABLE [dbo].[Reservations] (
     [checkOut] datetime  NOT NULL,
     [Id] int IDENTITY(1,1) NOT NULL,
     [bill] float  NOT NULL,
-    [Room_Id] int  NOT NULL
+    [guestsInfo] nvarchar(max)  NULL,
+    [Room_Id] int  NOT NULL,
+    [People_Id] int  NOT NULL
 );
 GO
 
@@ -138,13 +141,6 @@ GO
 CREATE TABLE [dbo].[People_Staff] (
     [password] nvarchar(max)  NOT NULL,
     [Id] int  NOT NULL
-);
-GO
-
--- Creating table 'ReservationPerson'
-CREATE TABLE [dbo].[ReservationPerson] (
-    [Reservations_Id] int  NOT NULL,
-    [People_Id] int  NOT NULL
 );
 GO
 
@@ -192,12 +188,6 @@ GO
 ALTER TABLE [dbo].[People_Staff]
 ADD CONSTRAINT [PK_People_Staff]
     PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
--- Creating primary key on [Reservations_Id], [People_Id] in table 'ReservationPerson'
-ALTER TABLE [dbo].[ReservationPerson]
-ADD CONSTRAINT [PK_ReservationPerson]
-    PRIMARY KEY CLUSTERED ([Reservations_Id], [People_Id] ASC);
 GO
 
 -- --------------------------------------------------
@@ -249,27 +239,18 @@ ON [dbo].[People_Customer]
     ([RoomPref_Id]);
 GO
 
--- Creating foreign key on [Reservations_Id] in table 'ReservationPerson'
-ALTER TABLE [dbo].[ReservationPerson]
-ADD CONSTRAINT [FK_ReservationPerson_Reservation]
-    FOREIGN KEY ([Reservations_Id])
-    REFERENCES [dbo].[Reservations]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating foreign key on [People_Id] in table 'ReservationPerson'
-ALTER TABLE [dbo].[ReservationPerson]
-ADD CONSTRAINT [FK_ReservationPerson_Person]
+-- Creating foreign key on [People_Id] in table 'Reservations'
+ALTER TABLE [dbo].[Reservations]
+ADD CONSTRAINT [FK_ReservationPerson]
     FOREIGN KEY ([People_Id])
     REFERENCES [dbo].[People]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
--- Creating non-clustered index for FOREIGN KEY 'FK_ReservationPerson_Person'
-CREATE INDEX [IX_FK_ReservationPerson_Person]
-ON [dbo].[ReservationPerson]
+-- Creating non-clustered index for FOREIGN KEY 'FK_ReservationPerson'
+CREATE INDEX [IX_FK_ReservationPerson]
+ON [dbo].[Reservations]
     ([People_Id]);
 GO
 

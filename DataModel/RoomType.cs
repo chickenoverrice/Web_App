@@ -18,12 +18,14 @@ namespace DataModel
         public RoomType()
         {
             this.basePrice = 0D;
+            this.maxGuests = 2;
             this.Rooms = new HashSet<Room>();
         }
     
         public int Id { get; set; }
         public string type { get; set; }
         public double basePrice { get; set; }
+        public int maxGuests { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Room> Rooms { get; set; }

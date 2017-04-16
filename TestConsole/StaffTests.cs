@@ -39,7 +39,7 @@ namespace TestConsole
                 context.People.Add(dummy);
 
                 //Add 2 Reservations
-                Reservation origRes = new Reservation { People = { dummy }, checkIn = DateTime.Now, checkOut = DateTime.Now.Date.AddDays(1), Room = rm1 };
+                Reservation origRes = new Reservation { People = dummy, checkIn = DateTime.Now, checkOut = DateTime.Now.Date.AddDays(1), Room = rm1 };
                 context.Reservations.Add(origRes);
 
                 try
@@ -110,7 +110,7 @@ namespace TestConsole
                 };
 
                 //Add a Reservation
-                Reservation origRes = new Reservation { People = { dummy }, checkIn = DateTime.Now, checkOut = DateTime.Now, Room = rm1 };
+                Reservation origRes = new Reservation { People = dummy, checkIn = DateTime.Now, checkOut = DateTime.Now, Room = rm1 };
                 context.Reservations.Add(origRes);
 
                 //CheckIn
@@ -147,7 +147,7 @@ namespace TestConsole
                 };
 
                 //Add 1 Reservation
-                Reservation origRes = new Reservation { People = { dummy }, checkIn = DateTime.Now, checkOut = DateTime.Now, Room = rm1 };
+                Reservation origRes = new Reservation { People = dummy, checkIn = DateTime.Now, checkOut = DateTime.Now, Room = rm1 };
                 context.Reservations.Add(origRes);
 
                 //Checkout
@@ -186,8 +186,8 @@ namespace TestConsole
                 };
 
                 //Add 2 Reservations
-                Reservation origRes = new Reservation { People = { dummy }, checkIn = DateTime.Now, checkOut = DateTime.Now.AddDays(1), Room = rm1 };
-                Reservation conflictingRes = new Reservation { People = { dummy }, checkIn = DateTime.Now, checkOut = DateTime.Now.AddDays(1), Room = rm2 };
+                Reservation origRes = new Reservation { People = dummy, checkIn = DateTime.Now, checkOut = DateTime.Now.AddDays(1), Room = rm1 };
+                Reservation conflictingRes = new Reservation { People = dummy, checkIn = DateTime.Now, checkOut = DateTime.Now.AddDays(1), Room = rm2 };
                 context.Reservations.Add(origRes);
                 context.Reservations.Add(conflictingRes);
 
