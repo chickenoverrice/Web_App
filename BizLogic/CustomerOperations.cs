@@ -125,8 +125,8 @@ namespace BizLogic
                 r.checkIn = start;
                 r.checkOut = end;
                 r.Room = room;
-                customer.Reservations.Add(r); //Change customer status; pass by ref.
-                room.Reservations.Add(r);    //Change room status; pass by ref.       
+                customer.Reservations.Add(r); 
+                room.Reservations.Add(r);         
                 return r;
             }
             else
@@ -176,7 +176,7 @@ namespace BizLogic
         {
             if (!customer.member)
             {
-                return (5-customer.stays).ToString() + " more stays to become a memeber";
+                return (5-customer.stays).ToString() + " more stays to become a member";
             }
             else
             {
