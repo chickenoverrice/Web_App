@@ -72,28 +72,41 @@ namespace BizLogic
                 customer.address = address;
         }
 
-        public static void CheckIn(ref Customer customer, ref Reservation r)
-        {            
+        public static bool CheckIn(ref Customer customer, ref Reservation r, CurrentDateTime current)
+        {
+            bool checkin = true;
+            if (DateTime.Compare(current.time, r.checkIn) < 0 || DateTime.Compare(current.time, r.checkOut) > 0)
+            {
+                checkin = false;
+                return checkin;
+            }
+               
             r.Room.occupied = true;
             customer.stays++;
             //Check elite member status after each stay.
             if (!customer.member)
             {
-                setLoyalty(customer);
+                setLoyalty(customer, current);
                 //If promoted to elite status, set the expiration date.
                 if (customer.member)
                 {
                     var ex = new DateTime(Convert.ToDateTime(r.checkIn).Year + 1, 12, 31);
-                    customer.expirationDate = ex.ToString();
+                    customer.expirationDate = ex;
+                    customer.loyaltyNum = customer.Id;
                 }
-            }                         
+            }
+            return checkin;                        
         }
 
-        public static void CheckOut(ref Reservation r)
+        public static void CheckOut(ref Reservation r, CurrentDateTime current)
         {
-            r.Room.occupied = false;
-            //Delete reservation after checkout.
-            r.Room.Reservations.Remove(r);
+            if (DateTime.Compare(current.time, r.checkIn) > 0)
+            {
+                r.checkOut = current.time;
+                r.Room.occupied = false;
+                //Delete reservation after checkout.
+                r.Room.Reservations.Remove(r);
+            }
         }
 
         public static Reservation MakeReservation(ref Customer customer, DateTime start, DateTime end, RoomType rt, CurrentDateTime current)
@@ -108,7 +121,7 @@ namespace BizLogic
             if (room != null)
             {
                 var r = new Reservation();
-                r.Customer = customer;
+                r.People = customer;
                 r.checkIn = start;
                 r.checkOut = end;
                 r.Room = room;
@@ -125,10 +138,10 @@ namespace BizLogic
         public static bool CancelReservation(Reservation r, CurrentDateTime current)
         {
             bool err = true;
-            if (DateTime.Compare(Convert.ToDateTime(current.time), r.checkIn) <= 0)
+            if (DateTime.Compare(current.time, r.checkIn) < 0)
             {
                 r.Room.Reservations.Remove(r);
-                r.Customers.Reservations.Remove(r);
+                r.People.Reservations.Remove(r);
             }
             else
                 err = false;
@@ -171,8 +184,8 @@ namespace BizLogic
             }
         }
 
-        //this method is wrong. should not count the reservation!
-        public static void setLoyalty(Customer customer)
+
+        public static void setLoyalty(Customer customer, CurrentDateTime now)
         {
             if (!customer.member && customer.lastStay != null)
             {

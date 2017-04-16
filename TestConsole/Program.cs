@@ -14,6 +14,7 @@ namespace TestConsole
     {
         static void Main(string[] args)
         {
+            
             using (var context = new HotelDatabaseContainer())
             {
                 Customer customer = new Customer
@@ -101,6 +102,9 @@ namespace TestConsole
 
             //Run Staff Tests
             StaffTests.runTests();
+
+            //Run customer tests.
+            testCustomerFunction.test();
         }
     }
 }
