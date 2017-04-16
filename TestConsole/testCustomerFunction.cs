@@ -29,23 +29,42 @@ namespace TestConsole
             Console.WriteLine(CustomerOperations.ViewRoom(type));
 
             DateTime now = System.DateTime.Now;
-            DateTime start = new DateTime(2017, 5, 10);
-            DateTime end = new DateTime(2017, 5, 15);
-            CurrentDateTime current = new CurrentDateTime;
-            current.time = now.ToString();
+            DateTime start1 = new DateTime(2017, 5, 10);
+            DateTime end1 = new DateTime(2017, 5, 15);
+            DateTime start2 = new DateTime(2017, 6, 10);
+            DateTime end2 = new DateTime(2017, 6, 15);
+            CurrentDateTime current = new CurrentDateTime();
+            current.time = now;
 
             //Make a reservation.
-            var rs = CustomerOperations.MakeReservation(ref customer, start, end, type, current);
-            foreach (Reservation r in customer.Reservation)
-                Console.WriteLine(r.checkIn + " " + r.checkOut + " " + r.Room.Id);
-            var canceled = CustomerOperations.CancelReservation(rs, current);
-            if (canceled) { }
-            //Console.WriteLine(room.occupied);
-            //CustomerOperations.CheckIn(ref customer, ref rs);
-            //Console.WriteLine(room.occupied);
-            Console.ReadKey();
+            var rs1 = CustomerOperations.MakeReservation(ref customer, start1, end1, type, current);
 
+            //View reservations.
+            var viewRes = CustomerOperations.ViewReservation(customer, current);
+            foreach (Reservation r in viewRes)
+                Console.WriteLine(r.checkIn + " " + r.checkOut + " " + r.Room.Id);
+
+            //Cancel a reservation.
+            var canceled = CustomerOperations.CancelReservation(rs1, current);
+            if (canceled) { }
+
+            //Make another reservation.
+            var rs2 = CustomerOperations.MakeReservation(ref customer, start2, end2, type, current);
+            Console.WriteLine(room.occupied);
+
+            //Check in.
+            CustomerOperations.CheckIn(ref customer, ref rs2);
+            Console.WriteLine(room.occupied);
+
+            //Check out.
+            CustomerOperations.CheckOut(ref rs2);
+            Console.WriteLine(room.occupied);
+
+            //View loyalty status
+            var viewloyal = CustomerOperations.ViewLoyalty(customer);
+            Console.WriteLine(viewloyal);
+            Console.ReadKey();
             }
         }
 }
-}
+

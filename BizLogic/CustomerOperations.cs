@@ -99,7 +99,7 @@ namespace BizLogic
         public static Reservation MakeReservation(ref Customer customer, DateTime start, DateTime end, RoomType rt, CurrentDateTime current)
         {
             //Should start and end time be validated here?
-            if (DateTime.Compare(start, end) > 0 || DateTime.Compare(Convert.ToDateTime(current.time), start) > 0)
+            if (DateTime.Compare(start, end) > 0 || DateTime.Compare(current.time, start) > 0)
             {
                 return null;
             }
@@ -108,11 +108,11 @@ namespace BizLogic
             if (room != null)
             {
                 var r = new Reservation();
-                r.Customers = customer;
-                r.checkIn = start.ToString();
-                r.checkOut = end.ToString();
+                r.Customer = customer;
+                r.checkIn = start;
+                r.checkOut = end;
                 r.Room = room;
-                customer.Reservation.Add(r); //Change customer status; pass by ref.
+                customer.Reservations.Add(r); //Change customer status; pass by ref.
                 room.Reservations.Add(r);    //Change room status; pass by ref.       
                 return r;
             }
@@ -125,10 +125,10 @@ namespace BizLogic
         public static bool CancelReservation(Reservation r, CurrentDateTime current)
         {
             bool err = true;
-            if (DateTime.Compare(Convert.ToDateTime(current.time), Convert.ToDateTime(r.checkIn)) <= 0)
+            if (DateTime.Compare(Convert.ToDateTime(current.time), r.checkIn) <= 0)
             {
                 r.Room.Reservations.Remove(r);
-                r.Customers.Reservation.Remove(r);
+                r.Customers.Reservations.Remove(r);
             }
             else
                 err = false;
@@ -151,9 +151,9 @@ namespace BizLogic
         public static ICollection<Reservation> ViewReservation(Customer customer, CurrentDateTime current)
         {
             ICollection<Reservation> view = new List<Reservation>();
-            foreach(Reservation r in customer.Reservation)
+            foreach(Reservation r in customer.Reservations)
             {
-                if(DateTime.Compare(Convert.ToDateTime(r.checkIn), Convert.ToDateTime(current.time)) > 0) 
+                if(DateTime.Compare(r.checkIn, current.time) > 0) 
                     view.Add(r);
             }
             return view;
@@ -161,7 +161,14 @@ namespace BizLogic
 
         public static string ViewLoyalty(Customer customer)
         {
-            return customer.expirationDate;
+            if (!customer.member)
+            {
+                return (5-customer.stays).ToString() + " more stays to become a memeber";
+            }
+            else
+            {
+                return "membership expires on: " + customer.expirationDate;
+            }
         }
 
         //this method is wrong. should not count the reservation!

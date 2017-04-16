@@ -32,21 +32,9 @@ namespace TestConsole
                 context.RoomTypes.Add(type);
                 context.Rooms.Add(room);
 
-                CurrentDateTime now = new CurrentDateTime { time = System.DateTime.Now.ToString() };
+                CurrentDateTime now = new CurrentDateTime { time = System.DateTime.Now};
                 context.CurrentDateTimes.Add(now);
-                DateTime start = new DateTime(2017, 5, 10);
-                DateTime end = new DateTime(2017, 5, 15);
-                var rs = CustomerOperations.MakeReservation(ref customer, start, end, type);
-                foreach (Reservation r in customer.Reservation)
-                    Console.WriteLine(r.checkIn+" "+r.checkOut+" "+r.Room.Id);
-                var canceled  = CustomerOperations.CancelReservation(rs, now);
-                if (canceled) { }
-                //Console.WriteLine(room.occupied);
-                //CustomerOperations.CheckIn(ref customer, ref rs);
-                //Console.WriteLine(room.occupied);
-                Console.ReadKey();
-                //CustomerOperations.setLoyalty(customer);
-                //System.Console.WriteLine(customer.member);
+
                 for (int i = 1; i < 6; i++)
                 {
                     Reservation reservation = new Reservation
