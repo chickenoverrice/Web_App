@@ -21,6 +21,7 @@ namespace DataModel
         }
     
         public int Id { get; set; }
+        public bool occupied { get; set; }
     
         public virtual RoomType RoomType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
