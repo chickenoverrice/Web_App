@@ -55,6 +55,7 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="occupied" Type="bit" Nullable="false" />
     <Property Name="RoomType_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="RoomTypes">
@@ -220,6 +221,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="RoomType" Relationship="HotelDatabase.RoomTypeRoom" FromRole="Room" ToRole="RoomType" />
           <NavigationProperty Name="Reservations" Relationship="HotelDatabase.RoomReservation" FromRole="Room" ToRole="Reservation" />
+          <Property Name="occupied" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="RoomType">
           <Key>
@@ -302,6 +304,7 @@
       <EntityTypeMapping TypeName="IsTypeOf(HotelDatabase.Room)">
         <MappingFragment StoreEntitySet="Rooms">
           <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="occupied" ColumnName="occupied" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
