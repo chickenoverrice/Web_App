@@ -200,7 +200,7 @@ namespace BizLogic
         }
 
         //overload function for guest
-        public static bool CheckIn(ref Person uuest, ref Reservation r, CurrentDateTime current)
+        public static bool CheckIn(ref Reservation r, CurrentDateTime current)
         {
             bool checkin = true;
             if (DateTime.Compare(current.time, r.checkIn) < 0 || DateTime.Compare(current.time, r.checkOut) > 0)
