@@ -14,7 +14,7 @@ namespace TestConsole
         public static void test()
         {
             //Create an account.
-            var customer = CustomerOperations.CreateAccount(firstname: "Jon",lastname: "Doe",
+            var customer = CustomerOperations.CreateAccount(firstname: "Jon", lastname: "Doe",
                 email: "jd@gmail.com", psw: "123456");
 
             Console.WriteLine(customer.firstName + " " + customer.lastName + " " + customer.email);
@@ -39,7 +39,7 @@ namespace TestConsole
 
             //Make a reservation.
             var rs1 = CustomerOperations.MakeReservation(ref customer, start1, end1, type, current);
-            if(rs1 != null)
+            if (rs1 != null)
             {
                 Console.WriteLine("reservation is made.");
             }
@@ -74,7 +74,7 @@ namespace TestConsole
             var viewloyal = CustomerOperations.ViewLoyalty(customer);
             Console.WriteLine(viewloyal);
             Console.ReadKey();
-            }
         }
+    }
 }
 

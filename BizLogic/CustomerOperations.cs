@@ -184,7 +184,6 @@ namespace BizLogic
             }
         }
 
-
         public static void setLoyalty(Customer customer, CurrentDateTime now)
         {
             if (!customer.member && customer.lastStay != null)
@@ -197,6 +196,47 @@ namespace BizLogic
                         customer.expirationDate = new DateTime(now.time.Year, 12, 31);
                     }
                 }
+            }
+        }
+
+        //overload function for guest
+        public static bool CheckIn(ref Reservation r, CurrentDateTime current)
+        {
+            bool checkin = true;
+            if (DateTime.Compare(current.time, r.checkIn) < 0 || DateTime.Compare(current.time, r.checkOut) > 0)
+            {
+                checkin = false;
+                return checkin;
+            }
+
+            r.Room.occupied = true;
+            return checkin;
+        }
+
+        //overload function for guest
+        public static Reservation MakeReservation(ref Person guest, DateTime start, DateTime end, RoomType rt, CurrentDateTime current)
+        {
+            //Should start and end time be validated here?
+            if (DateTime.Compare(start, end) > 0 || DateTime.Compare(current.time, start) > 0)
+            {
+                return null;
+            }
+
+            var room = isRoomAvailable(rt);
+            if (room != null)
+            {
+                var r = new Reservation();
+                r.People = guest;
+                r.checkIn = start;
+                r.checkOut = end;
+                r.Room = room;
+                guest.Reservations.Add(r);
+                room.Reservations.Add(r);
+                return r;
+            }
+            else
+            {
+                return null;
             }
         }
     }
