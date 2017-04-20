@@ -105,6 +105,9 @@ namespace TestConsole
 
             //Run customer tests.
             testCustomerFunction.test();
+
+            //Run validation tests
+            TestValidation.test();
         }
     }
 }
