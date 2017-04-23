@@ -1,0 +1,80 @@
+﻿@{
+    ViewBag.Title = "Main";
+}
+  
+<div id="topframe">
+    <img id="cover_img" src="~/pics/cover.jpg">
+    @using (Html.BeginForm("Book","Home"))
+    {
+        <div id="check_menu">
+            <label id="checkin" for="from">Arrival</label>
+            <input type="text" id="from" name="from">
+            <label id="checkout" for="to">Departure</label>
+            <input type="text" id="to" name="to">
+            <input type="submit" value="Book & Check Rates" />
+        </div>
+    }
+</div>
+
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>What's nearby</h2>
+        <p>
+            Financial District
+            At the southernmost tip of Manhattan, the Financial
+            District is where New York City began as a center of
+            commerce. Today, the historic streets and beautiful
+            setting are complemented by museums, countless
+            skyscrapers, and the heart of the Financial District,
+            home to Wall Street and the New York Stock Exchange.
+            Catch the Staten Island Ferry for an unbeatable view
+            of the skyline and Statue of Liberty, or sail to Ellis
+            Island to learn about the vital immigrant history of
+            the city.
+            <ul>
+                <li>Wall Street </li>
+                <li>National 9/11 Memorial </li>
+                <li>Statue of Liberty </li>
+                <li>South Street Seaport </li>
+                <li>Century 21 Shopping</li>
+            </ul>
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2>Hotel Highlights</h2>
+        <p>
+            <ul>
+                <li>Across from the World Trade Center, 9/11 Memorial and Museum, and One World Observatory</li>
+                <li>Breath-taking city views from this high rise lower Manhattan hotel</li>
+                <li>Steps to the Oculus, home to Westfield WTC Shopping and Transit Center</li>
+                <li>10 Subway lines within 1 block of the hotel</li>
+                <li>Located only 6 stops to Times Square via express subway</li>
+                <li>5 Blocks to the Brooklyn Bridge or 10 minutes walking to Statue of Liberty Ferry</li>
+            </ul>
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2>Meetings & Events</h2>
+        <p>
+            <ul>
+                <li>
+                    10,000 square feet of function space
+                </li>
+                <li>
+                    346 guest rooms and suites
+                </li>
+                <li>
+                    5 unique meeting spaces
+                </li>
+                <li>
+                    26,722 square feet of exclusive outdoor space
+                </li>
+                <li>
+                    Wedding Facilities
+                </li>
+            </ul>
+
+        </p>
+    </div>
+</div>
