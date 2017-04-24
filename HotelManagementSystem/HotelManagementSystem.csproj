@@ -314,6 +314,7 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Home\Book.cshtml" />
+    <Content Include="Views\Home\Room.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

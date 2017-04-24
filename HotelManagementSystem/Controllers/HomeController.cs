@@ -42,5 +42,12 @@ namespace HotelManagementSystem.Controllers
 
             return View();
         }
+
+        public ActionResult Room()
+        {
+            ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
     }
 }
