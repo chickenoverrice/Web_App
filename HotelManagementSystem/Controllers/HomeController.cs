@@ -13,6 +13,22 @@ namespace HotelManagementSystem.Controllers
             return View();
         }
 
+        public ActionResult Book(DateTime? from, DateTime? to)
+        {
+            if (!from.HasValue)
+            {
+                from = DateTime.Now;
+            }
+            if (!to.HasValue)
+            {
+                to = DateTime.Now.AddDays(1);
+            }
+            ViewBag.From = from.Value.ToString("dd MMMM, yyyy");
+            ViewBag.To = to.Value.ToString("dd MMMM, yyyy");
+            // get reservation data and roomtype data
+            return View();
+        }
+
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
