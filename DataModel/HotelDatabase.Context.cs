@@ -26,6 +26,8 @@ namespace DataModel
         }
     
         public virtual DbSet<Person> People { get; set; }
+        public virtual DbSet<Customer> Customers { get; set; }
+        public virtual DbSet<Staff> Staffs { get; set; }
         public virtual DbSet<Room> Rooms { get; set; }
         public virtual DbSet<RoomType> RoomTypes { get; set; }
         public virtual DbSet<Reservation> Reservations { get; set; }
