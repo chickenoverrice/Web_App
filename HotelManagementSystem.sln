@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsole", "TestConsole\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelManagementSystem", "HotelManagementSystem\HotelManagementSystem.csproj", "{FBF79FA6-66E1-44BE-9468-41708C99D539}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBooking", "..\..\..\Desktop\HotelBooking\HotelBooking.csproj", "{4934FEB6-3DA9-45AE-A986-45543ACC2F8A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,10 +33,6 @@ Global
 		{FBF79FA6-66E1-44BE-9468-41708C99D539}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBF79FA6-66E1-44BE-9468-41708C99D539}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBF79FA6-66E1-44BE-9468-41708C99D539}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4934FEB6-3DA9-45AE-A986-45543ACC2F8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4934FEB6-3DA9-45AE-A986-45543ACC2F8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4934FEB6-3DA9-45AE-A986-45543ACC2F8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4934FEB6-3DA9-45AE-A986-45543ACC2F8A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
