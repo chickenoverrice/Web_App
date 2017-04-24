@@ -1,0 +1,41 @@
+﻿body {
+}
+@font-face {
+    font-family: 'Sansation_Light';
+    src: url('../fonts/Sansation_Light.ttf') format('truetype');
+}
+div {
+    font-family: Sansation_Light;
+}
+
+#topframe {
+  padding-top: 30px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 30px;
+  font-size: 15px;
+  font-weight: 200;
+  line-height: 2;
+  color: inherit;
+  background-color: #eeeeee;
+}
+
+#cover_img {
+    display:block;
+    margin:auto;
+    width: 95%;
+    border-radius: 8px;
+}
+#check_menu {
+    margin: 10px;  
+}
+#checkin, #checkout, #from, #to {
+    margin-right: 10px;
+    font-size: 100%;
+}
+h2 {
+    font-family: Sansation_Light;
+    font-weight: 500;
+    line-height: 1.1;
+}
