@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<div>
+    <ul>
+        <li>
+            @Html.ActionLink("Make reservation", "Create")
+        </li>
+        <li>
+            @Html.ActionLink("View reservation", "Details")
+        </li>
+        <li>
+            @Html.ActionLink("Cancel reservation", "Delete")
+        </li>
+        <li>
+            @Html.ActionLink("View Loyalty Membership", "Loyalty")
+        </li>
+
+    </ul>
+
+</div>
+<ul>@ViewBag.customer.Id</ul>
+<ul>@ViewBag.customer.firstName</ul>
+<ul>@ViewBag.customer.lastName</ul>
+<ul>@ViewBag.customer.email</ul>
+
