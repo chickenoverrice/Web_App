@@ -16,7 +16,8 @@ namespace HotelManagementSystem.Controllers
             return View();
         }
 
-        public ActionResult Book(DateTime? from, DateTime? to)
+        [HttpPost]
+        public ActionResult Search(DateTime? from, DateTime? to, int? rooms)
         {
             if (!from.HasValue)
             {
@@ -28,6 +29,7 @@ namespace HotelManagementSystem.Controllers
             }
             ViewBag.From = from.Value.ToString("dd MMMM, yyyy");
             ViewBag.To = to.Value.ToString("dd MMMM, yyyy");
+            ViewBag.Rooms = rooms;
             // get reservation data and roomtype data
             using (var roomtypecontext = new RoomTypeContext())
             {
@@ -50,9 +52,9 @@ namespace HotelManagementSystem.Controllers
             return View();
         }
 
-        public ActionResult Room()
+        public ActionResult Book()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "Your book page.";
 
             return View();
         }

@@ -1,28 +1,5 @@
-﻿@model List<DataModel.RoomType>
-@using System.Data.Entity;
-@{
-    ViewBag.Title = "Booking";
+﻿@{
+    ViewBag.Title = "Book";
 }
 <h2>@ViewBag.Title.</h2>
 
-<div>You selected </div>
-<div>@ViewBag.From as arrival date</div>
-<div>@ViewBag.To as departure date</div>
-
-<div>Here are all avaiable rooms for you</div>
-@Model.Count()
-<table>
-    <tr>
-        <th>Room Type</th>
-        <th>Max Guest</th>
-        <th>Price</th>
-    </tr>
-    @foreach (var roomtype in Model) {
-    
-        <tr>
-            <td>@roomtype.type</td>
-            <td>@roomtype.maxGuests</td>
-            <td>@roomtype.basePrice</td>
-        </tr>
-    }
-</table>

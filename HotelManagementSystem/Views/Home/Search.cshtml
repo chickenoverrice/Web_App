@@ -1,0 +1,43 @@
+﻿@model List<DataModel.RoomType>
+@using System.Data.Entity;
+<div class="title">
+    @{
+        ViewBag.Title = "Contact";
+    }
+</div>
+
+<h4>Search Summary</h4>
+<div>You searched for: @ViewBag.From - @ViewBag.To · @ViewBag.Rooms room</div>
+<div>There are @Model.Count() matching rooms</div>
+
+<table class="searchtable">
+    <tr>
+        <th>Room Type</th>
+        <th>Description</th>
+        <th>Amenities</th>
+        <th>Max Guest</th>
+        <th>Price per night</th>
+        <th></th>
+    </tr>
+    @foreach (var roomtype in Model) {
+    
+        <tr>
+            <td class="roomtype">
+                @roomtype.type
+                <img class="room_img" src="@roomtype.pic">
+            </td>
+            <td class="roomtype">@roomtype.description</td>
+            <td class="roomtype">@roomtype.amenities</td>
+            <td class="roomtype">@roomtype.maxGuests</td>
+            <td class="roomtype">@roomtype.basePrice</td>
+            <td class="roomtype">
+            @using (Html.BeginForm("Book", "Home"))
+            {
+                <input type="hidden" name="RoomType" value="@roomtype.type" />
+                <input type="hidden" name="Rooms" value="@ViewBag.Rooms" />
+                <input class="btn" type="submit" value="Select" />
+            }
+            </td>
+        </tr>
+    }
+</table>
