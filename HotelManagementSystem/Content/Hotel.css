@@ -34,7 +34,13 @@ div {
     margin-left: 10px;
     font-size: 100%;
 }
-h2, h4 {
+h2 {
+    font-family: Sansation_Light;
+    font-weight: 500;
+    line-height: 1.1;
+}
+h4 {
+    padding-top: 20px;
     font-family: Sansation_Light;
     font-weight: 500;
     line-height: 1.1;

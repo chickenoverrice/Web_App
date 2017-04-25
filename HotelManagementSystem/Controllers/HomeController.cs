@@ -15,7 +15,12 @@ namespace HotelManagementSystem.Controllers
         {
             return View();
         }
+        public ActionResult Search()
+        {
+            ViewBag.Message = "Your search page.";
 
+            return View();
+        }
         [HttpPost]
         public ActionResult Search(DateTime? Checkin, DateTime? Checkout, int? rooms)
         {
@@ -55,6 +60,12 @@ namespace HotelManagementSystem.Controllers
 
             return View();
         }
+        public ActionResult Book()
+        {
+            ViewBag.Message = "Your Book page.";
+
+            return View();
+        }
         [HttpPost]
         public ActionResult Book(DateTime? Checkin, DateTime? Checkout,int? RoomId, int? Rooms)
         {
@@ -66,6 +77,12 @@ namespace HotelManagementSystem.Controllers
                 var room = roomtypecontext.RoomTypes.Find(RoomId);
                 ViewBag.RoomType = room.type;
             }
+            return View();
+        }
+        public ActionResult Room()
+        {
+            ViewBag.Message = "Your room page.";
+
             return View();
         }
     }
