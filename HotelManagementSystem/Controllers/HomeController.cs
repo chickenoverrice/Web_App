@@ -17,18 +17,22 @@ namespace HotelManagementSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult Search(DateTime? from, DateTime? to, int? rooms)
+        public ActionResult Search(DateTime? Checkin, DateTime? Checkout, int? rooms)
         {
-            if (!from.HasValue)
+            if (!Checkin.HasValue)
             {
-                from = DateTime.Now;
+                Checkin = DateTime.Now;
             }
-            if (!to.HasValue)
+            if (!Checkout.HasValue)
             {
-                to = DateTime.Now.AddDays(1);
+                Checkout = DateTime.Now.AddDays(1);
             }
-            ViewBag.From = from.Value.ToString("dd MMMM, yyyy");
-            ViewBag.To = to.Value.ToString("dd MMMM, yyyy");
+            if (!rooms.HasValue)
+            {
+                rooms = 1;
+            }
+            ViewBag.From = Checkin.Value.ToString("dd MMMM, yyyy");
+            ViewBag.To = Checkout.Value.ToString("dd MMMM, yyyy");
             ViewBag.Rooms = rooms;
             // get reservation data and roomtype data
             using (var roomtypecontext = new RoomTypeContext())
@@ -51,11 +55,17 @@ namespace HotelManagementSystem.Controllers
 
             return View();
         }
-
-        public ActionResult Book()
+        [HttpPost]
+        public ActionResult Book(DateTime? Checkin, DateTime? Checkout,int? RoomId, int? Rooms)
         {
-            ViewBag.Message = "Your book page.";
-
+            ViewBag.Rooms = Rooms;
+            ViewBag.From = Checkin.Value.ToString("dd MMMM, yyyy"); ;
+            ViewBag.To = Checkout.Value.ToString("dd MMMM, yyyy"); ;
+            using (var roomtypecontext = new RoomTypeContext())
+            {
+                var room = roomtypecontext.RoomTypes.Find(RoomId);
+                ViewBag.RoomType = room.type;
+            }
             return View();
         }
     }
