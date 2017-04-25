@@ -11,7 +11,8 @@ namespace DataModel
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Data.Entity;
+
     public partial class RoomType
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -31,5 +32,11 @@ namespace DataModel
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Room> Rooms { get; set; }
+    }
+    public class RoomTypeContext : DbContext
+    {
+        public RoomTypeContext() : base("DefaultConnection") { }
+        public DbSet<RoomType> RoomTypes { get; set; }
+
     }
 }

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using HotelManagementSystem.Models;
+using BizLogic;
+using DataModel;
 
 namespace HotelManagementSystem.Controllers
 {
@@ -26,7 +29,11 @@ namespace HotelManagementSystem.Controllers
             ViewBag.From = from.Value.ToString("dd MMMM, yyyy");
             ViewBag.To = to.Value.ToString("dd MMMM, yyyy");
             // get reservation data and roomtype data
-            return View();
+            using (var roomtypecontext = new RoomTypeContext())
+            {
+                return View(roomtypecontext.RoomTypes.ToList());
+            }
+            
         }
 
         public ActionResult About()
