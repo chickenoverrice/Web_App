@@ -6,7 +6,7 @@
 //     Manual changes to this file will be overwritten if the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-
+using System.Data.Entity;
 namespace DataModel
 {
     using System;
@@ -15,16 +15,24 @@ namespace DataModel
 
     public partial class Reservation
     {
+        [Display(Name = "Arrival")]
         [Required(ErrorMessage = "Check-in date is required")]
         public System.DateTime checkIn { get; set; }
+        [Display(Name = "Departure")]
         [Required(ErrorMessage = "Check-out date is required")]
         public System.DateTime checkOut { get; set; }
         public int Id { get; set; }
         public double bill { get; set; }
-        [Required(ErrorMessage = "Guest info is required")]
+        //[Required(ErrorMessage = "Guest info is required")]
+        [Display(Name = "Guest Information")]
         public string guestsInfo { get; set; }
         public virtual Room Room { get; set; }
-        [Required(ErrorMessage = "People is required")]
+        //[Required(ErrorMessage = "People is required")]
         public virtual Person People { get; set; }
+    }
+
+    public class ReservationContext: DbContext{
+        public ReservationContext() : base("DefaultConnection") { }
+        public DbSet<Reservation> Reservations { get; set; }
     }
 }

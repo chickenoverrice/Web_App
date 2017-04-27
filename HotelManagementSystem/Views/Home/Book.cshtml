@@ -1,9 +1,27 @@
-﻿@{
+﻿@model DataModel.Reservation
+@{
     ViewBag.Title = "Book";
 }
 
-
 <h4>Enter Your Details</h4>
+
 <div>
     You choose @ViewBag.Rooms @ViewBag.RoomType from @ViewBag.From to @ViewBag.To
 </div>
+@using (Html.BeginForm("Reserve", "Home"))
+{
+    @Html.AntiForgeryToken();
+    <h4>Booking Information</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div>
+        @Html.LabelFor(model => model.checkIn, new { htmlAttributes = new { } })
+        @Html.EditorFor(model => model.checkIn, new { htmlAttributes = new { @readonly= "readonly", @Value = ViewBag.From } })
+        @Html.LabelFor(model => model.checkOut, new { htmlAttributes = new { } })
+        @Html.EditorFor(model => model.checkOut, new { htmlAttributes = new { @readonly = "readonly", @Value = ViewBag.To } })
+    </div>
+    @Html.ValidationMessageFor(model => model.guestsInfo, "", new {@class ="text-danger"})
+    <div>
+        <input type="submit" value="Confirm" class="btn" />
+    </div>
+}

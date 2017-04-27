@@ -6,7 +6,7 @@
 
 <h4>Search Summary</h4>
 <div>You searched for: @ViewBag.From - @ViewBag.To · @ViewBag.Rooms room(s)</div>
-<div>There are @Model.Count() matching room(s)</div><br/>
+<div>There are @Model.Count matching room(s)</div><br/>
 
 <h4>Select Your Room</h4>
 <table class="searchtable">
@@ -34,9 +34,10 @@
             {
                 <input class="btn" type="submit" value="Select" />
                 <input type="hidden" name="RoomId" value="@roomtype.Id" />
+                <input type="hidden" name="RoomType" value="@roomtype.type" />
                 <input type="hidden" name="Rooms" value="@ViewBag.Rooms" />
-                <input type="hidden" name="Checkin" value="@ViewBag.From" />
-                <input type="hidden" name="Checkout" value="@ViewBag.To" />
+                <input type="hidden" name="Arrival" value="@ViewBag.From" />
+                <input type="hidden" name="Departure" value="@ViewBag.To" />
             }
             </td>
         </tr>
