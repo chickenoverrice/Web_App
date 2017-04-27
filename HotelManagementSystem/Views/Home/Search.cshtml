@@ -5,7 +5,7 @@
 }
 
 <h4>Search Summary</h4>
-<div>You searched for: @ViewBag.From - @ViewBag.To · @ViewBag.Rooms room(s)</div>
+<div>You searched for: @ViewBag.From - @ViewBag.To (@ViewBag.Nights Nights) · @ViewBag.Rooms room(s)</div>
 <div>There are @Model.Count matching room(s)</div><br/>
 
 <h4>Select Your Room</h4>
@@ -38,6 +38,7 @@
                 <input type="hidden" name="Rooms" value="@ViewBag.Rooms" />
                 <input type="hidden" name="Arrival" value="@ViewBag.From" />
                 <input type="hidden" name="Departure" value="@ViewBag.To" />
+                <input type="hidden" name="Nights" value="@ViewBag.Nights" />
             }
             </td>
         </tr>

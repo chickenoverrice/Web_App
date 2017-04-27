@@ -36,6 +36,7 @@ namespace HotelManagementSystem.Controllers
             }
             ViewBag.From = Arrival.Value.ToString("dd MMMM, yyyy");
             ViewBag.To = Departure.Value.ToString("dd MMMM, yyyy");
+            ViewBag.Nights = BizLogic.Utilities.CalculateNight(Arrival.Value, Departure.Value).Count;
             ViewBag.Rooms = rooms;
             // get reservation data and roomtype data
             // NEED TO PUT IMPORTANT SQL HERE!!!
@@ -43,19 +44,20 @@ namespace HotelManagementSystem.Controllers
             {
                 return View(roomtypecontext.RoomTypes.ToList());
             }
-            
         }
         public ActionResult Book()
         {
             return View("Index");
         }
         [HttpPost]
-        public ActionResult Book(DateTime Arrival, DateTime Departure, String RoomType, int RoomId, int Rooms)
+        public ActionResult Book(DateTime? Arrival, DateTime? Departure, int? Nights, String RoomType, int? RoomId, int? Rooms)
         {
+            ViewBag.RoomId = RoomId;
             ViewBag.RoomType = RoomType;
             ViewBag.Rooms = Rooms;
-            ViewBag.From = Arrival.ToString("dd MMMM, yyyy");
-            ViewBag.To = Departure.ToString("dd MMMM, yyyy");
+            ViewBag.From = Arrival.Value.ToString("dd MMMM, yyyy");
+            ViewBag.To = Departure.Value.ToString("dd MMMM, yyyy");
+            ViewBag.Nights = Nights;
             return View();
         }
         public ActionResult Reserve()
@@ -64,21 +66,38 @@ namespace HotelManagementSystem.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Reserve(Reservation r)
+        public ActionResult Reserve(ReservationViewModel rvm)
         {
-            using (var reservationcontext = new ReservationContext())
+            using (var reservationcontext = new ReservationDetailContext())
             {
                 try
                 {
                     if (ModelState.IsValid)
                     {
+                        Reservation r = new Reservation();
+                        r.checkIn = rvm.checkIn;
+                        r.checkOut = rvm.checkOut;
+                        r.Room.Id = rvm.RoomId;
+                        
+
+                        Person p = new Person();
+                        // Set Person value
+                        p.firstName = rvm.firstName;
+                        p.lastName = rvm.lastName;
+
+
+                        Customer c = new Customer();
+                        // Set Customer value
+                        
+                        reservationcontext.People.Add(p);
+                        c.Id = p.Id;
+                        reservationcontext.Customers.Add(c);
+                        r.People.Id = p.Id;
                         reservationcontext.Reservations.Add(r);
                         reservationcontext.SaveChanges();
-                        System.Diagnostics.Debug.WriteLine("Valid");
+                        System.Diagnostics.Debug.WriteLine("Reservation Made");
                         return RedirectToAction("Index");
                     }
-                    System.Diagnostics.Debug.WriteLine(r.checkIn);
-                    System.Diagnostics.Debug.WriteLine(r.checkOut);
                 }
                 catch
                 {
