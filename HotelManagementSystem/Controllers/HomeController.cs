@@ -5,7 +5,6 @@ using System.Web;
 using System.Web.Mvc;
 using HotelManagementSystem.Models;
 using BizLogic;
-using DataModel;
 
 namespace HotelManagementSystem.Controllers
 {
