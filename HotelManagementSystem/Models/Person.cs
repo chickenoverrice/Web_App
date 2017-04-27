@@ -1,18 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 
 namespace HotelManagementSystem.Models
 {
+    [Table("Person")]
     public partial class Person
-    {
+    {   
         public Person()
         {
             this.Reservations = new HashSet<Reservation>();
         }
-    
-        public int Id { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int id { get; set; }
         [Required(ErrorMessage ="First name is required")]
         public string firstName { get; set; }
         [Required(ErrorMessage = "Last name is required")]
@@ -35,6 +38,12 @@ namespace HotelManagementSystem.Models
         public ICollection<Reservation> Reservations { get; set; }
         public ICollection<Customer> Customers { get; set; }
         public ICollection<Staff> Staffs { get; set; }
+    }
+    public class PersonContext : DbContext
+    {
+        public PersonContext() : base("DefaultConnection") { }
+        public DbSet<Person> Persons { get; set; }
+
     }
 
 }

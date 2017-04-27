@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace HotelManagementSystem.Models
 {
+    [Table("Reservation")]
     public class Reservation
     {
         public Reservation()

@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HotelManagementSystem.Models
 {
+    [Table("Customer")]
     public class Customer
     {
         public Customer()
@@ -16,19 +17,19 @@ namespace HotelManagementSystem.Models
         }
 
         [Key]
-        public int Id { get; set; }
+        public int id { get; set; }
         public bool member { get; set; }
         public string password { get; set; }
         public int loyaltyNum { get; set; }
         public int stays { get; set; }
         public DateTime expirationDate { get; set; }
         public DateTime lastStay { get; set; }
-        public int RoomPref { get; set; }
+        public int roomPref { get; set; }
         
-        [ForeignKey("RoomPref")]
+        [ForeignKey("roomPref")]
         public RoomType RoomType { get; set; }
 
-        [ForeignKey("Id")]
+        [ForeignKey("id")]
         public Person Person { get; set; }
     }
     public class CustomerContext : DbContext

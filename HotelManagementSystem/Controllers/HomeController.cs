@@ -76,7 +76,7 @@ namespace HotelManagementSystem.Controllers
                         Reservation r = new Reservation();
                         r.checkIn = rvm.checkIn;
                         r.checkOut = rvm.checkOut;
-                        r.Room.Id = rvm.RoomId;
+                        r.RoomId = rvm.RoomId;
                         
 
                         Person p = new Person();
@@ -89,9 +89,9 @@ namespace HotelManagementSystem.Controllers
                         // Set Customer value
                         
                         reservationcontext.People.Add(p);
-                        c.Id = p.Id;
+                        c.id = p.id;
                         reservationcontext.Customers.Add(c);
-                        r.People.Id = p.Id;
+                        r.PersonId = p.id;
                         reservationcontext.Reservations.Add(r);
                         reservationcontext.SaveChanges();
                         System.Diagnostics.Debug.WriteLine("Reservation Made");
