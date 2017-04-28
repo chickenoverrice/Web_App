@@ -13,8 +13,9 @@ namespace HotelManagementSystem.Models
         {
  
         }
-    
-        public int Id { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int id { get; set; }
         public string type { get; set; }
         public double basePrice { get; set; }
         public int maxGuests { get; set; }

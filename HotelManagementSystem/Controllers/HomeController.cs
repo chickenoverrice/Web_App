@@ -64,7 +64,6 @@ namespace HotelManagementSystem.Controllers
             return View("Index");
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Reserve(ReservationViewModel rvm)
         {
             using (var reservationcontext = new ReservationDetailContext())
@@ -73,30 +72,39 @@ namespace HotelManagementSystem.Controllers
                 {
                     if (ModelState.IsValid)
                     {
-                        Reservation r = new Reservation();
-                        r.checkIn = rvm.checkIn;
-                        r.checkOut = rvm.checkOut;
-                        r.RoomId = rvm.RoomId;
-                        
-
                         Person p = new Person();
                         // Set Person value
                         p.firstName = rvm.firstName;
                         p.lastName = rvm.lastName;
-
+                        reservationcontext.People.Add(p);
 
                         Customer c = new Customer();
                         // Set Customer value
-                        
-                        reservationcontext.People.Add(p);
                         c.id = p.id;
                         reservationcontext.Customers.Add(c);
-                        r.PersonId = p.id;
+
+                        Reservation r = new Reservation();
+                        r.checkIn = rvm.checkIn;
+                        r.checkOut = rvm.checkOut;
+                        r.guestsInfo = rvm.guestInfo;
+                        r.bill = rvm.bill;
+                        r.firstName = rvm.firstName;
+                        r.lastName = rvm.lastName;
+                        r.email = rvm.email;
+                        r.phone = rvm.email;
+                        r.address = rvm.address;
+                        r.city = rvm.city;
+                        r.state = rvm.state;
+                        r.zip = rvm.zip;
+                        r.roomId = rvm.roomId;
+                        r.personId = p.id;
                         reservationcontext.Reservations.Add(r);
+
                         reservationcontext.SaveChanges();
                         System.Diagnostics.Debug.WriteLine("Reservation Made");
                         return RedirectToAction("Index");
                     }
+                    System.Diagnostics.Debug.WriteLine("Not Valid");
                 }
                 catch
                 {

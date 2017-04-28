@@ -13,11 +13,27 @@
 
 @using (Html.BeginForm("Reserve", "Home"))
 {
-    @Html.AntiForgeryToken();
+    @Html.ValidationSummary(true)
+    <fieldset>
     @Html.EditorFor(model => model.checkIn, new { htmlAttributes = new { @readonly= "readonly", @Value = ViewBag.From, @Type = "hidden" } })   
     @Html.EditorFor(model => model.checkOut, new { htmlAttributes = new { @readonly = "readonly", @Value = ViewBag.To, @Type = "hidden" } })
-    @Html.EditorFor(model => model.RoomId, new { htmlAttributes = new { @readonly = "readonly", @Value = ViewBag.RoomId, @Type = "hidden" } })
+    @Html.EditorFor(model => model.roomId, new { htmlAttributes = new { @readonly = "readonly", @Value = ViewBag.RoomId, @Type = "hidden" } })
     <div>
-        <input type="submit" value="Confirm" class="btn" />
+        @Html.LabelFor(model => model.firstName)
     </div>
+    <div>
+        @Html.EditorFor(model => model.firstName, new { htmlAttributes = new { } })
+        @Html.ValidationMessageFor(model => model.firstName)
+    </div>
+    <div>
+        @Html.LabelFor(model => model.lastName)
+    </div>
+    <div>
+        @Html.EditorFor(model => model.lastName, new { htmlAttributes = new { } })
+        @Html.ValidationMessageFor(model => model.lastName)
+    </div>
+    <p>
+        <input type="submit" value="Confirm" class="btn" />
+    </p>
+    </fieldset>
 }

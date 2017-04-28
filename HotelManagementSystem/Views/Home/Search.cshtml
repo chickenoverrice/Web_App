@@ -33,7 +33,7 @@
             @using (Html.BeginForm("Book", "Home"))
             {
                 <input class="btn" type="submit" value="Select" />
-                <input type="hidden" name="RoomId" value="@roomtype.Id" />
+                <input type="hidden" name="RoomId" value="@roomtype.id" />
                 <input type="hidden" name="RoomType" value="@roomtype.type" />
                 <input type="hidden" name="Rooms" value="@ViewBag.Rooms" />
                 <input type="hidden" name="Arrival" value="@ViewBag.From" />
