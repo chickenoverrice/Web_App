@@ -18,7 +18,7 @@ namespace HotelManagementSystem.CodeFirstModel
     {
         public CurrentDateTimeContext() : base("DefaultConnection")
         {
-            Database.SetInitializer<CurrentDateTimeContext>(new CreateDatabaseIfNotExists<CurrentDateTimeContext>());
+            Database.SetInitializer<CurrentDateTimeContext>(null);
         }
 
         public DbSet<CurrentDateTime> CurrentDateTimeRecords { get; set; }

@@ -28,7 +28,9 @@ namespace HotelManagementSystem.CodeFirstModel
     }
     public class RoomTypeContext : DbContext
     {
-        public RoomTypeContext() : base("DefaultConnection") { }
+        public RoomTypeContext() : base("DefaultConnection") {
+            Database.SetInitializer<RoomTypeContext>(null);
+        }
         public DbSet<RoomType> RoomTypes { get; set; }
 
     }

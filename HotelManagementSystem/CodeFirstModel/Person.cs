@@ -33,7 +33,7 @@ namespace HotelManagementSystem.CodeFirstModel
         public string state { get; set; }
         [DataType(DataType.PostalCode, ErrorMessage = "Invalid postal code")]
         public string zip { get; set; }
-        public DateTime sessionExpiration { get; set; }
+        public DateTime? sessionExpiration { get; set; }
     
         public ICollection<Reservation> Reservations { get; set; }
         public ICollection<Customer> Customers { get; set; }
@@ -41,7 +41,9 @@ namespace HotelManagementSystem.CodeFirstModel
     }
     public class PersonContext : DbContext
     {
-        public PersonContext() : base("DefaultConnection") { }
+        public PersonContext() : base("DefaultConnection") {
+            Database.SetInitializer<PersonContext>(null);
+        }
         public DbSet<Person> Persons { get; set; }
 
     }

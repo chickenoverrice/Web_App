@@ -1,4 +1,4 @@
-﻿@model List<HotelManagementSystem.Models.RoomType>
+﻿@model List<HotelManagementSystem.CodeFirstModel.RoomType>
 @using System.Data.Entity;
 @{
     ViewBag.Title = "Search";
@@ -35,6 +35,8 @@
                 <input class="btn" type="submit" value="Select" />
                 <input type="hidden" name="RoomId" value="@roomtype.id" />
                 <input type="hidden" name="RoomType" value="@roomtype.type" />
+                <input type="hidden" name="RoomGuest" value="@roomtype.maxGuests" />
+
                 <input type="hidden" name="Rooms" value="@ViewBag.Rooms" />
                 <input type="hidden" name="Arrival" value="@ViewBag.From" />
                 <input type="hidden" name="Departure" value="@ViewBag.To" />

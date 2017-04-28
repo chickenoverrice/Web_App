@@ -3,16 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Data.Entity;
-using DataModel;
+using HotelManagementSystem.CodeFirstModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HotelManagementSystem.Models
 {
-    public class ReservationViewModel
+    public class ReservationDetailViewModel
     {
-        public DateTime checkIn { get; set; }
-        public DateTime checkOut { get; set; }
+        public ReservationDetailViewModel()
+        {
+            this.checkIn = DateTime.Now;
+            this.checkOut = DateTime.Now.AddDays(1);
+        }
+        //[Column(TypeName = "datetime2")]
+        public System.DateTime? checkIn { get; set; }
+        //[Column(TypeName = "datetime2")]
+        public System.DateTime? checkOut { get; set; }
         public string guestInfo { get; set; }
         public double bill { get; set; }
         [Display(Name = "First Name")]

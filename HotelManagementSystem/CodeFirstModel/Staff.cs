@@ -15,7 +15,9 @@ namespace HotelManagementSystem.CodeFirstModel
     }
     public class StaffContext : DbContext
     {
-        public StaffContext() : base("DefaultConnection") { }
+        public StaffContext() : base("DefaultConnection") {
+            Database.SetInitializer<StaffContext>(null);
+        }
         public DbSet<Staff> Staffs { get; set; }
 
     }

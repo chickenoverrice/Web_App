@@ -34,7 +34,9 @@ namespace HotelManagementSystem.CodeFirstModel
     }
     public class CustomerContext : DbContext
     {
-        public CustomerContext() : base("DefaultConnection") { }
+        public CustomerContext() : base("DefaultConnection") {
+            Database.SetInitializer<CustomerContext>(null);
+        }
         public DbSet<Customer> Customers { get; set; }
 
     }
