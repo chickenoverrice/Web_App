@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 
-namespace HotelManagementSystem.Models
+namespace HotelManagementSystem.CodeFirstModel
 {
     [Table("Person")]
     public partial class Person

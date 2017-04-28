@@ -5,7 +5,7 @@ using System.Web.Helpers;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HotelManagementSystem.Models
+namespace HotelManagementSystem.CodeFirstModel
 {
     [Table("Customer")]
     public class Customer

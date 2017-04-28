@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
-namespace HotelManagementSystem.Models
+
+namespace HotelManagementSystem.CodeFirstModel
 {
     [Table("CurrentDateTime")]
     public class CurrentDateTime

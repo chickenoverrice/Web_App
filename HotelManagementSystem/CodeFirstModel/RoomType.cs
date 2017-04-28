@@ -4,7 +4,7 @@ using System.Data.Entity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HotelManagementSystem.Models
+namespace HotelManagementSystem.CodeFirstModel
 {
     [Table("RoomType")]
     public class RoomType

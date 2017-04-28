@@ -214,7 +214,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="CodeFirstModel\CurrentDateTime.cs" />
     <Compile Include="CodeFirstModel\Customer.cs" />
-    <Compile Include="Models\HotelDatabase.Context.cs" />
+    <Compile Include="CodeFirstModel\HotelDatabase.Context.cs" />
     <Compile Include="CodeFirstModel\Person.cs" />
     <Compile Include="CodeFirstModel\Reservation.cs" />
     <Compile Include="Models\ReservationViewModel.cs" />
