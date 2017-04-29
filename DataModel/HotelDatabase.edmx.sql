@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/29/2017 14:10:56
--- Generated from EDMX file: C:\Users\Hassan Zaidi\Source\Repos\hotelmanagementsystem\DataModel\HotelDatabase.edmx
+-- Date Created: 04/29/2017 14:31:23
+-- Generated from EDMX file: C:\Users\Lihao\Documents\Project\hotelManagementSystem\DataModel\HotelDatabase.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -110,6 +110,14 @@ CREATE TABLE [dbo].[Reservations] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [bill] float  NOT NULL,
     [guestsInfo] nvarchar(max)  NULL,
+    [firstName] nvarchar(max)  NOT NULL,
+    [lastName] nvarchar(max)  NOT NULL,
+    [email] nvarchar(max)  NOT NULL,
+    [address] nvarchar(max)  NULL,
+    [phone] nvarchar(max)  NULL,
+    [city] nvarchar(max)  NULL,
+    [state] nvarchar(max)  NULL,
+    [zip] nvarchar(max)  NULL,
     [Room_Id] int  NOT NULL,
     [People_Id] int  NOT NULL
 );

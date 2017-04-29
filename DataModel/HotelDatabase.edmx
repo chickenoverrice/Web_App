@@ -84,6 +84,14 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="bill" Type="float" Nullable="false" />
     <Property Name="guestsInfo" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="firstName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="lastName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="email" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="address" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="phone" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="city" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="state" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="zip" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Room_Id" Type="int" Nullable="false" />
     <Property Name="People_Id" Type="int" Nullable="false" />
   </EntityType>
@@ -284,6 +292,14 @@
           <Property Name="bill" Type="Double" Nullable="false" />
           <NavigationProperty Name="People" Relationship="HotelDatabase.ReservationPerson" FromRole="Reservation" ToRole="Person" />
           <Property Name="guestsInfo" Type="String" Nullable="true" />
+          <Property Name="firstName" Type="String" Nullable="false" />
+          <Property Name="lastName" Type="String" Nullable="false" />
+          <Property Name="email" Type="String" Nullable="false" />
+          <Property Name="address" Type="String" Nullable="true" />
+          <Property Name="phone" Type="String" Nullable="true" />
+          <Property Name="city" Type="String" Nullable="true" />
+          <Property Name="state" Type="String" Nullable="true" />
+          <Property Name="zip" Type="String" Nullable="true" />
         </EntityType>
         <Association Name="RoomReservation">
           <End Type="HotelDatabase.Room" Role="Room" Multiplicity="1" />
@@ -376,6 +392,14 @@
           <ScalarProperty Name="checkOut" ColumnName="checkOut" />
           <ScalarProperty Name="bill" ColumnName="bill" />
           <ScalarProperty Name="guestsInfo" ColumnName="guestsInfo" />
+          <ScalarProperty Name="firstName" ColumnName="firstName" />
+          <ScalarProperty Name="lastName" ColumnName="lastName" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="phone" ColumnName="phone" />
+          <ScalarProperty Name="city" ColumnName="city" />
+          <ScalarProperty Name="state" ColumnName="state" />
+          <ScalarProperty Name="zip" ColumnName="zip" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
