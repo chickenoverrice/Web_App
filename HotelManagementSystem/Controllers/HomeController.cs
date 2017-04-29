@@ -39,10 +39,11 @@ namespace HotelManagementSystem.Controllers
             ViewBag.Rooms = rooms;
             // get reservation data and roomtype data
             // NEED TO PUT IMPORTANT SQL HERE!!!
-            using (var roomtypecontext = new RoomTypeContext())
-            {
-                return View(roomtypecontext.RoomTypes.ToList());
-            }
+            /*  using (var roomtypecontext = new RoomTypeContext())
+              {
+                  return View(roomtypecontext.RoomTypes.ToList());
+              }*/
+            return View();
         }
         public ActionResult Book()
         {
@@ -65,7 +66,7 @@ namespace HotelManagementSystem.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Reserve(ReservationViewModel rvm)
+/*        public ActionResult Reserve(ReservationViewModel rvm)
         {
             using (var reservationcontext = new ReservationDetailContext())
             {
@@ -105,7 +106,8 @@ namespace HotelManagementSystem.Controllers
                 }
             }
             return View();
-        }
+        }*/
+
         public ActionResult Room()
         {
             ViewBag.Message = "Room page.";

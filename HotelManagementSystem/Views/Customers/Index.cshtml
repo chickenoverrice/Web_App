@@ -1,0 +1,69 @@
+﻿@model DataModel.Customer
+
+@{
+    ViewBag.Title = "Index";
+}
+@section customer {
+    <link href="@Url.Content("~/Content/Customer.css")" rel="stylesheet" />
+}
+
+<div class="container">
+    <div class="left">
+        <table class="sidebar">
+            <tr>
+                <td>
+                    @Html.ActionLink("View Reservation", "ReservationDetails", new { id = ViewBag.id }, null)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.ActionLink("Make Reservation", "Create", "CustomerReservations", new { id = ViewBag.id }, null)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.ActionLink("View Loyalty Status", "Loyalty", new { id = ViewBag.id }, null)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.ActionLink("View Profile", "Details", new { id = ViewBag.id }, null)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.ActionLink("Change Profile", "Edit", new { id = ViewBag.id }, null)
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class ="right">
+        <hr />
+        <p>Account information</p>
+        <dl class="account">
+            <dt>
+                First Name:
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.firstName)
+            </dd>
+
+            <dt>
+                Last Name:
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.lastName)
+            </dd>
+
+            <dt>
+                Email:
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.email)
+            </dd>
+        </dl>
+    </div>
+</div>
