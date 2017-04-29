@@ -36,7 +36,7 @@ namespace TestConsole
                         return;
                     }
 
-                    Customer c1 = new Customer(firstname, lastname, email, sessionId, sessionExp, password, phone, address, state, city, zip);
+                    Customer c1 = new Customer { firstName = "test", lastName = "test", email = "test" }; //, sessionId, sessionExp, password, phone, address, state, city, zip);
                     context.People.Add((Person)c1);
                     context.SaveChanges();
                     Console.WriteLine("Add C1");
@@ -46,7 +46,7 @@ namespace TestConsole
                     email = "12345";
                     phone = "12345";
                     zip = "Hello";
-                    Customer c2 = new Customer(firstname, lastname, email, sessionId, sessionExp, password, phone, address, state, city, zip);
+                    Customer c2 = new Customer { firstName = "test", lastName = "test", email = "test" }; //;, sessionId, sessionExp, password, phone, address, state, city, zip);
                     context.People.Add((Person)c2);
                     context.SaveChanges();
                     Console.WriteLine("Add C2");                    

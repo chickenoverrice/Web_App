@@ -1,0 +1,95 @@
+﻿@{
+    ViewBag.Title = "Hotel Status";
+}
+
+<br />
+<h2>Hotel Status</h2>
+<div class="well" style="margin:17px;">
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="input-group">
+
+                <input type="text"
+                       id="HotelStatusDate"
+                       name="filter"
+                       value="@ViewBag.filter"
+                       class="form-control"
+                       style="display: inline" />
+            </div>
+        </div>
+    </div>
+
+    <div style="margin:17px;">
+        <div id="tabs">
+            <ul>
+                <li><a href="#tabs-1">Check In</a></li>
+                <li><a href="#tabs-2">Check Out</a></li>
+                <li><a href="#tabs-3">Occupancy</a></li>
+            </ul>
+            <div id="tabs-1">
+                @Html.Action("CheckInGrid", "Staff")
+            </div>
+            <div id="tabs-2">
+                @Html.Action("CheckOutGrid", "Staff")
+            </div>
+            <div id="tabs-3">
+                @Html.Action("OccupancyGrid", "Staff")
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function reloadTab(id, date) {
+        if (id == "tabs-1") {
+            $.ajax({
+                url: "/Staff/CheckInGridDate",
+                data: { newDate: date.toISOString() },
+                type: "GET",
+                success: function (data) { $('#tabs-1').html(data) },
+                error: function () { }
+            });
+        } else if (id == "tabs-2") {
+            $.ajax({
+                url: "/Staff/CheckOutGridDate",
+                data: { newDate: date.toISOString() },
+                type: "GET",
+                success: function (data) { $('#tabs-2').html(data) },
+                error: function () { }
+            });
+        } else if (id == "tabs-3") {
+            $.ajax({
+                url: "/Staff/OccupancyGridDate",
+                data: { newDate: date.toISOString() },
+                type: "GET",
+                success: function (data) { $('#tabs-3').html(data) },
+                error: function () { }
+            });
+        }
+    }
+
+    $(function () {
+        $("#HotelStatusDate").datepicker();
+        $("#HotelStatusDate").datepicker('setDate', new Date());
+        $("#tabs").tabs();
+
+        //Reload Tab on new Click
+        $("#tabs").tabs({
+            activate: function (event, ui) {
+                var tab = ui.newPanel[0];
+                var date = new Date($("#HotelStatusDate")[0].value);
+
+                reloadTab(tab.id, date);
+            }
+        });
+
+        //On Date Change
+        $("#HotelStatusDate").datepicker().on("input change", function (e) {
+            var date = new Date(e.target.value);
+            var activeId = $("#tabs .ui-tabs-panel:visible").attr("id");
+
+            reloadTab(activeId, date);
+        });
+    })
+</script>

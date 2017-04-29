@@ -1,0 +1,49 @@
+﻿@model List<HotelManagementSystem.Models.ReservationInfo>
+
+@{
+    var grid = new WebGrid(
+        canPage: true,
+        rowsPerPage: 10,
+        canSort: true,
+        ajaxUpdateContainerId: "grid");
+
+    grid.Bind(Model, rowCount: 10);
+    grid.Pager(WebGridPagerModes.All);
+
+    @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                                    fillEmptyRows: false,
+                                    tableStyle: "table table-bordered table-hover",
+                                    selectedRowStyle: "selected",
+                                    headerStyle: "header",
+                                    mode: WebGridPagerModes.All,
+                                    columns: grid.Columns(
+                                                    grid.Column("Id", "Reservation Id"),
+                                                    grid.Column("personName", "Booker Name"),
+                                                    grid.Column("guestInfo", "Guest Info"),
+                                                    grid.Column("roomNumber", "Room Number"),
+                                                    grid.Column("roomType", "Room Type"),
+                                                    grid.Column("bill", "Bill"),
+                                                    grid.Column("checkIn", "Check In Time"),
+                                                    grid.Column("checkOut", "Check Out Time"),
+                                                    grid.Column(header: "Check Out", canSort: false, style: "action",
+                                                                    format: @<text>
+                                                        <button class="checkOut" id="@item.Id" @(item.roomOccupied ? "" : "disabled")>Check Out</button>
+                                                                    </text>)
+
+    ));
+}
+
+<script>
+    $(function () {
+        $('.checkOut').on('click', function () {
+            var button = $(this)[0];
+            $.ajax({
+                url: "/Staff/checkOut",
+                data: { "resId": parseInt(button.id) },
+                type: "POST",
+                success: function () { button.disabled = true; },
+                error: function () { console.log("Error"); }
+            });
+        });
+    })
+</script>

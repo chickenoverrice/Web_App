@@ -203,6 +203,7 @@
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\StaffController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -211,6 +212,8 @@
     <Compile Include="CodeFirstModel\Customer.cs" />
     <Compile Include="CodeFirstModel\Person.cs" />
     <Compile Include="CodeFirstModel\Reservation.cs" />
+    <Compile Include="Models\RoomInventoryInfo.cs" />
+    <Compile Include="Models\ReservationInfo.cs" />
     <Compile Include="Models\ReservationViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -335,6 +338,12 @@
     <Content Include="Views\Home\Book.cshtml" />
     <Content Include="Views\Home\Room.cshtml" />
     <Content Include="Views\Home\Reserve.cshtml" />
+    <Content Include="Views\Staff\HotelStatus.cshtml" />
+    <Content Include="Views\Staff\Inventory.cshtml" />
+    <Content Include="Views\Staff\Member.cshtml" />
+    <Content Include="Views\Staff\_CheckIn.cshtml" />
+    <Content Include="Views\Staff\_CheckOut.cshtml" />
+    <Content Include="Views\Staff\_Occupancy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
