@@ -1,4 +1,5 @@
 ﻿using System;
+using DataModel;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 

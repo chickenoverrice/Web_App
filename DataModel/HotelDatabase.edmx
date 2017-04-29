@@ -70,6 +70,10 @@
     <Property Name="type" Type="nvarchar(max)" Nullable="false" />
     <Property Name="basePrice" Type="float" Nullable="false" DefaultValue="0" />
     <Property Name="maxGuests" Type="int" Nullable="false" DefaultValue="2" />
+    <Property Name="numberOfRooms" Type="int" Nullable="false" />
+    <Property Name="description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="amenities" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="picture" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="Reservations">
     <Key>
@@ -260,6 +264,10 @@
           <Property Name="basePrice" Nullable="false" Type="Double" DefaultValue="0.0" />
           <NavigationProperty Name="Rooms" Relationship="HotelDatabase.RoomTypeRoom" FromRole="RoomType" ToRole="Room" />
           <Property Name="maxGuests" Type="Int32" Nullable="false" DefaultValue="2" />
+          <Property Name="numberOfRooms" Type="Int32" Nullable="false" />
+          <Property Name="description" Type="String" Nullable="false" />
+          <Property Name="amenities" Type="String" Nullable="false" />
+          <Property Name="picture" Type="String" Nullable="false" />
         </EntityType>
         <Association Name="RoomTypeRoom">
           <End Type="HotelDatabase.RoomType" Role="RoomType" Multiplicity="1" />
@@ -353,6 +361,10 @@
           <ScalarProperty Name="type" ColumnName="type" />
           <ScalarProperty Name="basePrice" ColumnName="basePrice" />
           <ScalarProperty Name="maxGuests" ColumnName="maxGuests" />
+          <ScalarProperty Name="numberOfRooms" ColumnName="numberOfRooms" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="amenities" ColumnName="amenities" />
+          <ScalarProperty Name="picture" ColumnName="picture" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

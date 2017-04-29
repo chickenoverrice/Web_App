@@ -7,7 +7,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HotelManagementSystem.Models
 {
-    public class Customer
+    [NotMapped]
+    public partial class Customer
     {
         public Customer()
         {

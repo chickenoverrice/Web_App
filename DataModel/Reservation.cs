@@ -6,41 +6,21 @@
 //     Manual changes to this file will be overwritten if the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-using System.Data.Entity;
+
 namespace DataModel
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Reservation
     {
-        public Reservation()
-        {
-
-        }
-
-        [Key]
-        public int Id { get; set; }
-        [Display(Name = "Arrival")]
-        [Required(ErrorMessage = "Check-in date is required")]
         public System.DateTime checkIn { get; set; }
-        [Display(Name = "Departure")]
-        [Required(ErrorMessage = "Check-out date is required")]
         public System.DateTime checkOut { get; set; }
-        [Required]
+        public int Id { get; set; }
         public double bill { get; set; }
-        //[Required(ErrorMessage = "Guest info is required")]
-        [Display(Name = "Guest Information")]
         public string guestsInfo { get; set; }
-        //[Required(ErrorMessage = "Check-out date is required")]
+    
         public virtual Room Room { get; set; }
-        //[Required(ErrorMessage = "People is required")]
         public virtual Person People { get; set; }
-    }
-
-    public class ReservationContext: DbContext{
-        public ReservationContext() : base("DefaultConnection") { }
-        public DbSet<Reservation> Reservations { get; set; }
     }
 }

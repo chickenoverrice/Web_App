@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/16/2017 16:10:38
--- Generated from EDMX file: C:\Users\PatYuen\Source\Repos\hotelmanagementsystem\DataModel\HotelDatabase.edmx
+-- Date Created: 04/29/2017 14:10:56
+-- Generated from EDMX file: C:\Users\Hassan Zaidi\Source\Repos\hotelmanagementsystem\DataModel\HotelDatabase.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -26,11 +26,8 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_CustomerRoomType]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[People_Customer] DROP CONSTRAINT [FK_CustomerRoomType];
 GO
-IF OBJECT_ID(N'[dbo].[FK_ReservationPerson_Reservation]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[ReservationPerson] DROP CONSTRAINT [FK_ReservationPerson_Reservation];
-GO
-IF OBJECT_ID(N'[dbo].[FK_ReservationPerson_Person]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[ReservationPerson] DROP CONSTRAINT [FK_ReservationPerson_Person];
+IF OBJECT_ID(N'[dbo].[FK_ReservationPerson]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Reservations] DROP CONSTRAINT [FK_ReservationPerson];
 GO
 IF OBJECT_ID(N'[dbo].[FK_Customer_inherits_Person]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[People_Customer] DROP CONSTRAINT [FK_Customer_inherits_Person];
@@ -63,9 +60,6 @@ IF OBJECT_ID(N'[dbo].[People_Customer]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[People_Staff]', 'U') IS NOT NULL
     DROP TABLE [dbo].[People_Staff];
-GO
-IF OBJECT_ID(N'[dbo].[ReservationPerson]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ReservationPerson];
 GO
 
 -- --------------------------------------------------
@@ -101,7 +95,11 @@ CREATE TABLE [dbo].[RoomTypes] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [type] nvarchar(max)  NOT NULL,
     [basePrice] float  NOT NULL,
-    [maxGuests] int  NOT NULL
+    [maxGuests] int  NOT NULL,
+    [numberOfRooms] int  NOT NULL,
+    [description] nvarchar(max)  NOT NULL,
+    [amenities] nvarchar(max)  NOT NULL,
+    [picture] nvarchar(max)  NOT NULL
 );
 GO
 

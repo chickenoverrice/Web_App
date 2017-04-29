@@ -5,7 +5,7 @@ using System.Data.Entity;
 namespace HotelManagementSystem.Models
 {
 
-    public class RoomType
+    public partial class RoomType
     {
         public RoomType()
         {
