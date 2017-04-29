@@ -1,18 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HotelManagementSystem.Models
+namespace HotelManagementSystem.CodeFirstModel
 {
-
-    public partial class RoomType
+    [Table("RoomType")]
+    public class RoomType
     {
         public RoomType()
         {
  
         }
-    
-        public int Id { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int id { get; set; }
         public string type { get; set; }
         public double basePrice { get; set; }
         public int maxGuests { get; set; }
@@ -25,7 +28,9 @@ namespace HotelManagementSystem.Models
     }
     public class RoomTypeContext : DbContext
     {
-        public RoomTypeContext() : base("DefaultConnection") { }
+        public RoomTypeContext() : base("DefaultConnection") {
+            Database.SetInitializer<RoomTypeContext>(null);
+        }
         public DbSet<RoomType> RoomTypes { get; set; }
 
     }

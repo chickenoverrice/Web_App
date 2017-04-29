@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
-namespace HotelManagementSystem.Models
+
+namespace HotelManagementSystem.CodeFirstModel
 {
     [Table("CurrentDateTime")]
     public class CurrentDateTime
@@ -17,7 +18,7 @@ namespace HotelManagementSystem.Models
     {
         public CurrentDateTimeContext() : base("DefaultConnection")
         {
-            Database.SetInitializer<CurrentDateTimeContext>(new CreateDatabaseIfNotExists<CurrentDateTimeContext>());
+            Database.SetInitializer<CurrentDateTimeContext>(null);
         }
 
         public DbSet<CurrentDateTime> CurrentDateTimeRecords { get; set; }

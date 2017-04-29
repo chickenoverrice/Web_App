@@ -207,16 +207,15 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\CurrentDateTime.cs" />
-    <Compile Include="Models\Customer.cs" />
-    <Compile Include="Models\HotelDatabase.Context.cs" />
-    <Compile Include="Models\Person.cs" />
-    <Compile Include="Models\Reservation.cs" />
+    <Compile Include="CodeFirstModel\CurrentDateTime.cs" />
+    <Compile Include="CodeFirstModel\Customer.cs" />
+    <Compile Include="CodeFirstModel\Person.cs" />
+    <Compile Include="CodeFirstModel\Reservation.cs" />
     <Compile Include="Models\ReservationViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\RoomType.cs" />
-    <Compile Include="Models\Staff.cs" />
+    <Compile Include="CodeFirstModel\RoomType.cs" />
+    <Compile Include="CodeFirstModel\Staff.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
