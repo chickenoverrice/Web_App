@@ -26,6 +26,10 @@ namespace DataModel
         public string type { get; set; }
         public double basePrice { get; set; }
         public int maxGuests { get; set; }
+        public int numberOfRooms { get; set; }
+        public string description { get; set; }
+        public string amenities { get; set; }
+        public string picture { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Room> Rooms { get; set; }

@@ -23,7 +23,7 @@ namespace HotelManagementSystem.Controllers
         {
             using (var context = new HotelDatabaseContainer())
             {
-                var c = (from customer in context.People
+                var c = (from customer in context.Customers
                          where customer.Id == id
                          select customer).Single();
 

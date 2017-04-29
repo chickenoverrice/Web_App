@@ -1,10 +1,56 @@
-﻿@{
+﻿@model HotelManagementSystem.CodeFirstModel.Reservation
+
+@{
     ViewBag.Title = "Book";
 }
-<h2>@ViewBag.Title.</h2>
+<h4>Booking Information</h4>
 
-<div>You selected </div>
-<div>@ViewBag.From as arrival date</div>
-<div>@ViewBag.To as departure date</div>
+<div>Date: @ViewBag.From - @ViewBag.To (@ViewBag.Nights Nights)</div>
+<div>Room Type: @ViewBag.RoomType</div>
+<div>Number of rooms: @ViewBag.Rooms</div>
+<hr />
+<h4>Enter Your Details</h4>
 
-<div>Here are all avaiable rooms for you</div>
+@using (Html.BeginForm("Reserve", "Home"))
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+    @Html.EditorFor(model => model.checkIn, new { htmlAttributes = new { @readonly = "readonly", @Value = ViewBag.From, @Type = "hidden" } })
+    @Html.EditorFor(model => model.checkOut, new { htmlAttributes = new { @readonly = "readonly", @Value = ViewBag.To, @Type = "hidden" } })
+    @Html.EditorFor(model => model.roomId, new { htmlAttributes = new { @readonly = "readonly", @Value = ViewBag.RoomId, @Type = "hidden" } })
+    @Html.EditorFor(model => model.roomNumber, new { htmlAttributes = new { @readonly = "readonly", @Value = ViewBag.Rooms, @Type = "hidden" } })
+    @Html.EditorFor(model => model.personId, new { htmlAttributes = new { @readonly = "readonly", @Value = 1, @Type = "hidden" } })
+    <div>
+        @Html.LabelFor(model => model.firstName)
+    </div>
+    <div>
+        @Html.EditorFor(model => model.firstName, new { htmlAttributes = new { } })
+        @Html.ValidationMessageFor(model => model.firstName)
+    </div>
+    <div>
+        @Html.LabelFor(model => model.lastName)
+    </div>
+    <div>
+        @Html.EditorFor(model => model.lastName, new { htmlAttributes = new { } })
+        @Html.ValidationMessageFor(model => model.lastName)
+    </div>
+    <div>
+        @Html.LabelFor(model => model.email)
+    </div>
+    <div>
+        @Html.EditorFor(model => model.email, new { htmlAttributes = new { } })
+        @Html.ValidationMessageFor(model => model.email)
+    </div>
+    <div>
+        @Html.LabelFor(model => model.phone)
+    </div>
+    <div>
+        @Html.EditorFor(model => model.phone, new { htmlAttributes = new { } })
+        @Html.ValidationMessageFor(model => model.phone)
+    </div>
+    <input type="hidden" name="RoomType" value="@ViewBag.RoomType" />
+    <p>
+        <input type="submit" value="Confirm" class="btn" />
+    </p>
+    </fieldset>
+}

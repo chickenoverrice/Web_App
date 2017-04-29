@@ -9,6 +9,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using HotelManagementSystem.Models;
+using DataModel;
+using System.Data.Entity.Validation;
 
 namespace HotelManagementSystem.Controllers
 {
@@ -151,6 +153,44 @@ namespace HotelManagementSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                DataModel.Customer newUser = new DataModel.Customer
+                {
+                    firstName = model.FirstName,
+                    lastName = model.LastName,
+                    email = model.Email,
+                    address = model.Address,
+                    city = model.City,
+                    state = model.State,
+                    zip = model.Zip,
+                    phone = model.Phone,
+                    sessionExpiration = System.DateTime.Now.AddMinutes(10),
+                    password = model.Password
+                };
+
+                using (var context = new DataModel.HotelDatabaseContainer())
+                {
+                    context.People.Add(newUser);
+                    try
+                    {
+                        context.SaveChanges();
+                        System.Diagnostics.Debug.WriteLine("Added new customer account!");
+                    }
+                    catch (DbEntityValidationException e)
+                    {
+                        foreach (var eve in e.EntityValidationErrors)
+                        {
+                            System.Diagnostics.Debug.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                                eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                            foreach (var ve in eve.ValidationErrors)
+                            {
+                                System.Diagnostics.Debug.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                                    ve.PropertyName, ve.ErrorMessage);
+                            }
+                        }
+                        throw;
+                    }
+                }
+
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)

@@ -10,42 +10,17 @@
 namespace DataModel
 {
     using System;
-    using System.Data.Entity;
     using System.Collections.Generic;
-    using System.Web.Helpers;
-
+    
     public partial class Customer : Person
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Customer(string firstname, string lastname, string email, string sessionId, DateTime sessionExp,
-            string password, string phone, string address, string state,
-            string city, string zip)
-       {
-            this.firstName = firstname;
-            this.lastName = lastname;
-            this.email = email;
-            this.sessionId = sessionId;
-            this.phone = phone;
-            this.address = address;
-            this.state = state;
-            this.city = city;
-            this.zip = zip;
-            this.sessionExpiration = sessionExp;
-
-            this.member = false;
-            this.password = Crypto.HashPassword(password);
-            this.loyaltyNum = 0;
-            this.stays = 0;
-            this.lastStay = null;
-            this.RoomPref = null;
-        }
-
         public Customer()
         {
             this.member = false;
             this.stays = 0;
         }
-
+    
         public Nullable<System.DateTime> expirationDate { get; set; }
         public bool member { get; set; }
         public string password { get; set; }

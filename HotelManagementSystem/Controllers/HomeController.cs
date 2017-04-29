@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using HotelManagementSystem.Models;
+using BizLogic;
 
 namespace HotelManagementSystem.Controllers
 {
@@ -12,35 +14,113 @@ namespace HotelManagementSystem.Controllers
         {
             return View();
         }
-
-        public ActionResult Book(DateTime? from, DateTime? to)
+        public ActionResult Search()
         {
-            if (!from.HasValue)
+            return View("Index");
+        }
+        [HttpPost]
+        public ActionResult Search(DateTime? Arrival, DateTime? Departure, int? rooms)
+        {
+            if (!Arrival.HasValue)
             {
-                from = DateTime.Now;
+                Arrival = DateTime.Now;
             }
-            if (!to.HasValue)
+            if (!Departure.HasValue)
             {
-                to = DateTime.Now.AddDays(1);
+                Departure = DateTime.Now.AddDays(1);
             }
-            ViewBag.From = from.Value.ToString("dd MMMM, yyyy");
-            ViewBag.To = to.Value.ToString("dd MMMM, yyyy");
+            if (!rooms.HasValue)
+            {
+                rooms = 1;
+            }
+            ViewBag.From = Arrival.Value.ToString("dd MMMM, yyyy");
+            ViewBag.To = Departure.Value.ToString("dd MMMM, yyyy");
+            ViewBag.Nights = BizLogic.Utilities.CalculateNight(Arrival.Value, Departure.Value).Count;
+            ViewBag.Rooms = rooms;
             // get reservation data and roomtype data
+            // NEED TO PUT IMPORTANT SQL HERE!!!
+            using (var roomtypecontext = new RoomTypeContext())
+            {
+                return View(roomtypecontext.RoomTypes.ToList());
+            }
+        }
+        public ActionResult Book()
+        {
+            return View("Index");
+        }
+        [HttpPost]
+        public ActionResult Book(DateTime? Arrival, DateTime? Departure, int? Nights, String RoomType, int? RoomId, int? Rooms)
+        {
+            ViewBag.RoomId = RoomId;
+            ViewBag.RoomType = RoomType;
+            ViewBag.Rooms = Rooms;
+            ViewBag.From = Arrival.Value.ToString("dd MMMM, yyyy");
+            ViewBag.To = Departure.Value.ToString("dd MMMM, yyyy");
+            ViewBag.Nights = Nights;
             return View();
         }
+        public ActionResult Reserve()
+        {
+            return View("Index");
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Reserve(ReservationViewModel rvm)
+        {
+            using (var reservationcontext = new ReservationDetailContext())
+            {
+                try
+                {
+                    if (ModelState.IsValid)
+                    {
+                        Reservation r = new Reservation();
+                        r.checkIn = rvm.checkIn;
+                        r.checkOut = rvm.checkOut;
+                        r.RoomId = rvm.RoomId;
+                        
 
+                        Person p = new Person();
+                        // Set Person value
+                        p.firstName = rvm.firstName;
+                        p.lastName = rvm.lastName;
+
+
+                        Customer c = new Customer();
+                        // Set Customer value
+                        
+                        reservationcontext.People.Add(p);
+                        c.Id = p.Id;
+                        reservationcontext.Customers.Add(c);
+                        r.PersonId = p.Id;
+                        reservationcontext.Reservations.Add(r);
+                        reservationcontext.SaveChanges();
+                        System.Diagnostics.Debug.WriteLine("Reservation Made");
+                        return RedirectToAction("Index");
+                    }
+                }
+                catch
+                {
+                    System.Diagnostics.Debug.WriteLine("Catch");
+                    return View();
+                }
+            }
+            return View();
+        }
+        public ActionResult Room()
+        {
+            ViewBag.Message = "Room page.";
+            return View();
+        }
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
-
+            ViewBag.Message = "About page.";
             return View();
         }
-
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
-
+            ViewBag.Message = "Contact page.";
             return View();
         }
+
     }
 }

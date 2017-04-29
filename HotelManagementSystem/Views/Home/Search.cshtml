@@ -1,0 +1,48 @@
+﻿@model List<HotelManagementSystem.CodeFirstModel.RoomType>
+@using System.Data.Entity;
+@{
+    ViewBag.Title = "Search";
+}
+
+<h4>Search Summary</h4>
+<div>You searched for: @ViewBag.From - @ViewBag.To (@ViewBag.Nights Nights) · @ViewBag.Rooms room(s)</div>
+<div>There are @Model.Count matching room(s)</div><br/>
+
+<h4>Select Your Room</h4>
+<table class="searchtable">
+    <tr>
+        <th>Room Type</th>
+        <th>Description</th>
+        <th>Amenities</th>
+        <th>Max Guest</th>
+        <th>Price per night</th>
+        <th></th>
+    </tr>
+    @foreach (var roomtype in Model) {
+    
+        <tr>
+            <td class="roomtype_p">
+                @roomtype.type
+                <img class="room_img" src="@roomtype.pic">
+            </td>
+            <td class="roomtype_d">@roomtype.description</td>
+            <td class="roomtype_a">@roomtype.amenities</td>
+            <td class="roomtype_m">@roomtype.maxGuests</td>
+            <td class="roomtype_b">@roomtype.basePrice</td>
+            <td class="roomtype_s">
+            @using (Html.BeginForm("Book", "Home"))
+            {
+                <input class="btn" type="submit" value="Select" />
+                <input type="hidden" name="RoomId" value="@roomtype.id" />
+                <input type="hidden" name="RoomType" value="@roomtype.type" />
+                <input type="hidden" name="RoomGuest" value="@roomtype.maxGuests" />
+
+                <input type="hidden" name="Rooms" value="@ViewBag.Rooms" />
+                <input type="hidden" name="Arrival" value="@ViewBag.From" />
+                <input type="hidden" name="Departure" value="@ViewBag.To" />
+                <input type="hidden" name="Nights" value="@ViewBag.Nights" />
+            }
+            </td>
+        </tr>
+    }
+</table>

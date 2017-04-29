@@ -18,6 +18,17 @@ namespace HotelManagementSystem
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+            routes.MapRoute(
+                name: "Search",
+                url: "{controller}/{action}/{id}",
+                defaults: new { controller = "Home", action = "Search", id = UrlParameter.Optional }
+            );
+            routes.MapRoute(
+                name: "Book",
+                url: "{controller}/{action}/{id}",
+                defaults: new { controller = "Home", action = "Book", id = UrlParameter.Optional }
+            );
+
         }
     }
 }

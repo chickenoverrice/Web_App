@@ -4,15 +4,23 @@
 
 <div id="topframe">
     <img id="cover_img" src="~/pics/cover.jpg">
-    @using (Html.BeginForm("Book", "Home"))
+    @using (Html.BeginForm("Search", "Home"))
     {
         <div id="check_menu">
             <label id="checkin" for="from">Arrival</label>
-            <input type="text" id="from" name="from">
+            <input type="text" id="from" name="Arrival" readonly="readonly">
             <label id="checkout" for="to">Departure</label>
-            <input type="text" id="to" name="to">
-            <input type="submit" value="Book & Check Rates" />
-        </div>
+            <input type="text" id="to" name="Departure" readonly="readonly">
+            <label class="numberofroom" >Room(s)</label>
+            <select id="rooms" name="rooms">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+                <input class="btn" type="submit" value="Search & Check Rates" />
+</div>
     }
 </div>
 

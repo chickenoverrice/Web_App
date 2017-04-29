@@ -11,20 +11,24 @@ namespace DataModel
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Reservation
     {
-        [Required(ErrorMessage = "Check-in date is required")]
         public System.DateTime checkIn { get; set; }
-        [Required(ErrorMessage = "Check-out date is required")]
         public System.DateTime checkOut { get; set; }
         public int Id { get; set; }
         public double bill { get; set; }
-        [Required(ErrorMessage = "Guest info is required")]
         public string guestsInfo { get; set; }
+        public string firstName { get; set; }
+        public string lastName { get; set; }
+        public string email { get; set; }
+        public string address { get; set; }
+        public string phone { get; set; }
+        public string city { get; set; }
+        public string state { get; set; }
+        public string zip { get; set; }
+    
         public virtual Room Room { get; set; }
-        [Required(ErrorMessage = "People is required")]
         public virtual Person People { get; set; }
     }
 }
