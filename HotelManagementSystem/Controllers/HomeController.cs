@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using HotelManagementSystem.Models;
 using BizLogic;
+using DataModel;
 
 namespace HotelManagementSystem.Controllers
 {
@@ -39,11 +40,10 @@ namespace HotelManagementSystem.Controllers
             ViewBag.Rooms = rooms;
             // get reservation data and roomtype data
             // NEED TO PUT IMPORTANT SQL HERE!!!
-            /*  using (var roomtypecontext = new RoomTypeContext())
-              {
-                  return View(roomtypecontext.RoomTypes.ToList());
-              }*/
-            return View();
+            using (var roomtypecontext = new HotelDatabaseContainer())
+            {
+                return View(roomtypecontext.RoomTypes.ToList());
+            }
         }
         public ActionResult Book()
         {
@@ -66,9 +66,9 @@ namespace HotelManagementSystem.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-/*        public ActionResult Reserve(ReservationViewModel rvm)
+        public ActionResult Reserve(Reservation rvm)
         {
-            using (var reservationcontext = new ReservationDetailContext())
+            using (var reservationcontext = new HotelDatabaseContainer())
             {
                 try
                 {
@@ -77,7 +77,7 @@ namespace HotelManagementSystem.Controllers
                         Reservation r = new Reservation();
                         r.checkIn = rvm.checkIn;
                         r.checkOut = rvm.checkOut;
-                        r.RoomId = rvm.RoomId;
+                        r.Id = rvm.Id;
                         
 
                         Person p = new Person();
@@ -92,7 +92,7 @@ namespace HotelManagementSystem.Controllers
                         reservationcontext.People.Add(p);
                         c.Id = p.Id;
                         reservationcontext.Customers.Add(c);
-                        r.PersonId = p.Id;
+                        r.Id = p.Id;
                         reservationcontext.Reservations.Add(r);
                         reservationcontext.SaveChanges();
                         System.Diagnostics.Debug.WriteLine("Reservation Made");
@@ -106,8 +106,7 @@ namespace HotelManagementSystem.Controllers
                 }
             }
             return View();
-        }*/
-
+        }
         public ActionResult Room()
         {
             ViewBag.Message = "Room page.";

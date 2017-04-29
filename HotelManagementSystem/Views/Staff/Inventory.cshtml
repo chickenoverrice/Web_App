@@ -1,0 +1,128 @@
+﻿@model List<HotelManagementSystem.Models.RoomInventoryInfo>
+
+@{
+    ViewBag.Title = "Inventory";
+}
+
+<br />
+<h2>Inventory</h2>
+<br />
+<div class="well">
+    <div style="margin:0px;">
+        @{
+            var grid = new WebGrid(
+                canPage: true,
+                rowsPerPage: 10,
+                canSort: false,
+                ajaxUpdateContainerId: "grid",
+                ajaxUpdateCallback: "callBack");
+
+            grid.Bind(Model, rowCount: 10);
+            grid.Pager(WebGridPagerModes.All);
+
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                                        fillEmptyRows: false,
+                                        tableStyle: "table table-bordered table-hover",
+                                        selectedRowStyle: "selected",
+                                        headerStyle: "header",
+                                        mode: WebGridPagerModes.All,
+                                        columns: grid.Columns(
+                                                        grid.Column("rmType",
+                                                                    "Room Type",
+                                                                    (item) => item.rmType.type),
+                                                        grid.Column("quantity",
+                                                                    "Quantity",
+                                                                    format: @<text>
+                                                                        <span id="display-quantity" class="display-mode">@item.quantity</span>
+                                                                        @Html.TextBox("edit-quantity", 0, new { @Value = @item.quantity, @type = "number", @class = "edit-mode", @min = item.occupiedRooms })
+                                                                    </text>),
+                                                        grid.Column("occupiedRooms", "Total Occupied", style: "occupied"),
+                                                        grid.Column(header: "Action", canSort: false, style: "action",
+                                                                        format: @<text>
+                                                            <button class="edit display-mode" id="@item.rmType.Id">Edit</button>
+                                                            <button class="save edit-mode" id="@item.rmType.Id">Save</button>
+                                                            <button class="undo edit-mode" id="@item.rmType.Id">Undo</button>
+                                                                        </text>)
+
+        ));
+        }
+    </div>
+</div>
+
+<!-- Modal for displaying the messages -->
+<div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content panel-danger">
+            <div class="modal-header panel-heading">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Errors</h4>
+            </div>
+
+            <div class="modal-body">
+                <!-- The messages container -->
+                <div id="error"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.edit-mode').hide();
+
+        $('.edit').on('click', function () {
+            var tr = $(this).parents('tr:first');
+            tr.find('.display-mode').hide();
+            tr.find('.edit-mode').show();
+        });
+
+        $('.undo').on('click', function () {
+            var tr = $(this).parents('tr:first');
+
+            tr.find('#edit-quantity')[0].value = tr.find('#display-quantity')[0].innerText
+
+            tr.find('.edit-mode').hide();
+            tr.find('.display-mode').show();
+        });
+
+        $('.save').on('click', function () {
+            var tr = $(this).parents('tr:first');
+            var roomTypeId = parseInt($(this)[0].id);
+
+            var editQuantity = tr.find('#edit-quantity')[0];
+            var displayQuantity = tr.find('#display-quantity')[0];
+
+            $.ajax({
+                url: "/Staff/updateRecord",
+                datatype: "JSON",
+                data: { "roomTypeId": roomTypeId, "newValue": editQuantity.value },
+                type: "POST",
+                success: function (data) {
+                    if (data.hasOwnProperty('errorMessage')) {
+                        $('#error').text(data['errorMessage']);
+                        $('#messageModal').modal('show');
+                        editQuantity.value = displayQuantity.innerText
+                    } else {
+                        displayQuantity.innerText = editQuantity.value
+                        tr.find('.edit-mode').hide();
+                        tr.find('.display-mode').show();
+                    }
+
+                    if (data.hasOwnProperty('usedRooms')) {
+                        editQuantity.min = data['usedRooms'];
+                        tr.find('.occupied')[0].innerText = data['usedRooms']
+                    }
+                },
+                error: function () {
+                    editQuantity.value = displayQuantity.value
+                }
+            });
+        });
+    })
+</script>
