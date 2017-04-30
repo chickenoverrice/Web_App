@@ -7,7 +7,6 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using System.Data.Entity;
 using HotelManagementSystem.Models;
-using HotelManagementSystem.CodeFirstModel;
 namespace HotelManagementSystem
 {
     public class MvcApplication : System.Web.HttpApplication

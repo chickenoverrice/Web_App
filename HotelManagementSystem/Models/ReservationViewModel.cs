@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Data.Entity;
-using HotelManagementSystem.CodeFirstModel;
+using DataModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -13,13 +13,10 @@ namespace HotelManagementSystem.Models
     {
         public ReservationDetailViewModel()
         {
-            this.checkIn = DateTime.Now;
-            this.checkOut = DateTime.Now.AddDays(1);
         }
-        //[Column(TypeName = "datetime2")]
         public System.DateTime? checkIn { get; set; }
-        //[Column(TypeName = "datetime2")]
         public System.DateTime? checkOut { get; set; }
+        public int numberOfNights { get; set; }
         public string guestInfo { get; set; }
         public double bill { get; set; }
         [Display(Name = "First Name")]
@@ -33,6 +30,7 @@ namespace HotelManagementSystem.Models
         [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string email { get; set; }
         [Display(Name = "Address")]
+        [Required(ErrorMessage = "Address is required")]
         public string address { get; set; }
         [Display(Name = "Phone Number")]
         [Required(ErrorMessage = "Phone number is required")]
@@ -40,13 +38,18 @@ namespace HotelManagementSystem.Models
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Invalid phone number")]
         public string phone { get; set; }
         [Display(Name = "City")]
+        [Required(ErrorMessage = "City is required")]
         public string city { get; set; }
         [Display(Name = "State")]
+        [Required(ErrorMessage = "State is required")]
         public string state { get; set; }
         [Display(Name = "Zip Code")]
+        [Required(ErrorMessage = "Zip Code is required")]
         [DataType(DataType.PostalCode, ErrorMessage = "Invalid postal code")]
         public string zip { get; set; }
+        public string roomType { get; set; }
         public int roomId { get; set; }
+        public int roomGuest { get; set; }
         public int personId { get; set; }
 
     }

@@ -1,4 +1,4 @@
-﻿@model HotelManagementSystem.CodeFirstModel.Reservation
+﻿@model HotelManagementSystem.Models.ReservationDetailViewModel
 
 @{
     ViewBag.Title = "Book";
@@ -7,50 +7,142 @@
 
 <div>Date: @ViewBag.From - @ViewBag.To (@ViewBag.Nights Nights)</div>
 <div>Room Type: @ViewBag.RoomType</div>
-<div>Number of rooms: @ViewBag.Rooms</div>
+<div>Price Details:</div>
 <hr />
-<h4>Enter Your Details</h4>
 
-@using (Html.BeginForm("Reserve", "Home"))
+<h4>Enter Guest Information</h4>
+@using (Html.BeginForm("Reserve", "Home", FormMethod.Post))
 {
-    @Html.ValidationSummary(true)
+    <table>
+        @for (var i = 1; i <= @ViewBag.RoomGuest; i++)
+        {
+        <tr>
+            <td><label>Name of Guest @i:</label></td>
+            <td><input type="text" name="guest-@i"></td>
+        </tr>
+        }
+    </table>
+    <hr/>
+    <h4>Enter Billing Information</h4>
     <fieldset>
-    @Html.EditorFor(model => model.checkIn, new { htmlAttributes = new { @readonly = "readonly", @Value = ViewBag.From, @Type = "hidden" } })
-    @Html.EditorFor(model => model.checkOut, new { htmlAttributes = new { @readonly = "readonly", @Value = ViewBag.To, @Type = "hidden" } })
-    @Html.EditorFor(model => model.roomId, new { htmlAttributes = new { @readonly = "readonly", @Value = ViewBag.RoomId, @Type = "hidden" } })
-    @Html.EditorFor(model => model.roomNumber, new { htmlAttributes = new { @readonly = "readonly", @Value = ViewBag.Rooms, @Type = "hidden" } })
-    @Html.EditorFor(model => model.personId, new { htmlAttributes = new { @readonly = "readonly", @Value = 1, @Type = "hidden" } })
-    <div>
-        @Html.LabelFor(model => model.firstName)
-    </div>
-    <div>
-        @Html.EditorFor(model => model.firstName, new { htmlAttributes = new { } })
-        @Html.ValidationMessageFor(model => model.firstName)
-    </div>
-    <div>
-        @Html.LabelFor(model => model.lastName)
-    </div>
-    <div>
-        @Html.EditorFor(model => model.lastName, new { htmlAttributes = new { } })
-        @Html.ValidationMessageFor(model => model.lastName)
-    </div>
-    <div>
-        @Html.LabelFor(model => model.email)
-    </div>
-    <div>
-        @Html.EditorFor(model => model.email, new { htmlAttributes = new { } })
-        @Html.ValidationMessageFor(model => model.email)
-    </div>
-    <div>
-        @Html.LabelFor(model => model.phone)
-    </div>
-    <div>
-        @Html.EditorFor(model => model.phone, new { htmlAttributes = new { } })
-        @Html.ValidationMessageFor(model => model.phone)
-    </div>
-    <input type="hidden" name="RoomType" value="@ViewBag.RoomType" />
-    <p>
-        <input type="submit" value="Confirm" class="btn" />
-    </p>
+        @Html.EditorFor(model => model.checkIn, new { htmlAttributes = new { @Value = ViewBag.From, @Type = "hidden" } })
+        @Html.EditorFor(model => model.checkOut, new { htmlAttributes = new { @Value = ViewBag.To, @Type = "hidden" } })
+        @Html.EditorFor(model => model.numberOfNights, new { htmlAttributes = new { @Value = ViewBag.Nights, @Type = "hidden" } })
+        
+        @Html.EditorFor(model => model.roomId, new { htmlAttributes = new { @Value = ViewBag.RoomId, @Type = "hidden" } })
+        @Html.EditorFor(model => model.roomType, new { htmlAttributes = new { @Value = @ViewBag.RoomType, @Type = "hidden" } })
+        @Html.EditorFor(model => model.roomGuest, new { htmlAttributes = new { @Value = @ViewBag.RoomGuest, @Type = "hidden" } })
+        @Html.EditorFor(model => model.personId, new { htmlAttributes = new { @Value = 1, @Type = "hidden" } })
+                <table>
+                    <tr>
+                        <td>
+                            <div>
+                                @Html.LabelFor(model => model.firstName)
+                            </div>
+                        </td>
+                    
+                        <td>
+                            <div>
+                                @Html.EditorFor(model => model.firstName, new { htmlAttributes = new { } }) 
+                                @Html.ValidationMessageFor(model => model.firstName, "", new { @class = "text-danger" })
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div>
+                                @Html.LabelFor(model => model.lastName)
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                @Html.EditorFor(model => model.lastName, new { htmlAttributes = new { } })
+                                @Html.ValidationMessageFor(model => model.lastName, "", new { @class = "text-danger" })
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div>
+                                @Html.LabelFor(model => model.email)
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                @Html.EditorFor(model => model.email, new { htmlAttributes = new { } })
+                                @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div>
+                                @Html.LabelFor(model => model.phone)
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                @Html.EditorFor(model => model.phone, new { htmlAttributes = new { } })
+                                @Html.ValidationMessageFor(model => model.phone, "", new { @class = "text-danger" })
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div>
+                                @Html.LabelFor(model => model.address)
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                @Html.EditorFor(model => model.address, new { htmlAttributes = new { } })
+                                @Html.ValidationMessageFor(model => model.address, "", new { @class = "text-danger" })
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div>
+                                @Html.LabelFor(model => model.city)
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                @Html.EditorFor(model => model.city, new { htmlAttributes = new { } })
+                                @Html.ValidationMessageFor(model => model.city, "", new { @class = "text-danger" })
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div>
+                                @Html.LabelFor(model => model.state)
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                @Html.EditorFor(model => model.state, new { htmlAttributes = new { } })
+                                @Html.ValidationMessageFor(model => model.state, "", new { @class = "text-danger" })
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div>
+                                @Html.LabelFor(model => model.zip)
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                @Html.EditorFor(model => model.zip, new { htmlAttributes = new { } })
+                                @Html.ValidationMessageFor(model => model.zip, "", new { @class = "text-danger" })
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><input type="submit" value="Confirm" class="btn" /></td>
+                    </tr>
+        </table>
     </fieldset>
+    
 }

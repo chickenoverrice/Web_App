@@ -207,15 +207,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="CodeFirstModel\CurrentDateTime.cs" />
-    <Compile Include="CodeFirstModel\Customer.cs" />
-    <Compile Include="CodeFirstModel\Person.cs" />
-    <Compile Include="CodeFirstModel\Reservation.cs" />
     <Compile Include="Models\ReservationViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="CodeFirstModel\RoomType.cs" />
-    <Compile Include="CodeFirstModel\Staff.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -334,6 +328,7 @@
     <Content Include="Views\Home\Search.cshtml" />
     <Content Include="Views\Home\Book.cshtml" />
     <Content Include="Views\Home\Room.cshtml" />
+    <Content Include="Views\Home\Confirm.cshtml" />
     <Content Include="Views\Home\Reserve.cshtml" />
   </ItemGroup>
   <ItemGroup>
