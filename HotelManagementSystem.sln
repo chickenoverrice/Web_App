@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BizLogic", "BizLogic\BizLog
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataModel", "DataModel\DataModel.csproj", "{295C75A0-4480-497D-BDD2-E425CE332574}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsole", "TestConsole\TestConsole.csproj", "{AC2F7650-31B0-40EE-84BA-49EA6612D491}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelManagementSystem", "HotelManagementSystem\HotelManagementSystem.csproj", "{FBF79FA6-66E1-44BE-9468-41708C99D539}"
 EndProject
 Global
@@ -25,10 +23,6 @@ Global
 		{295C75A0-4480-497D-BDD2-E425CE332574}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{295C75A0-4480-497D-BDD2-E425CE332574}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{295C75A0-4480-497D-BDD2-E425CE332574}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AC2F7650-31B0-40EE-84BA-49EA6612D491}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AC2F7650-31B0-40EE-84BA-49EA6612D491}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AC2F7650-31B0-40EE-84BA-49EA6612D491}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AC2F7650-31B0-40EE-84BA-49EA6612D491}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FBF79FA6-66E1-44BE-9468-41708C99D539}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FBF79FA6-66E1-44BE-9468-41708C99D539}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBF79FA6-66E1-44BE-9468-41708C99D539}.Release|Any CPU.ActiveCfg = Release|Any CPU

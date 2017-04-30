@@ -40,7 +40,7 @@ namespace HotelManagementSystem.Controllers
             ViewBag.Rooms = rooms;
             // get reservation data and roomtype data
             // NEED TO PUT IMPORTANT SQL HERE!!!
-            using (var roomtypecontext = new DataModel.HotelDatabaseContainer())
+            using (var roomtypecontext = new RoomTypeContext())
             {
                 return View(roomtypecontext.RoomTypes.ToList());
             }
@@ -66,30 +66,34 @@ namespace HotelManagementSystem.Controllers
             return View("Index");
         }
         [HttpPost]
-        public ActionResult Reserve(ReservationDetailViewModel rvm)
+        [ValidateAntiForgeryToken]
+        public ActionResult Reserve(ReservationViewModel rvm)
         {
-            using (var reservationcontext = new DataModel.HotelDatabaseContainer())
+            using (var reservationcontext = new ReservationDetailContext())
             {
                 try
                 {
                     if (ModelState.IsValid)
                     {
-                        DataModel.Reservation r = new DataModel.Reservation();
-                        r.checkIn = rvm.checkIn.Value;
-                        r.checkOut = rvm.checkOut.Value;
-                        r.firstName = rvm.firstName;
-                        r.lastName = rvm.lastName;
-                        r.email = rvm.email;
-                        r.phone = rvm.phone;
-                        r.address = rvm.address;
-                        r.city = rvm.city;
-                        r.state = rvm.state;
-                        r.zip = rvm.zip;
-                        r.Room.Id = 5004;
-                        r.People.Id = 1;
-                        // Chck if user has login id
-                        // Yes, r.personid = user.id
-                        // No, create a person for guest
+                        Reservation r = new Reservation();
+                        r.checkIn = rvm.checkIn;
+                        r.checkOut = rvm.checkOut;
+                        r.RoomId = rvm.RoomId;
+                        
+
+                        Person p = new Person();
+                        // Set Person value
+                        p.firstName = rvm.firstName;
+                        p.lastName = rvm.lastName;
+
+
+                        Customer c = new Customer();
+                        // Set Customer value
+                        
+                        reservationcontext.People.Add(p);
+                        c.Id = p.Id;
+                        reservationcontext.Customers.Add(c);
+                        r.PersonId = p.Id;
                         reservationcontext.Reservations.Add(r);
                         reservationcontext.SaveChanges();
                         System.Diagnostics.Debug.WriteLine("Reservation Made");

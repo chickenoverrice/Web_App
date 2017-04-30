@@ -48,28 +48,24 @@ namespace BizLogic
             return user;
         }
 
-        public static void ChangeAccount(ref Customer customer, string firstname = null, string lastname = null, 
-            string email = null, string psw = null, string phone = null, string address = null, string state = null,
-            string city = null, string zip = null)
+        public static void ChangeAccount(ref Customer customer, Customer newCustomer)
         {
-            if (firstname != null)
-                customer.firstName = firstname;
-            if (lastname != null)
-                customer.lastName = lastname;
-            if (email != null)
-                customer.email = email;
-            if (psw != null)
-                customer.password = Crypto.HashPassword(psw);
-            if(phone != null)
-                customer.phone = phone;
-            if(state != null)
-                customer.state = state;
-            if(zip != null)
-                customer.zip = zip;
-            if(city != null)
-                customer.city = city;
-            if(address != null)
-                customer.address = address;
+            if (newCustomer.firstName != null)
+                customer.firstName = newCustomer.firstName;
+            if (newCustomer.lastName != null)
+                customer.lastName = newCustomer.lastName;
+            if (newCustomer.email != null)
+                customer.email = newCustomer.email;
+            if(newCustomer.phone != null)
+                customer.phone = newCustomer.phone;
+            if(newCustomer.state != null)
+                customer.state = newCustomer.state;
+            if(newCustomer.zip != null)
+                customer.zip = newCustomer.zip;
+            if(newCustomer.city != null)
+                customer.city = newCustomer.city;
+            if(newCustomer.address != null)
+                customer.address = newCustomer.address;
         }
 
         public static bool CheckIn(ref Customer customer, ref Reservation r, CurrentDateTime current)

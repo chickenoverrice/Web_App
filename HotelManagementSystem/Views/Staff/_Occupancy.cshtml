@@ -1,0 +1,25 @@
+﻿@model List<HotelManagementSystem.Models.RoomInventoryInfo>
+
+@{
+    var grid = new WebGrid(
+        canPage: true,
+        rowsPerPage: 10,
+        canSort: true,
+        ajaxUpdateContainerId: "grid");
+
+    grid.Bind(Model, rowCount: 10);
+    grid.Pager(WebGridPagerModes.All);
+
+    @grid.GetHtml(htmlAttributes: new { id = "grid" },
+                                    fillEmptyRows: false,
+                                    tableStyle: "table table-bordered table-hover",
+                                    selectedRowStyle: "selected",
+                                    headerStyle: "header",
+                                    mode: WebGridPagerModes.All,
+                                    columns: grid.Columns(
+                                                    grid.Column("rmType", "Room Type", (item) => item.rmType.type),
+                                                    grid.Column("occupiedRooms", "Occupied Rooms"),
+                                                    grid.Column("quantity", "Total Rooms")
+
+    ));
+}

@@ -76,8 +76,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="StaffUtilities.cs" />
     <Compile Include="CustomerOperations.cs" />
+    <Compile Include="StaffUtilities.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,0 +1,50 @@
+﻿@model DataModel.Reservation
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Reservation</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.checkIn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.checkIn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.checkOut)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.checkOut)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.bill)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.bill)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.guestsInfo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.guestsInfo)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index", new { id = Model.Id })
+</p>
