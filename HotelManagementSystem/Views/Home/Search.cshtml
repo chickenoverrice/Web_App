@@ -1,12 +1,11 @@
-﻿@model List<DataModel.RoomType>
-@using System.Data.Entity;
+﻿@model HotelManagementSystem.Models.SearchRoomViewModel
 @{
     ViewBag.Title = "Search";
 }
 
 <h4>Search Summary</h4>
-<div>You searched for: @ViewBag.From - @ViewBag.To (@ViewBag.Nights Nights)</div>
-<div>There are @Model.Count matching room(s)</div><br/>
+<div>You searched for: @Model.checkIn.ToString("MM/dd/yyyy") - @Model.checkOut.ToString("MM/dd/yyyy") (@Model.nights.Count Nights)</div>
+<div>There are @Model.rooms.Count matching room(s)</div><br/>
 
 <h4>Select Your Room</h4>
 <table class="searchtable">
@@ -18,28 +17,24 @@
         <th>Price per night</th>
         <th></th>
     </tr>
-    @foreach (var roomtype in Model) {
-    
+    @for (var i = 0; i < Model.rooms.Count; i++)
+    {
         <tr>
             <td class="roomtype_p">
-                @roomtype.type
-                <img class="room_img" src="@roomtype.picture">
+                @Model.rooms[i].type
+                <img class="room_img" src="@Model.rooms[i].picture">
             </td>
-            <td class="roomtype_d">@roomtype.description</td>
-            <td class="roomtype_a">@roomtype.amenities</td>
-            <td class="roomtype_m">@roomtype.maxGuests</td>
-            <td class="roomtype_b">@roomtype.basePrice</td>
+            <td class="roomtype_d">@Model.rooms[i].description</td>
+            <td class="roomtype_a">@Model.rooms[i].amenities</td>
+            <td class="roomtype_m">@Model.rooms[i].maxGuests</td>
+            <td class="roomtype_b">Model.avgPrices[i]</td>
             <td class="roomtype_s">
-            @using (Html.BeginForm("Book","Home"))
+            @using (Html.BeginForm("Book", "Home"))
             {
+                @Html.EditorFor(model => model.checkIn, new { htmlAttributes = new { @Value = Model.checkIn, @Type = "hidden" } })
+                @Html.EditorFor(model => model.checkOut, new { htmlAttributes = new { @Value = Model.checkOut, @Type = "hidden" } })
+                @Html.EditorFor(model => model.roomId, new { htmlAttributes = new { @Value = Model.rooms[i].Id, @Type = "hidden" } })
                 <input class="btn" type="submit" value="Select" />
-                <input type="hidden" name="RoomId" value="@roomtype.Id" />
-                <input type="hidden" name="RoomType" value="@roomtype.type" />
-                <input type="hidden" name="RoomGuest" value="@roomtype.maxGuests" />
-
-                <input type="hidden" name="Arrival" value="@ViewBag.From" />
-                <input type="hidden" name="Departure" value="@ViewBag.To" />
-                <input type="hidden" name="Nights" value="@ViewBag.Nights" />
             }
             </td>
         </tr>

@@ -20,7 +20,7 @@ namespace HotelManagementSystem.Controllers
             return View("Index");
         }
         [HttpPost]
-        public ActionResult Search(DateTime? Arrival, DateTime? Departure, int? rooms)
+        public ActionResult Search(DateTime? Arrival, DateTime? Departure)
         {
             if (!Arrival.HasValue)
             {
@@ -30,36 +30,61 @@ namespace HotelManagementSystem.Controllers
             {
                 Departure = DateTime.Now.AddDays(1);
             }
-            if (!rooms.HasValue)
-            {
-                rooms = 1;
-            }
-            ViewBag.From = Arrival.Value.ToString("dd MMMM, yyyy");
-            ViewBag.To = Departure.Value.ToString("dd MMMM, yyyy");
-            ViewBag.Nights = BizLogic.Utilities.CalculateNight(Arrival.Value, Departure.Value).Count;
-            ViewBag.Rooms = rooms;
-            // get reservation data and roomtype data
+            SearchRoomViewModel srm = new SearchRoomViewModel();
+            srm.checkIn = Arrival.Value;
+            srm.checkOut = Departure.Value;
+            srm.nights = BizLogic.Utilities.CalculateNight(Arrival.Value, Departure.Value);
+            // Find available rooms
             // NEED TO PUT IMPORTANT SQL HERE!!!
+            List<RoomType> rooms = null;
             using (var roomtypecontext = new DataModel.HotelDatabaseContainer())
             {
-                return View(roomtypecontext.RoomTypes.ToList());
+                rooms = roomtypecontext.RoomTypes.ToList();
             }
+            srm.rooms = rooms;
+            for (int i = 0; i < rooms.Count; i++)
+            {
+                for (int j = 0; j < srm.nights.Count; j++)
+                {
+                    int roomId = rooms[i].Id;
+                    DateTime date = srm.nights[j];
+                    int roomNum = rooms[i].numberOfRooms;
+                    using (var availableContext = new DataModel.HotelDatabaseContainer())
+                    {
+                        var sqlstring = 
+                           "SELECT COUNT(*) FROM dbo.Reservations WHERE Room_Id = "
+                           + roomId + " AND " + date + " BETWEEN checkIn AND checkOut";
+                        System.Diagnostics.Debug.WriteLine(sqlstring);
+                        var sql = availableContext.Reservations.SqlQuery(sqlstring).First();
+                        System.Diagnostics.Debug.WriteLine(sql);
+                    }
+                }        
+            }
+           //srm.avgPrices = ......;
+            
+            return View(srm);
         }
         public ActionResult Book()
         {
             return View("Index");
         }
         [HttpPost]
-        public ActionResult Book(DateTime? Arrival, DateTime? Departure, int? Nights, String RoomType, int? RoomId, int? Rooms, int? RoomGuest)
+        public ActionResult Book(SearchRoomViewModel srm)
         {
-            ViewBag.RoomId = RoomId;
-            ViewBag.RoomType = RoomType;
-            ViewBag.Rooms = Rooms;
-            ViewBag.RoomGuest = RoomGuest;
-            ViewBag.From = Arrival.Value.ToString("dd MMMM, yyyy");
-            ViewBag.To = Departure.Value.ToString("dd MMMM, yyyy");
-            ViewBag.Nights = Nights;
-            return View();
+            ReservationDetailViewModel rvm = new ReservationDetailViewModel();
+            rvm.checkIn = srm.checkIn;
+            rvm.checkOut = srm.checkOut;
+            rvm.nights = BizLogic.Utilities.CalculateNight(srm.checkIn, srm.checkOut);
+            rvm.roomId = srm.roomId;
+            // get roomType and maxGuest by using roomId
+            RoomType room = null;
+            using (var roomcontext = new DataModel.HotelDatabaseContainer())
+            {
+                room = roomcontext.RoomTypes.Find(rvm.roomId);
+            }
+            rvm.roomType = room.type;
+            rvm.roomGuest = room.maxGuests;
+            return View(rvm);
         }
         public ActionResult Reserve()
         {
@@ -75,8 +100,8 @@ namespace HotelManagementSystem.Controllers
                     if (ModelState.IsValid)
                     {
                         DataModel.Reservation r = new DataModel.Reservation();
-                        r.checkIn = rvm.checkIn.Value;
-                        r.checkOut = rvm.checkOut.Value;
+                        r.checkIn = rvm.checkIn;
+                        r.checkOut = rvm.checkOut;
                         r.firstName = rvm.firstName;
                         r.lastName = rvm.lastName;
                         r.email = rvm.email;
@@ -85,6 +110,7 @@ namespace HotelManagementSystem.Controllers
                         r.city = rvm.city;
                         r.state = rvm.state;
                         r.zip = rvm.zip;
+                        r.bill = rvm.bill;
                         r.Room.Id = 5004;
                         r.People.Id = 1;
                         // Chck if user has login id
@@ -99,15 +125,17 @@ namespace HotelManagementSystem.Controllers
                 catch (Exception e)
                 {
                     System.Diagnostics.Debug.WriteLine("Catch" + e);
-                    return View();
+                    return View("Index");
                 }
             }
-            ViewBag.RoomId = rvm.roomId;
-            ViewBag.RoomType = rvm.roomType;
-            ViewBag.RoomGuest = rvm.roomGuest;
-            ViewBag.From = rvm.checkIn.Value.ToString("dd MMMM, yyyy");
-            ViewBag.To = rvm.checkOut.Value.ToString("dd MMMM, yyyy");
-            ViewBag.Nights = BizLogic.Utilities.CalculateNight(rvm.checkIn.Value, rvm.checkOut.Value).Count;
+            rvm.nights = BizLogic.Utilities.CalculateNight(rvm.checkIn, rvm.checkOut);
+            RoomType room = null;
+            using (var roomcontext = new DataModel.HotelDatabaseContainer())
+            {
+                room = roomcontext.RoomTypes.Find(rvm.roomId);
+            }
+            rvm.roomType = room.type;
+            rvm.roomGuest = room.maxGuests;
             return View("Book", rvm);
         }
         public ActionResult Room()

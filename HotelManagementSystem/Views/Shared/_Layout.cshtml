@@ -11,7 +11,7 @@
     <!-- jQuery UI CSS Reference -->
     <link href="@Url.Content("~/Content/themes/base/jquery-ui.min.css")" rel="stylesheet" />
     <!-- Required jQuery and jQuery UI Javascript references -->
-    <script src="@Url.Content("~/Scripts/jquery-1.12.4.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery-3.1.1.min.js")"></script>
     <script src="@Url.Content("~/Scripts/jquery-ui-1.12.1.min.js")"></script>
 
     <script type='text/javascript'>
@@ -26,47 +26,7 @@
         appInsights.trackPageView();
 
     </script>
-    <script type="text/javascript">
-        var today = new Date();
-        var tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        $(function () {
-            var dateFormat = "mm/dd/yyyy",
-              from = $("#from").datepicker({
-                  minDate: 0,
-                  changeYear: true,
-                  changeMonth: true,
-                  numberOfMonths: 1,
-                  showOtherMonths: true,
-                  selectOtherMonths: true,
-                  onSelect: function(date){
-                      var fromdate = $("#from").datepicker("getDate");
-                      fromdate.setDate(fromdate.getDate() + 1);
-                      //to.datepicker("option", "defaultDate", fromdate);
-                      to.datepicker("option", "minDate", fromdate);
-                      to.datepicker("setDate", fromdate);
-                  }
-              }).datepicker("setDate", today);
-              to = $("#to").datepicker({
-                  minDate: +1,
-                  changeYear: true,
-                  changeMonth: true,
-                  numberOfMonths: 1,
-                  showOtherMonths: true,
-                  selectOtherMonths: true
-              }).datepicker("setDate", tomorrow);
-
-            function getDate(element) {
-                var date;
-                try {
-                    date = $.datepicker.parseDate(dateFormat, element.value);
-                } catch (error) {
-                    date = null;
-                }
-                return date;
-            }
-        });
-    </script>
+    
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">

@@ -5,33 +5,51 @@
 }
 <h4>Booking Information</h4>
 
-<div>Date: @ViewBag.From - @ViewBag.To (@ViewBag.Nights Nights)</div>
-<div>Room Type: @ViewBag.RoomType</div>
+<div>Date: @Model.checkIn.ToString("MM/dd/yyyy") - @Model.checkOut.ToString("MM/dd/yyyy") (@Model.nights.Count Nights)</div>
+<div>Room Type: @Model.roomType</div>
 <div>Price Details:</div>
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Price</th>
+    </tr>
+    @for (var i = 0; i < Model.nights.Count; i++)
+    {
+        <tr>
+            <td>@Model.nights[i].ToString("MM/dd/yyyy")</td>
+            <td>Model.prices[i]</td>
+        </tr>
+    }
+    <tr>
+        <td>Average</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Total</td>
+        <td></td>
+    </tr>
+</table>
 <hr />
 
 <h4>Enter Guest Information</h4>
 @using (Html.BeginForm("Reserve", "Home", FormMethod.Post))
 {
     <table>
-        @for (var i = 1; i <= @ViewBag.RoomGuest; i++)
+        @for (var i = 0; i < Model.roomGuest; i++)
         {
         <tr>
-            <td><label>Name of Guest @i:</label></td>
-            <td><input type="text" name="guest-@i"></td>
+            <td><label>Name of Guest @(i+1):</label></td>
+            <td><input type="text" name="guest-@(i+1)"></td>
         </tr>
         }
     </table>
     <hr/>
     <h4>Enter Billing Information</h4>
     <fieldset>
-        @Html.EditorFor(model => model.checkIn, new { htmlAttributes = new { @Value = ViewBag.From, @Type = "hidden" } })
-        @Html.EditorFor(model => model.checkOut, new { htmlAttributes = new { @Value = ViewBag.To, @Type = "hidden" } })
-        @Html.EditorFor(model => model.numberOfNights, new { htmlAttributes = new { @Value = ViewBag.Nights, @Type = "hidden" } })
-        
-        @Html.EditorFor(model => model.roomId, new { htmlAttributes = new { @Value = ViewBag.RoomId, @Type = "hidden" } })
-        @Html.EditorFor(model => model.roomType, new { htmlAttributes = new { @Value = @ViewBag.RoomType, @Type = "hidden" } })
-        @Html.EditorFor(model => model.roomGuest, new { htmlAttributes = new { @Value = @ViewBag.RoomGuest, @Type = "hidden" } })
+        @Html.EditorFor(model => model.checkIn, new { htmlAttributes = new { @Value = Model.checkIn, @Type = "hidden" } })
+        @Html.EditorFor(model => model.checkOut, new { htmlAttributes = new { @Value = Model.checkOut, @Type = "hidden" } })
+        @Html.EditorFor(model => model.roomId, new { htmlAttributes = new { @Value = Model.roomId, @Type = "hidden" } })
+
         @Html.EditorFor(model => model.personId, new { htmlAttributes = new { @Value = 1, @Type = "hidden" } })
                 <table>
                     <tr>
