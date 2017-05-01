@@ -9,13 +9,28 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HotelManagementSystem.Models
 {
+    public class SearchRoomViewModel
+    {
+        public SearchRoomViewModel() { }
+        // for parameters from Index
+        public System.DateTime checkIn { get; set; }
+        public System.DateTime checkOut { get; set; }
+        public List<DateTime> nights { get; set; }
+        public List<DataModel.RoomType> rooms { get; set; }
+        public List<double> avgPrices { get; set; }
+
+        // for parameters to Book
+        public int roomId { get; set; }
+        //public string roomType { get; set; }
+
+    }
     public class ReservationDetailViewModel
     {
-        public ReservationDetailViewModel()
-        {
-        }
-        public System.DateTime? checkIn { get; set; }
-        public System.DateTime? checkOut { get; set; }
+        public ReservationDetailViewModel() { }
+        public System.DateTime checkIn { get; set; }
+        public System.DateTime checkOut { get; set; }
+        public List<DateTime> nights { get ; set; }
+        public List<double> prices { get; set; }
         public int numberOfNights { get; set; }
         public string guestInfo { get; set; }
         public double bill { get; set; }
