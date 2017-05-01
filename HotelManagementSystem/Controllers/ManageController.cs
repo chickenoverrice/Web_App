@@ -54,16 +54,8 @@ namespace HotelManagementSystem.Controllers
         //
         // GET: /Manage/Index
         public ActionResult Index()
-        {
-            int customerid;
-            using (var context = new DataModel.HotelDatabaseContainer())
-            {
-                var user = (from users in context.Customers
-                            where users.email == User.Identity.Name
-                            select users).Single();
-                customerid = user.Id;
-            }               
-            return RedirectToAction("Index", "Customers", new { id = customerid });
+        { 
+            return RedirectToAction("Index", "Customers");
         }
 /*        public async Task<ActionResult> Index(ManageMessageId? message)
         {

@@ -7,7 +7,7 @@
 
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
-                <a class="dropdown-toggle" role="button" aria-expanded="false" href="#" data-toggle="dropdown">Hello<span class="caret"></span></a>
+                <a class="dropdown-toggle" role="button" aria-expanded="false" href="#" data-toggle="dropdown">@User.Identity.Name<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                     <li>@Html.ActionLink("Main", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })</li>
                     <li>@Html.ActionLink("Change Password", "ChangePassword", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })</li>

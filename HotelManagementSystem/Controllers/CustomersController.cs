@@ -11,27 +11,31 @@ using BizLogic;
 
 namespace HotelManagementSystem.Controllers
 {
+    [Authorize]
     public class CustomersController : Controller
     {
         private HotelDatabaseContainer db = new HotelDatabaseContainer();
 
         // GET: Customers
-        public ActionResult Index(int id)
+        public ActionResult Index()
         {
-            ViewBag.id = id;
-            Session["customer"] = id;
-            Customer customer = db.Customers.Find(id);
+            Customer customer = (from users in db.Customers
+                            where users.email == User.Identity.Name
+                            select users).FirstOrDefault();
+
+            //ViewBag.id = id;
+            //Session["customer"] = id;
+            if (customer == null)
+                return HttpNotFound();
             return View(customer);
         }
 
         // GET: Customers/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details()
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Customer customer = db.Customers.Find(id);
+            Customer customer = (from users in db.Customers
+                                 where users.email == User.Identity.Name
+                                 select users).FirstOrDefault();
             if (customer == null)
             {
                 return HttpNotFound();
@@ -41,9 +45,12 @@ namespace HotelManagementSystem.Controllers
             return View(customer);
         }
 
-        public ActionResult ReservationDetails(int id)
+        public ActionResult ReservationDetails()
         {
-            Session["customer"] = id;
+            Customer customer = (from users in db.Customers
+                                 where users.email == User.Identity.Name
+                                 select users).FirstOrDefault();
+            Session["customer"] = customer.Id;
             return RedirectToAction("Index", "CustomerReservations");
 
         }
@@ -96,13 +103,11 @@ namespace HotelManagementSystem.Controllers
         }
 
         // GET: Customers/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit()
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Customer customer = db.Customers.Find(id);
+            Customer customer = (from users in db.Customers
+                                 where users.email == User.Identity.Name
+                                 select users).FirstOrDefault();
             if (customer == null)
             {
                 return HttpNotFound();
@@ -120,26 +125,23 @@ namespace HotelManagementSystem.Controllers
             if (ModelState.IsValid)
             {
                 var dbcustomer = db.Customers.FirstOrDefault(c => c.Id == customer.Id);
-                if (customer == null)
+                if (dbcustomer == null)
                 {
                     return HttpNotFound();
                 }
                 CustomerOperations.ChangeAccount(ref dbcustomer, customer);
                 db.SaveChanges();
-                //int Id = (int)Session["customer"];
             }
            
                 return RedirectToAction("Index", new { id = customer.Id});
         }
 
         // GET: Customers/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete()
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Customer customer = db.Customers.Find(id);
+            Customer customer = (from users in db.Customers
+                                 where users.email == User.Identity.Name
+                                 select users).FirstOrDefault();
             if (customer == null)
             {
                 return HttpNotFound();
@@ -150,10 +152,10 @@ namespace HotelManagementSystem.Controllers
         // POST: Customers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(Customer customer)
         {
-            Customer customer = db.Customers.Find(id);
-            db.People.Remove(customer);
+            var dbcustomer = db.Customers.FirstOrDefault(c => c.Id == customer.Id);
+            db.People.Remove(dbcustomer);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
