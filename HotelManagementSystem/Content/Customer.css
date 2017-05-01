@@ -3,12 +3,16 @@
 
 .container{
     width:100%;
-   
 }
+
 .left{
-        margin-top: 5%;
-    width: 20%;
-        float: left;
+    margin-top: 5%;
+    margin-left: 0;
+    padding: 0;
+    width: 12%;
+    min-width: 160px;
+    float: left;
+    box-shadow: 3px 3px 1px lightgray;
 }
 
 .right{
@@ -16,8 +20,56 @@
     margin-left:25%;
 }
 
-.sidebar{
+.dropbtn {
+    background-color: #e5e4e2;
+    color: black;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 24px;
+    padding-right: 0px;
+    font-size: 16px;
     border: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    width: 100%;
+    text-align:left;
+}
+
+.dropdown {
+    position: relative;
+    border-color:white;
+    border-style:inset;
+    border-width:1px;
+    border-radius:3px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: whitesmoke;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    background-color:whitesmoke;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #e5e4e2;
+    color: red}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: whitesmoke;
 }
 
 .account{
@@ -29,14 +81,12 @@
 .account>dt {
   float: left;
   width: 15%;
-  /* adjust the width; make sure the total of both is 100% */
   padding: 0;
   margin: 0
 }
 .account>dd {
   float: left;
   width: 85%;
-  /* adjust the width; make sure the total of both is 100% */
   padding: 0;
   margin: 0
 }

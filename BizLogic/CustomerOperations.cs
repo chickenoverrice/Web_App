@@ -180,6 +180,12 @@ namespace BizLogic
             }
         }
 
+        public static ICollection<string> getGuestNames(Reservation r)
+        {
+            ICollection<string> guests = r.guestsInfo.Split(',').ToList<string>();
+            return guests;
+        }
+
         public static void setLoyalty(Customer customer, CurrentDateTime now)
         {
             if (!customer.member && customer.lastStay != null)

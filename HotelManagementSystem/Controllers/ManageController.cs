@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using HotelManagementSystem.Models;
+using DataModel;
 
 namespace HotelManagementSystem.Controllers
 {
@@ -52,7 +53,19 @@ namespace HotelManagementSystem.Controllers
 
         //
         // GET: /Manage/Index
-        public async Task<ActionResult> Index(ManageMessageId? message)
+        public ActionResult Index()
+        {
+            int customerid;
+            using (var context = new DataModel.HotelDatabaseContainer())
+            {
+                var user = (from users in context.Customers
+                            where users.email == User.Identity.Name
+                            select users).Single();
+                customerid = user.Id;
+            }               
+            return RedirectToAction("Index", "Customers", new { id = customerid });
+        }
+/*        public async Task<ActionResult> Index(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
@@ -74,9 +87,10 @@ namespace HotelManagementSystem.Controllers
             };
             return View(model);
         }
+        */
 
-        //
-        // POST: /Manage/RemoveLogin
+            //
+            // POST: /Manage/RemoveLogin
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RemoveLogin(string loginProvider, string providerKey)

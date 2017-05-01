@@ -1,0 +1,35 @@
+﻿@model DataModel.Customer
+
+@{
+    ViewBag.Title = "_CustomerLayout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section scripts{
+    @RenderSection("scripts", false)
+}
+
+<link href="@Url.Content("~/Content/Customer.css")" rel="stylesheet" />
+
+
+    <div class="left">
+        <div class="dropdown">
+            <button class="dropbtn" onclick="location.href='@Url.Action("Index", "Customers", new { id = Model.Id })' ">Home</button>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Reservation</button>
+            <div class="dropdown-content">
+                <a href="@Url.Action("ReservationDetails", "Customers", new { id = Model.Id })">View Reservation</a>
+                <a href="@Url.Action("MakeReservation", "Customers")">Make Reservation</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Profile</button>
+            <div class="dropdown-content">
+                <a href="@Url.Action("Details", "Customers", new { id = Model.Id })">View profile</a>
+                <a href="@Url.Action("Edit", "Customers", new { id = Model.Id })">Change profile</a>
+            </div>
+        </div>
+    </div>
+
+@RenderBody()

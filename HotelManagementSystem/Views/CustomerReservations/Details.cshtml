@@ -35,11 +35,14 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.guestsInfo)
+            Guests
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.guestsInfo)
+            @foreach (var guest in (List<string>)ViewBag.guests)
+            {
+                <p>@guest</p>
+            }
         </dd>
 
     </dl>

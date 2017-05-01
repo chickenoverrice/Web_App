@@ -36,6 +36,8 @@ namespace HotelManagementSystem.Controllers
             {
                 return HttpNotFound();
             }
+            string s = CustomerOperations.ViewLoyalty(customer);
+            ViewBag.message = s;
             return View(customer);
         }
 
@@ -43,6 +45,13 @@ namespace HotelManagementSystem.Controllers
         {
             Session["customer"] = id;
             return RedirectToAction("Index", "CustomerReservations");
+
+        }
+
+        public ActionResult MakeReservation()
+        {
+            //Session["customer"] = id;
+            return RedirectToAction("Create", "CustomerReservations");
 
         }
 
@@ -106,7 +115,7 @@ namespace HotelManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,firstName,lastName,email,address,phone,city,state,zip")] Customer customer)
+        public ActionResult Edit([Bind(Include = "Id,firstName,lastName, address,phone,city,state,zip")] Customer customer)
                {
             if (ModelState.IsValid)
             {

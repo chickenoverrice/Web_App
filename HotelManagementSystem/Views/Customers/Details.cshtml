@@ -2,81 +2,88 @@
 
 @{
     ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
 }
 
-<h2>Details</h2>
-
-<div>
-    <h4>Customer</h4>
+<div class="right">
+    <h4>Account details</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.firstName)
-        </dt>
+        <div>
+        <dl class="account">
+            <dt>
+                First Name:
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.firstName)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.firstName)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.lastName)
-        </dt>
+            <dt>
+                Last Name:
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.lastName)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.lastName)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.email)
-        </dt>
+            <dt>
+                Email:
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.email)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.email)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.address)
-        </dt>
+            <dt>
+                Address:
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.address)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.address)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.phone)
-        </dt>
+            <dt>
+                Phone:
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.phone)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.phone)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.city)
-        </dt>
+            <dt>
+                City:
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.city)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.city)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.state)
-        </dt>
+            <dt>
+                State:
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.state)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.state)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.zip)
-        </dt>
+            <dt>
+                Zip:
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.zip)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.zip)
+            </dd>
+            <dt>
+                Loyalty Status:
+            </dt>
 
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index", new { id = Model.Id })
-</p>
+            <dd>
+                @ViewBag.message
+            </dd>
+
+        </dl>
+            </div>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) 
+    </p>

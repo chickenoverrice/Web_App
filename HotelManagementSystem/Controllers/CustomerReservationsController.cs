@@ -39,6 +39,7 @@ namespace HotelManagementSystem.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.guests = CustomerOperations.getGuestNames(reservation).ToList<string>();
             return View(reservation);
         }
 
