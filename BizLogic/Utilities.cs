@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,25 +19,25 @@ namespace BizLogic
         {
             current.time = future;
         }
-        public static List<DateTime> CalculateNight(DateTime StartingDate, DateTime EndingDate)
+        public static List<DateTime> calculateNight(DateTime StartingDate, DateTime EndingDate)
         {
             if (StartingDate > EndingDate)
             {
                 return null;
             }
-            List<DateTime> rv = new List<DateTime>();
+            List<DateTime> dateList = new List<DateTime>();
             if (StartingDate == EndingDate)
             {
-                rv.Add(StartingDate);
-                return rv;
+                dateList.Add(StartingDate);
+                return dateList;
             }
             DateTime tmpDate = StartingDate;
             while (tmpDate != EndingDate)
             {
-                rv.Add(tmpDate);
+                dateList.Add(tmpDate);
                 tmpDate = tmpDate.AddDays(1);
             }
-            return rv;
+            return dateList;
         }
     }
 }

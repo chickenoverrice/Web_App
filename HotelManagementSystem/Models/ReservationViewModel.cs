@@ -26,11 +26,13 @@ namespace HotelManagementSystem.Models
     public class ReservationDetailViewModel
     {
         public ReservationDetailViewModel() { }
+        public String reservationId { get; set; }
         public System.DateTime checkIn { get; set; }
         public System.DateTime checkOut { get; set; }
         public List<DateTime> nights { get ; set; }
         public List<double> listPrice { get; set; }
         public int numberOfNights { get; set; }
+        public List<String> guestInfoList { get; set; }
         public string guestInfo { get; set; }
         public double bill { get; set; }
         [Display(Name = "First Name")]

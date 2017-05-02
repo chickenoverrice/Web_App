@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 05/02/2017 01:05:14
+-- Date Created: 05/02/2017 15:44:40
 -- Generated from EDMX file: C:\Users\Lihao\Documents\Project\hotelManagementSystem\DataModel\HotelDatabase.edmx
 -- --------------------------------------------------
 
@@ -28,6 +28,9 @@ IF OBJECT_ID(N'[dbo].[FK_CustomerRoomType]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_ReservationPerson]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Reservations] DROP CONSTRAINT [FK_ReservationPerson];
+GO
+IF OBJECT_ID(N'[dbo].[FK_RoomTypeReservation]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Reservations] DROP CONSTRAINT [FK_RoomTypeReservation];
 GO
 IF OBJECT_ID(N'[dbo].[FK_Customer_inherits_Person]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[People_Customer] DROP CONSTRAINT [FK_Customer_inherits_Person];
@@ -119,8 +122,9 @@ CREATE TABLE [dbo].[Reservations] (
     [state] nvarchar(max)  NULL,
     [zip] nvarchar(max)  NULL,
     [RoomTypeId] int  NULL,
+    [PersonId] int  NULL,
     [Room_Id] int  NULL,
-    [People_Id] int  NULL
+    [ReservationPerson_Reservation_Id] int  NULL
 );
 GO
 
@@ -246,10 +250,10 @@ ON [dbo].[People_Customer]
     ([RoomPref_Id]);
 GO
 
--- Creating foreign key on [People_Id] in table 'Reservations'
+-- Creating foreign key on [ReservationPerson_Reservation_Id] in table 'Reservations'
 ALTER TABLE [dbo].[Reservations]
 ADD CONSTRAINT [FK_ReservationPerson]
-    FOREIGN KEY ([People_Id])
+    FOREIGN KEY ([ReservationPerson_Reservation_Id])
     REFERENCES [dbo].[People]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -258,7 +262,7 @@ GO
 -- Creating non-clustered index for FOREIGN KEY 'FK_ReservationPerson'
 CREATE INDEX [IX_FK_ReservationPerson]
 ON [dbo].[Reservations]
-    ([People_Id]);
+    ([ReservationPerson_Reservation_Id]);
 GO
 
 -- Creating foreign key on [RoomTypeId] in table 'Reservations'
@@ -274,6 +278,21 @@ GO
 CREATE INDEX [IX_FK_RoomTypeReservation]
 ON [dbo].[Reservations]
     ([RoomTypeId]);
+GO
+
+-- Creating foreign key on [PersonId] in table 'Reservations'
+ALTER TABLE [dbo].[Reservations]
+ADD CONSTRAINT [FK_PersonReservation]
+    FOREIGN KEY ([PersonId])
+    REFERENCES [dbo].[People]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_PersonReservation'
+CREATE INDEX [IX_FK_PersonReservation]
+ON [dbo].[Reservations]
+    ([PersonId]);
 GO
 
 -- Creating foreign key on [Id] in table 'People_Customer'

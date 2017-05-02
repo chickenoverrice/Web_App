@@ -1,6 +1,17 @@
-﻿@{
-    ViewBag.Title = "Check My Reservation";
+﻿@model HotelManagementSystem.Models.ReservationDetailViewModel
+@{
+    ViewBag.Title = "Check";
 }
+<h2>Reservation Confirmation #@Model.reservationId</h2>
+<h3>Hotel</h3>
 
-<h2>@ViewBag.Title</h2>
 
+<h3>Stay Information</h3>
+<div>Check-In Date: @Model.checkIn.ToString("MM/dd/yyyy (ddd)")</div>
+<div>Check-Out Date: @Model.checkOut.ToString("MM/dd/yyyy (ddd)")</div>
+<div>Stay(s): @Model.nights.Count</div>
+
+<h3>Guest Information</h3>
+
+
+<h3>Billing Information</h3>

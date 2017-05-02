@@ -26,25 +26,27 @@
         <td>$@Model.listPrice.Average().ToString("0.##")</td>
     </tr>
     <tr>
-        <td>Total</td>
-        <td>$@Model.listPrice.Sum().ToString("0.##")</td>
+        <td><strong>Total</strong></td>
+        <td><strong>$@Model.listPrice.Sum().ToString("0.##")</strong></td>
     </tr>
 </table>
 <hr />
 
 <h4>Enter Guest Information</h4>
-@using (Html.BeginForm("Reserve", "Home", FormMethod.Post))
+@using (Html.BeginForm("Reserve", "Home"))
 {
     for (int j = 0; j < Model.nights.Count; j++)
     {
         @Html.HiddenFor(model => model.listPrice[j], new { Value = Model.listPrice[j] })
     }
     <table>
-        @for (var i = 0; i < Model.roomGuest; i++)
+        @for (int i = 0; i < Model.roomGuest; i++)
         {
         <tr>
             <td><label>Name of Guest @(i+1):</label></td>
-            <td><input type="text" name="guest-@(i+1)"></td>
+            <td>
+                @Html.EditorFor(model => model.guestInfoList[i], new { htmlAttributes = new { @pattern = "[A-Za-z ]+", title = "Name should only contain letters", maxlength = "number" } })
+            </td>
         </tr>
         }
     </table>
@@ -56,7 +58,7 @@
         @Html.HiddenFor(model => model.roomId, new { Value = Model.roomId })
         @Html.HiddenFor(model => model.bill, new { Value = Model.listPrice.Sum() })
         @Html.HiddenFor(model => model.personId, new { Value = 1 })
-                <table>
+        <table>
                     <tr>
                         <td>
                             <div>

@@ -1,7 +1,21 @@
-﻿@{
+﻿@model HotelManagementSystem.Models.ReservationDetailViewModel
+@{
     ViewBag.Title = "Booking Confirmed";
 }
-<h4>@ViewBag.Title</h4>
-<div>Thanks! Your booking at LXYZ Hotel is confirmed.</div>
+<h3>Your booking at LXYZ Hotel is confirmed!</h3>
 <hr />
-<div>Here is your booking information</div>
+<h4>Booking Information</h4>
+<div>Reservation ID: @Model.reservationId</div>
+<div>Check In Date: @Model.checkIn.ToString("MM/dd/yyyy (ddd)")</div>
+<div>Check Out Date: @Model.checkOut.ToString("MM/dd/yyyy (ddd)")</div>
+<div>Number of stay: Model.nights.Count</div>
+<br />
+<h4>Booking Information</h4>
+<div>Room Type: @Model.roomType</div>
+<div>Guest Information: @Model.guestInfoList.ToString()</div>
+<div>Reservation ID: @Model.reservationId</div>
+<div>Reservation ID: @Model.reservationId</div>
+<br />
+<h4>Billing Information</h4>
+
+<div>Total Price: @Model.bill.ToString("0.##")</div>
