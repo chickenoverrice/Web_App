@@ -17,7 +17,6 @@
         <AssociationConnector Association="HotelDatabase.RoomReservation" />
         <EntityTypeShape EntityType="HotelDatabase.CurrentDateTime" Width="1.5" PointX="0.5" PointY="0.75" />
         <AssociationConnector Association="HotelDatabase.CustomerRoomType" />
-        <AssociationConnector Association="HotelDatabase.ReservationPerson" />
         <AssociationConnector Association="HotelDatabase.RoomTypeReservation" />
         <AssociationConnector Association="HotelDatabase.PersonReservation" />
       </Diagram>

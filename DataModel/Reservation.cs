@@ -32,6 +32,6 @@ namespace DataModel
     
         public virtual Room Room { get; set; }
         public virtual RoomType RoomType { get; set; }
-        public virtual Person Person { get; set; }
+        public virtual Person People { get; set; }
     }
 }

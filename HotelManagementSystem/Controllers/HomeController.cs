@@ -81,7 +81,6 @@ namespace HotelManagementSystem.Controllers
                         if (reserved == roomNum)
                         {
                             // if not available, exit check loop
-                            //System.Diagnostics.Debug.WriteLine(roomId + "@" + date + " is not available ");
                             available = false;
                             break;
                         }
@@ -89,7 +88,6 @@ namespace HotelManagementSystem.Controllers
                         {
                             // if available, calculate price
                             double percentage = (double) reserved / roomNum;
-                            //System.Diagnostics.Debug.WriteLine("Reserved: "+reserved+", Number of rooms: "+roomNum+", Percentage: " + percentage);
                             if (percentage >= 0.75) {
                                 price = baseprice * 2;
                             } else if (0.75 > percentage && percentage >= 0.5) {
@@ -97,7 +95,6 @@ namespace HotelManagementSystem.Controllers
                             } else {
                                 price = baseprice * 1;
                             }
-                            //System.Diagnostics.Debug.WriteLine("Price: " + price);
                             listPrice.Add(price);
                         }
                     }
@@ -125,8 +122,6 @@ namespace HotelManagementSystem.Controllers
             rvm.nights = BizLogic.Utilities.calculateNight(srm.checkIn, srm.checkOut);
             rvm.roomId = srm.roomId;
             rvm.listPrice = srm.listPrice;
-            //System.Diagnostics.Debug.WriteLine("srm.listPrice="+ srm.listPrice);
-            //System.Diagnostics.Debug.WriteLine("srm.listPrice.count=" + srm.listPrice.Count);
             RoomType room = new RoomType();
             using (var roomcontext = new DataModel.HotelDatabaseContainer())
             {
@@ -142,6 +137,7 @@ namespace HotelManagementSystem.Controllers
             System.Diagnostics.Debug.WriteLine("Reserve HttpGet");
             Reservation r = getReservation(Int32.Parse(Request.Cookies["Reservation"]["Id"]), Request.Cookies["Reservation"]["Email"]);
             ReservationDetailViewModel rvm = new ReservationDetailViewModel();
+            rvm.reservationId = r.Id.ToString();
             RoomType room = new RoomType();
             using (var roomcontext = new DataModel.HotelDatabaseContainer())
             {
@@ -149,6 +145,7 @@ namespace HotelManagementSystem.Controllers
             }
             rvm.roomType = room.type;
             rvm.roomGuest = room.maxGuests;
+            rvm.guestInfoList = r.guestsInfo.Split(';').ToList();
             rvm.checkIn = r.checkIn;
             rvm.checkOut = r.checkOut;
             rvm.nights = BizLogic.Utilities.calculateNight(r.checkIn, r.checkOut);
@@ -184,9 +181,9 @@ namespace HotelManagementSystem.Controllers
                         r.bill = rvm.bill;
                         r.guestsInfo = String.Join(";",rvm.guestInfoList.ToArray());
                         r.RoomTypeId = rvm.roomId;
-                        //r.People.Id = 1;
                         // Chck if user has login id
-                        // Yes, r.personid = user.id
+                        r.PersonId = 1;
+                        // Yes, r.PersonId = user.id
                         // No, create a person for guest
                         reservationcontext.Reservations.Add(r);
                         reservationcontext.SaveChanges();
@@ -276,9 +273,8 @@ namespace HotelManagementSystem.Controllers
                 } else {
                     r = query.First();
                     return r;
-                }                
+                }
             }
         }
-
     }
 }

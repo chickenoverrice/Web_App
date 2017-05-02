@@ -25,10 +25,6 @@
       <End Role="Customer" EntitySet="People_Customer" />
       <End Role="RoomType" EntitySet="RoomTypes" />
     </AssociationSet>
-    <AssociationSet Name="ReservationPerson" Association="HotelDatabase.Store.ReservationPerson">
-      <End Role="Reservation" EntitySet="Reservations" />
-      <End Role="Person" EntitySet="People" />
-    </AssociationSet>
     <AssociationSet Name="RoomTypeReservation" Association="HotelDatabase.Store.RoomTypeReservation">
       <End Role="RoomType" EntitySet="RoomTypes" />
       <End Role="Reservation" EntitySet="Reservations" />
@@ -103,7 +99,6 @@
     <Property Name="RoomTypeId" Type="int" Nullable="true" />
     <Property Name="PersonId" Type="int" Nullable="true" />
     <Property Name="Room_Id" Type="int" Nullable="true" />
-    <Property Name="ReservationPerson_Reservation_Id" Type="int" Nullable="true" />
   </EntityType>
   <EntityType Name="CurrentDateTimes">
     <Key>
@@ -165,18 +160,6 @@
       </Principal>
       <Dependent Role="Customer">
         <PropertyRef Name="RoomPref_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="ReservationPerson">
-    <End Role="Reservation" Type="HotelDatabase.Store.Reservations" Multiplicity="*" />
-    <End Role="Person" Type="HotelDatabase.Store.People" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="Person">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Reservation">
-        <PropertyRef Name="ReservationPerson_Reservation_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -253,10 +236,6 @@
           <AssociationSet Name="CustomerRoomType" Association="HotelDatabase.CustomerRoomType">
             <End Role="Customer" EntitySet="People" />
             <End Role="RoomType" EntitySet="RoomTypes" />
-          </AssociationSet>
-          <AssociationSet Name="ReservationPerson" Association="HotelDatabase.ReservationPerson">
-            <End Role="Reservation" EntitySet="Reservations" />
-            <End Role="Person" EntitySet="People" />
           </AssociationSet>
           <AssociationSet Name="RoomTypeReservation" Association="HotelDatabase.RoomTypeReservation">
             <End Role="RoomType" EntitySet="RoomTypes" />
@@ -344,7 +323,7 @@
           <Property Name="zip" Type="String" Nullable="true" />
           <NavigationProperty Name="RoomType" Relationship="HotelDatabase.RoomTypeReservation" FromRole="Reservation" ToRole="RoomType" />
           <Property Name="RoomTypeId" Type="Int32" Nullable="true" />
-          <NavigationProperty Name="Person" Relationship="HotelDatabase.PersonReservation" FromRole="Reservation" ToRole="Person" />
+          <NavigationProperty Name="People" Relationship="HotelDatabase.PersonReservation" FromRole="Reservation" ToRole="Person" />
           <Property Name="PersonId" Type="Int32" Nullable="true" />
         </EntityType>
         <Association Name="RoomReservation">
@@ -361,12 +340,6 @@
         <Association Name="CustomerRoomType">
           <End Type="HotelDatabase.Customer" Role="Customer" Multiplicity="*" />
           <End Type="HotelDatabase.RoomType" Role="RoomType" Multiplicity="0..1" />
-        </Association>
-        <Association Name="ReservationPerson">
-          <End Type="HotelDatabase.Reservation" Role="Reservation" Multiplicity="*" >
-          </End>
-          <End Type="HotelDatabase.Person" Role="Person" Multiplicity="0..1" >
-          </End>
         </Association>
         <Association Name="RoomTypeReservation">
           <End Type="HotelDatabase.RoomType" Role="RoomType" Multiplicity="0..1" />
@@ -508,15 +481,6 @@
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
       <Condition ColumnName="RoomPref_Id" IsNull="false" />
-    </AssociationSetMapping>
-    <AssociationSetMapping Name="ReservationPerson" TypeName="HotelDatabase.ReservationPerson" StoreEntitySet="Reservations">
-      <EndProperty Name="Person">
-        <ScalarProperty Name="Id" ColumnName="ReservationPerson_Reservation_Id" />
-      </EndProperty>
-      <EndProperty Name="Reservation">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-      <Condition ColumnName="ReservationPerson_Reservation_Id" IsNull="false" />
     </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
