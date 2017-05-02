@@ -4,8 +4,8 @@
 }
 
 <h4>Search Summary</h4>
-<div>You searched for: @Model.checkIn.ToString("MM/dd/yyyy") - @Model.checkOut.ToString("MM/dd/yyyy") (@Model.nights.Count Nights)</div>
-<div>There are @Model.rooms.Count matching room(s)</div><br/>
+<div>You searched for: @Model.checkIn.ToString("MM/dd/yyyy (ddd)") - @Model.checkOut.ToString("MM/dd/yyyy (ddd)") (@Model.nights.Count Nights)</div>
+<div>There are @Model.roomTypes.Count matching room(s)</div><br/>
 
 <h4>Select Your Room</h4>
 <table class="searchtable">
@@ -14,29 +14,32 @@
         <th>Description</th>
         <th>Amenities</th>
         <th>Max Guest</th>
-        <th>Price per night</th>
+        <th>Average Price/Night</th>
         <th></th>
     </tr>
-    @for (var i = 0; i < Model.rooms.Count; i++)
+    @for (int i = 0; i < Model.roomTypes.Count; i++)
     {
         <tr>
             <td class="roomtype_p">
-                @Model.rooms[i].type
-                <img class="room_img" src="@Model.rooms[i].picture">
+                @Model.roomTypes[i].type
+                <img class="room_img" src="@Model.roomTypes[i].picture">
             </td>
-            <td class="roomtype_d">@Model.rooms[i].description</td>
-            <td class="roomtype_a">@Model.rooms[i].amenities</td>
-            <td class="roomtype_m">@Model.rooms[i].maxGuests</td>
-            <td class="roomtype_b">Model.avgPrices[i]</td>
+            <td class="roomtype_d">@Model.roomTypes[i].description</td>
+            <td class="roomtype_a">@Model.roomTypes[i].amenities</td>
+            <td class="roomtype_m">@Model.roomTypes[i].maxGuests</td>
+            <td class="roomtype_b">$@Model.listPrices[i].Average().ToString("0.##")</td>
             <td class="roomtype_s">
-            @using (Html.BeginForm("Book", "Home"))
-            {
-                @Html.EditorFor(model => model.checkIn, new { htmlAttributes = new { @Value = Model.checkIn, @Type = "hidden" } })
-                @Html.EditorFor(model => model.checkOut, new { htmlAttributes = new { @Value = Model.checkOut, @Type = "hidden" } })
-                @Html.EditorFor(model => model.roomId, new { htmlAttributes = new { @Value = Model.rooms[i].Id, @Type = "hidden" } })
-                <input class="btn" type="submit" value="Select" />
-            }
-            </td>
-        </tr>
+                @using (Html.BeginForm("Book", "Home"))
+                {
+                    @Html.HiddenFor(model => model.checkIn, new { Value = Model.checkIn })
+                    @Html.HiddenFor(model => model.checkOut, new { Value = Model.checkOut })
+                    @Html.HiddenFor(model => model.roomId, new { Value = Model.roomTypes[i].Id })
+                    for (int j = 0; j < Model.nights.Count; j++) { 
+                        @Html.HiddenFor(model => model.listPrice[j], new { Value = Model.listPrices[i][j] })
+                    }
+                    <input class="btn" type="submit" value="Select" />
+                }
+                </td>
+                </tr>
     }
 </table>

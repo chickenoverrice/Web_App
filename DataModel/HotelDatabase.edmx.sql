@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/29/2017 14:31:23
+-- Date Created: 05/02/2017 01:05:14
 -- Generated from EDMX file: C:\Users\Lihao\Documents\Project\hotelManagementSystem\DataModel\HotelDatabase.edmx
 -- --------------------------------------------------
 
@@ -118,8 +118,9 @@ CREATE TABLE [dbo].[Reservations] (
     [city] nvarchar(max)  NULL,
     [state] nvarchar(max)  NULL,
     [zip] nvarchar(max)  NULL,
-    [Room_Id] int  NOT NULL,
-    [People_Id] int  NOT NULL
+    [RoomTypeId] int  NULL,
+    [Room_Id] int  NULL,
+    [People_Id] int  NULL
 );
 GO
 
@@ -258,6 +259,21 @@ GO
 CREATE INDEX [IX_FK_ReservationPerson]
 ON [dbo].[Reservations]
     ([People_Id]);
+GO
+
+-- Creating foreign key on [RoomTypeId] in table 'Reservations'
+ALTER TABLE [dbo].[Reservations]
+ADD CONSTRAINT [FK_RoomTypeReservation]
+    FOREIGN KEY ([RoomTypeId])
+    REFERENCES [dbo].[RoomTypes]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_RoomTypeReservation'
+CREATE INDEX [IX_FK_RoomTypeReservation]
+ON [dbo].[Reservations]
+    ([RoomTypeId]);
 GO
 
 -- Creating foreign key on [Id] in table 'People_Customer'

@@ -34,34 +34,75 @@ namespace HotelManagementSystem.Controllers
             srm.checkIn = Arrival.Value;
             srm.checkOut = Departure.Value;
             srm.nights = BizLogic.Utilities.CalculateNight(Arrival.Value, Departure.Value);
+            srm.roomTypes = new List<RoomType>();
+            //srm.avgPrices = new List<double>();
+            srm.listPrices = new List<List<double>>();
             // Find available rooms
-            // NEED TO PUT IMPORTANT SQL HERE!!!
-            List<RoomType> rooms = null;
+            List<RoomType> roomTypes = new List<RoomType>();
             using (var roomtypecontext = new DataModel.HotelDatabaseContainer())
             {
-                rooms = roomtypecontext.RoomTypes.ToList();
+                roomTypes = roomtypecontext.RoomTypes.ToList();
             }
-            srm.rooms = rooms;
-            for (int i = 0; i < rooms.Count; i++)
+            //srm.rooms = roomTypes;
+            for (int i = 0; i < roomTypes.Count; i++)
             {
+                Boolean available = true;
+                List<double> listPrice = new List<double>();
+
+                int roomId = roomTypes[i].Id;
+                int roomNum = roomTypes[i].numberOfRooms;
+                double baseprice = roomTypes[i].basePrice;
+
                 for (int j = 0; j < srm.nights.Count; j++)
                 {
-                    int roomId = rooms[i].Id;
                     DateTime date = srm.nights[j];
-                    int roomNum = rooms[i].numberOfRooms;
+                    double price = 0;
                     using (var availableContext = new DataModel.HotelDatabaseContainer())
                     {
-                        var sqlstring = 
-                           "SELECT COUNT(*) FROM dbo.Reservations WHERE Room_Id = "
-                           + roomId + " AND " + date + " BETWEEN checkIn AND checkOut";
-                        System.Diagnostics.Debug.WriteLine(sqlstring);
-                        var sql = availableContext.Reservations.SqlQuery(sqlstring).First();
-                        System.Diagnostics.Debug.WriteLine(sql);
+                        var sqlstring =
+                           "SELECT COUNT(*) FROM dbo.Reservations WHERE dbo.Reservations.RoomTypeId = "
+                           + roomId + " AND dbo.Reservations.checkIn <= '" + date + "' AND dbo.Reservations.checkOut > '" + date + "'";
+                        int reserved = availableContext.Database.SqlQuery<int>(sqlstring).First();
+                        System.Diagnostics.Debug.WriteLine(roomId +"@"+ date +": "+reserved);
+                        if (reserved == roomNum)
+                        {
+                            // not available
+                            System.Diagnostics.Debug.WriteLine(roomId + "@" + date + " is not available ");
+                            available = false;
+                            // exit night check loop
+                            break;
+                        }
+                        else
+                        {
+                            // available
+                            // calculate every night price
+                            double percentage = (double) reserved / roomNum;
+                            System.Diagnostics.Debug.WriteLine("Reserved: "+reserved+", Number of rooms: "+roomNum+", Percentage: " + percentage);
+                            if (percentage >= 0.75)
+                            {
+                                price = baseprice * 2;
+                            }
+                            else if (0.75 > percentage && percentage >= 0.5)
+                            {
+                                price = baseprice * 1.5;
+                            }
+                            else
+                            {
+                                price = baseprice * 1;
+                            }
+                            System.Diagnostics.Debug.WriteLine("Price: " + price);
+                            listPrice.Add(price);
+                        }
                     }
-                }        
+                }
+                if (available)
+                {
+                    srm.roomTypes.Add(roomTypes[i]);
+                    // calculate average price for all night
+                    //srm.avgPrices.Add(listPrice.Average());
+                    srm.listPrices.Add(listPrice);
+                }
             }
-           //srm.avgPrices = ......;
-            
             return View(srm);
         }
         public ActionResult Book()
@@ -76,10 +117,14 @@ namespace HotelManagementSystem.Controllers
             rvm.checkOut = srm.checkOut;
             rvm.nights = BizLogic.Utilities.CalculateNight(srm.checkIn, srm.checkOut);
             rvm.roomId = srm.roomId;
+            rvm.listPrice = srm.listPrice;
+            System.Diagnostics.Debug.WriteLine("srm.listPrice="+ srm.listPrice);
+            System.Diagnostics.Debug.WriteLine("srm.listPrice.count=" + srm.listPrice.Count);
             // get roomType and maxGuest by using roomId
             RoomType room = null;
             using (var roomcontext = new DataModel.HotelDatabaseContainer())
             {
+                //roomcontext.Reservations.First().Room.RoomType.Id;
                 room = roomcontext.RoomTypes.Find(rvm.roomId);
             }
             rvm.roomType = room.type;
@@ -110,16 +155,17 @@ namespace HotelManagementSystem.Controllers
                         r.city = rvm.city;
                         r.state = rvm.state;
                         r.zip = rvm.zip;
+                        // what should be in bill?
                         r.bill = rvm.bill;
-                        r.Room.Id = 5004;
-                        r.People.Id = 1;
+                        r.RoomTypeId = rvm.roomId;
+                        //r.People.Id = 1;
                         // Chck if user has login id
                         // Yes, r.personid = user.id
                         // No, create a person for guest
                         reservationcontext.Reservations.Add(r);
                         reservationcontext.SaveChanges();
                         System.Diagnostics.Debug.WriteLine("Reservation Made");
-                        return View("Confirm");
+                        return View("Confirm", rvm);
                     }
                 }
                 catch (Exception e)
@@ -151,6 +197,11 @@ namespace HotelManagementSystem.Controllers
         public ActionResult Contact()
         {
             ViewBag.Message = "Contact page.";
+            return View();
+        }
+        public ActionResult Confirm(ReservationDetailViewModel rvm)
+        {
+            ViewBag.Message = "Confirm page.";
             return View();
         }
 

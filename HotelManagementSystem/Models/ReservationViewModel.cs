@@ -16,13 +16,12 @@ namespace HotelManagementSystem.Models
         public System.DateTime checkIn { get; set; }
         public System.DateTime checkOut { get; set; }
         public List<DateTime> nights { get; set; }
-        public List<DataModel.RoomType> rooms { get; set; }
-        public List<double> avgPrices { get; set; }
-
+        public List<DataModel.RoomType> roomTypes { get; set; }
+        public List<double> listPrice { get; set; }
+        public List<List<double>> listPrices { get; set; }
         // for parameters to Book
         public int roomId { get; set; }
-        //public string roomType { get; set; }
-
+        //public List<double> listPrices { get; set; }
     }
     public class ReservationDetailViewModel
     {
@@ -30,7 +29,7 @@ namespace HotelManagementSystem.Models
         public System.DateTime checkIn { get; set; }
         public System.DateTime checkOut { get; set; }
         public List<DateTime> nights { get ; set; }
-        public List<double> prices { get; set; }
+        public List<double> listPrice { get; set; }
         public int numberOfNights { get; set; }
         public string guestInfo { get; set; }
         public double bill { get; set; }

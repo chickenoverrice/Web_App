@@ -27,8 +27,10 @@ namespace DataModel
         public string city { get; set; }
         public string state { get; set; }
         public string zip { get; set; }
+        public Nullable<int> RoomTypeId { get; set; }
     
         public virtual Room Room { get; set; }
         public virtual Person People { get; set; }
+        public virtual RoomType RoomType { get; set; }
     }
 }
