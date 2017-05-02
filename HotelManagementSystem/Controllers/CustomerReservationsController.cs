@@ -11,6 +11,7 @@ using BizLogic;
 
 namespace HotelManagementSystem.Controllers
 {
+    [Authorize]
     public class CustomerReservationsController : Controller
     {
         private HotelDatabaseContainer db = new HotelDatabaseContainer();
@@ -21,9 +22,23 @@ namespace HotelManagementSystem.Controllers
             //fix to get the current time!!!
             CurrentDateTime curr = new CurrentDateTime();
             curr.time = System.DateTime.Now;
-            int id = (int)Session["customer"];
-            Customer customer = db.Customers.Find(id);
-            List<Reservation> r = CustomerOperations.ViewReservation(customer, curr).ToList();
+            Customer customer = (from users in db.Customers
+                                 where users.email == User.Identity.Name
+                                 select users).FirstOrDefault();
+            if (customer == null)
+            {
+                return HttpNotFound();
+            }
+
+            List<Reservation> r = (from reservations in db.Reservations
+                                   where reservations.email == User.Identity.Name
+                                   && reservations.checkIn > curr.time
+                                   select reservations).ToList();
+            if (r.Count() == 0)
+            {
+                ViewBag.message = "No upcoming reservation.";
+            }
+
             return View(r);
         }
 

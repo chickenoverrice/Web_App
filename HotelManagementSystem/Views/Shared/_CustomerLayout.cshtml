@@ -1,4 +1,4 @@
-﻿@model DataModel.Customer
+﻿
 
 @{
     ViewBag.Title = "_CustomerLayout";
@@ -13,21 +13,21 @@
 
 
     <div class="left">
-        <div class="dropdown">
-            <button class="dropbtn" onclick="location.href='@Url.Action("Index", "Customers", new { id = Model.Id })' ">Home</button>
+        <div class="cdropdown">
+            <button class="dropbtn" onclick="location.href='@Url.Action("Index", "Customers")' ">Home</button>
         </div>
-        <div class="dropdown">
+        <div class="cdropdown">
             <button class="dropbtn">Reservation</button>
             <div class="dropdown-content">
-                <a href="@Url.Action("ReservationDetails", "Customers", new { id = Model.Id })">View Reservation</a>
-                <a href="@Url.Action("MakeReservation", "Customers")">Make Reservation</a>
+                <a href="@Url.Action("ReservationDetails", "Customers")">View Reservation</a>
+                <a href="@Url.Action("Index", "Home")">Make Reservation</a>
             </div>
         </div>
-        <div class="dropdown">
+        <div class="cdropdown">
             <button class="dropbtn">Profile</button>
             <div class="dropdown-content">
-                <a href="@Url.Action("Details", "Customers", new { id = Model.Id })">View profile</a>
-                <a href="@Url.Action("Edit", "Customers", new { id = Model.Id })">Change profile</a>
+                <a href="@Url.Action("Details", "Customers")">View profile</a>
+                <a href="@Url.Action("Edit", "Customers")">Change profile</a>
             </div>
         </div>
     </div>

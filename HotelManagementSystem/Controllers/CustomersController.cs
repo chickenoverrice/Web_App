@@ -22,9 +22,6 @@ namespace HotelManagementSystem.Controllers
             Customer customer = (from users in db.Customers
                             where users.email == User.Identity.Name
                             select users).FirstOrDefault();
-
-            //ViewBag.id = id;
-            //Session["customer"] = id;
             if (customer == null)
                 return HttpNotFound();
             return View(customer);
@@ -47,10 +44,6 @@ namespace HotelManagementSystem.Controllers
 
         public ActionResult ReservationDetails()
         {
-            Customer customer = (from users in db.Customers
-                                 where users.email == User.Identity.Name
-                                 select users).FirstOrDefault();
-            Session["customer"] = customer.Id;
             return RedirectToAction("Index", "CustomerReservations");
 
         }
