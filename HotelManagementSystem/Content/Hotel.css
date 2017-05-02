@@ -8,11 +8,11 @@ div {
 }
 
 #topframe {
-    padding-top: 30px;
+    padding-top: 10px;
     padding-left: 10px;
     padding-right: 10px;
     padding-bottom: 10px;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
     font-size: 15px;
     font-weight: 200;
     line-height: 2;
@@ -23,7 +23,8 @@ div {
 #cover_img {
     display:block;
     margin:auto;
-    width: 95%;
+    height: 100%;
+    width: 100%;
     border-radius: 8px;
 }
 #check_menu {
@@ -40,11 +41,9 @@ h2 {
     line-height: 1.1;
 }
 h3{
-    padding-top: 20px;
     margin-top:10px;
 }
 h4 {
-    padding-top: 20px;
     margin-top:10px;
     font-family: Sansation_Light;
     font-weight: 500;
@@ -106,7 +105,7 @@ h4 {
 	cursor:pointer;
 	color:#ffffff;
 	font-size:15px;
-	padding:6px 20px;
+	padding:3px 15px;
 	text-decoration:none;
 	text-shadow:0px 1px 0px #283966;
     margin-left:20px;
@@ -225,4 +224,16 @@ table tr:hover td {
 	background: #f2f2f2;
 	background: -webkit-gradient(linear, left top, left bottom, from(#f2f2f2), to(#f0f0f0));
 	background: -moz-linear-gradient(top,  #f2f2f2,  #f0f0f0);	
+}
+.check-reservation {
+    color: #777777;
+    margin-top: 0px;
+    padding: 0px;
+}
+.body-content {
+    padding-top: 70px;
+}
+.resizedTextbox {
+    width: 100px; 
+    height: 20px;
 }

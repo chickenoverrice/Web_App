@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Book";
 }
-<h3>Booking Information</h3>
+<h2>Booking Information</h2>
 
 <div>Date: @Model.checkIn.ToString("MM/dd/yyyy (ddd)") - @Model.checkOut.ToString("MM/dd/yyyy (ddd)") (@Model.nights.Count Nights)</div>
 <div>Room Type: @Model.roomType</div>
@@ -35,6 +35,10 @@
 <h4>Enter Guest Information</h4>
 @using (Html.BeginForm("Reserve", "Home", FormMethod.Post))
 {
+    for (int j = 0; j < Model.nights.Count; j++)
+    {
+        @Html.HiddenFor(model => model.listPrice[j], new { Value = Model.listPrice[j] })
+    }
     <table>
         @for (var i = 0; i < Model.roomGuest; i++)
         {

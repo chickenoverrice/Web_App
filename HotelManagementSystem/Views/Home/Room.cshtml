@@ -1,4 +1,32 @@
-﻿@{
-    ViewBag.Title = "Room";
+﻿@model List<DataModel.RoomType>
+@{
+    ViewBag.Title = "Rooms";
 }
+<h2>Room & Suites</h2>
+<p>
+    The rooms and suites at our hotel are designed with comfort and convenience in mind, providing a place to unwind or to catch up on work. <br/>
+    Explore the various types of rooms and amenities, and choose the one that's right for you.
+</p>
+<table class="searchtable">
+    <tr>
+        <th>Room Type</th>
+        <th>Description</th>
+        <th>Amenities</th>
+        <th>Max Guest</th>
+        <th>Base Price</th>
+    </tr>
+    @foreach (var roomtype in Model)
+    {
 
+        <tr>
+            <td class="roomtype_p">
+                @roomtype.type
+                <img class="room_img" src="@roomtype.picture">
+            </td>
+            <td class="roomtype_d">@roomtype.description</td>
+            <td class="roomtype_a">@roomtype.amenities</td>
+            <td class="roomtype_m">@roomtype.maxGuests</td>
+            <td class="roomtype_b">@roomtype.basePrice</td>
+        </tr>
+    }
+</table>

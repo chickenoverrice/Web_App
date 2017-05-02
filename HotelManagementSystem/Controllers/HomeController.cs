@@ -155,8 +155,8 @@ namespace HotelManagementSystem.Controllers
                         r.city = rvm.city;
                         r.state = rvm.state;
                         r.zip = rvm.zip;
-                        // what should be in bill?
                         r.bill = rvm.bill;
+                        r.guestsInfo = rvm.guestInfo;
                         r.RoomTypeId = rvm.roomId;
                         //r.People.Id = 1;
                         // Chck if user has login id
@@ -182,26 +182,39 @@ namespace HotelManagementSystem.Controllers
             }
             rvm.roomType = room.type;
             rvm.roomGuest = room.maxGuests;
+            //rvm.listPrice = rvm.listPrice;
             return View("Book", rvm);
         }
         public ActionResult Room()
         {
-            ViewBag.Message = "Room page.";
-            return View();
+            ViewBag.Message = "Rooms & Suites";
+            List<RoomType> roomTypes = new List<RoomType>();
+            using (var roomtypecontext = new DataModel.HotelDatabaseContainer())
+            {
+                roomTypes = roomtypecontext.RoomTypes.ToList();
+            }
+            return View(roomTypes);
         }
         public ActionResult About()
         {
-            ViewBag.Message = "About page.";
+            ViewBag.Message = "About";
             return View();
         }
-        public ActionResult Contact()
+        public ActionResult Location()
         {
-            ViewBag.Message = "Contact page.";
+            ViewBag.Message = "Location";
             return View();
         }
         public ActionResult Confirm(ReservationDetailViewModel rvm)
         {
-            ViewBag.Message = "Confirm page.";
+            ViewBag.Message = "Confirm";
+            return View();
+        }
+
+        public ActionResult Check(String confirmationid, String email)
+        {
+            ViewBag.Message = "Check My Reservation";
+
             return View();
         }
 

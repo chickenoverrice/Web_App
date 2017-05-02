@@ -38,19 +38,29 @@
                     <span class="icon-bar"></span>
                 </button>
                 @Html.ActionLink("LXYZ Hotel", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <br />
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Room", "Room", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    <li>@Html.ActionLink("Staff", "Member", "Staff")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
-            </div>
-        </div>
+                
+            </div><br />
+            <font color="#FFFFFF">
+                251 Mercer Street, New York, N.Y. 10012-1185
+            </font>
+                <div class="navbar-collapse collapse" style="margin-right:20px;">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("Rooms", "Room", "Home")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Location", "Location", "Home")</li>
+                        <li>@Html.ActionLink("Staff", "Member", "Staff")</li>
+                        <li>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</li>
+                    </ul>
+                    @using (Html.BeginForm("Check", "Home"))
+                    {
+                        <font color="#FFFFFF">Check Reservation:&nbsp;</font>
+                        <input type="text" class="resizedTextbox" name="confirmationid" placeholder="Confirmation#" required /><input type="text" class="resizedTextbox" name="email" placeholder="Email" required />
+                        <input class="btn" type="submit" value="Find" />
+                    }
+                    @Html.Partial("_LoginPartial")
+                </div>
+</div>
     </div>
     <div class="container body-content">
         @RenderBody()
