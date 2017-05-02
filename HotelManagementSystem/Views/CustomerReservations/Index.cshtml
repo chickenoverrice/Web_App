@@ -2,39 +2,49 @@
 
 @{
     ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
 }
 
-<h2>Index</h2>
+@if (ViewBag.message == null)
+{
+    <div class="right">
+        <h4>Upcoming Reservations</h4>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.checkIn)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.checkOut)
+                </th>
+                <th></th>
+            </tr>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.checkIn)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.checkOut)
-        </th>
-        <th></th>
-    </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.checkIn)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.checkOut)
+                    </td>
+                    <td>
+                        @Html.ActionLink("CheckIn", "CheckIn", new { id = item.Id }) |
+                        @Html.ActionLink("CheckOut", "CheckOut", new { id = item.Id })|
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                        @Html.ActionLink("Cancel", "Delete", new { id = item.Id })
+                    </td>
+                </tr>
+            }
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.checkIn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.checkOut)
-        </td>
-        <td>
-            @Html.ActionLink("CheckIn", "CheckIn", new { id=item.Id }) |
-            @Html.ActionLink("CheckOut", "CheckOut", new { id=item.Id})|
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Cancel", "Delete", new { id=item.Id })
-        </td>
-    </tr>
+        </table>
+    </div>
 }
 
-</table>
+else
+{
+    <div class="right">
+        @ViewBag.message
+    </div>
+}

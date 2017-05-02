@@ -24,7 +24,7 @@ namespace DataModel
         {
             throw new UnintentionalCodeFirstException();
         }
-
+    
         public virtual DbSet<Person> People { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<Staff> Staffs { get; set; }

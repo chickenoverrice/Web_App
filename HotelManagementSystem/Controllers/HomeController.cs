@@ -14,6 +14,21 @@ namespace HotelManagementSystem.Controllers
     {
         public ActionResult Index()
         {
+            //NOT robust, will fix in spare time.
+            var today = DateTime.Now;
+            if (today.Month == 12 && today.Day == 31)
+            {
+                using (var context = new DataModel.HotelDatabaseContainer())
+                {
+                    var customer = from customers in context.Customers
+                                   select customers;
+                    foreach(var c in customer)
+                    {
+                        c.stays = 0;
+                    }
+                    context.SaveChanges();
+                }
+            }
             return View();
         }
         public ActionResult Search()
@@ -102,6 +117,8 @@ namespace HotelManagementSystem.Controllers
         [HttpPost]
         public ActionResult Book(SearchRoomViewModel srm)
         {
+            Session["start"] = DateTime.Now.ToString();
+
             ReservationDetailViewModel rvm = new ReservationDetailViewModel();
             rvm.checkIn = srm.checkIn;
             rvm.checkOut = srm.checkOut;
@@ -140,6 +157,13 @@ namespace HotelManagementSystem.Controllers
         [HttpPost]
         public ActionResult Reserve(ReservationDetailViewModel rvm)
         {
+            var current = DateTime.Now;
+            string start = (string)Session["start"];
+            var startTime= DateTime.Parse(start);
+            if (current.Subtract(startTime) >= TimeSpan.FromMinutes(10))
+            {
+                return RedirectToAction("Index");
+            }
             using (var reservationcontext = new DataModel.HotelDatabaseContainer())
             {
                 try
