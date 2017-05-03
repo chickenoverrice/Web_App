@@ -15,7 +15,7 @@
     {
         @Html.AntiForgeryToken()
         <input type="text" name="reservationId" value="@Model.reservationId" hidden />
-        <p><input id="deletebtn" class="btn" type="submit" value="Cancel Reservation" /></p>
+        <p><input id="deletebtn" class="btn" type="submit" value="Cancel This Reservation" /></p>
     }
     <p><button class="btn" id="printbtn" title="Click to show Printer Friendly View" href="#" onclick="print(); return false;">Show Printer Friendly View</button></p>
     <a id="unprintbtn" title="Click to show Original View" href="#" onclick="unprint(); return false;">Show Original View</a>

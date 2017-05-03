@@ -37,6 +37,7 @@
 <h4>Enter Guest Information</h4>
 @using (Html.BeginForm("Reserve", "Home"))
 {
+    @Html.AntiForgeryToken()
     for (int j = 0; j < Model.nights.Count; j++)
     {
         @Html.HiddenFor(model => model.listPrice[j], new { Value = Model.listPrice[j] })
