@@ -149,6 +149,15 @@ namespace HotelManagementSystem.Controllers
             rvm.checkIn = r.checkIn;
             rvm.checkOut = r.checkOut;
             rvm.nights = BizLogic.Utilities.calculateNight(r.checkIn, r.checkOut);
+            rvm.firstName = r.firstName;
+            rvm.lastName = r.lastName;
+            rvm.email = r.email;
+            rvm.phone = r.phone;
+            rvm.address = r.address;
+            rvm.city = r.city;
+            rvm.state = r.state;
+            rvm.zip = r.zip;
+            rvm.bill = r.bill;
             return View(rvm);
         }
         [HttpPost]
@@ -230,9 +239,19 @@ namespace HotelManagementSystem.Controllers
             }
             rvm.roomType = room.type;
             rvm.roomGuest = room.maxGuests;
+            rvm.guestInfoList = r.guestsInfo.Split(';').ToList();
             rvm.checkIn = r.checkIn;
             rvm.checkOut = r.checkOut;
             rvm.nights = BizLogic.Utilities.calculateNight(r.checkIn, r.checkOut);
+            rvm.firstName = r.firstName;
+            rvm.lastName = r.lastName;
+            rvm.email = r.email;
+            rvm.phone = r.phone;
+            rvm.address = r.address;
+            rvm.city = r.city;
+            rvm.state = r.state;
+            rvm.zip = r.zip;
+            rvm.bill = r.bill;
             return View(rvm);
         }
         [HttpGet]

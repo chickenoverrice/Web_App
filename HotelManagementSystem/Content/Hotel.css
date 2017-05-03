@@ -237,3 +237,12 @@ table tr:hover td {
     width: 100px; 
     height: 20px;
 }
+.reservation-table {
+    width: 80%;
+}
+#printbtn {
+    display: block;
+}
+#unprintbtn {
+    display: none;
+}

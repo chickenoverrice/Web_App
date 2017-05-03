@@ -1,0 +1,65 @@
+﻿div {
+    font-family: Arial;
+    font-size: 15px;
+}
+h2, h3, h4 {
+    font-family: Arial;
+    font-stretch:wider; 
+}
+
+body {
+  color : #000000;
+  background : #ffffff;
+  font-family : "Times New Roman", Times, serif;
+  font-size : 12pt;
+  padding-top: 0;
+}
+a {
+  text-decoration : underline;
+  color : #0000ff;
+}
+.body-content {
+    padding-top: 0;
+}
+.navbar, .navbar-header, footer
+{
+    display: none;
+}
+.container
+{
+    width: 100%; margin: 0; float: none;
+}
+.reservation-table {
+    width: 100%;
+}
+/* Change text colour to black (useful for light text on a dark background) */
+.lighttext
+{
+color: #000 
+}
+
+/* Improve colour contrast of links */
+a:link, a:visited
+{
+    color: #781351;
+    text-decoration: none;
+}
+a:hover, a:active {
+    text-decoration: underline;
+}
+
+@page {
+  size: A4;
+}
+@page :left {
+  margin-left: 0;
+}
+@page :right {
+  margin-left: 0;
+}
+#printbtn, .confirm-msg{
+    display: none;
+}
+#unprintbtn {
+    display: block;
+}
