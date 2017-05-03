@@ -31,6 +31,24 @@ a {
 }
 .reservation-table {
     width: 100%;
+    background: #ffffff;
+    border: 1px solid black;
+}
+table th {
+    border: 1px solid black;
+	background: #ffffff;
+}
+table td {
+    border: 1px solid black;
+	background: #ffffff;
+}
+table tr.even td {
+    border: 1px solid black;
+	background: #ffffff;
+}
+table tr:hover td {
+	border: 1px solid black;
+	background: #ffffff;
 }
 /* Change text colour to black (useful for light text on a dark background) */
 .lighttext
@@ -57,7 +75,7 @@ a:hover, a:active {
 @page :right {
   margin-left: 0;
 }
-#printbtn, .confirm-msg{
+#printbtn, .confirm-msg, #deletebtn {
     display: none;
 }
 #unprintbtn {

@@ -25,7 +25,13 @@
                 <img class="room_img" src="@Model.roomTypes[i].picture">
             </td>
             <td class="roomtype_d">@Model.roomTypes[i].description</td>
-            <td class="roomtype_a">@Model.roomTypes[i].amenities</td>
+            @{ List<String> amentitiesList = Model.roomTypes[i].amenities.Split(';').ToList();}
+            <td class="roomtype_a">
+            @foreach (var a in amentitiesList)
+            {
+                <div>@a</div>
+            }
+            </td>
             <td class="roomtype_m">@Model.roomTypes[i].maxGuests</td>
             <td class="roomtype_b">$@Model.listPrices[i].Average().ToString("0.##")</td>
             <td class="roomtype_s">

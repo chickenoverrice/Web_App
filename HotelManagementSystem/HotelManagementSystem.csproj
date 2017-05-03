@@ -357,7 +357,6 @@
     <Content Include="Views\Home\Search.cshtml" />
     <Content Include="Views\Home\Book.cshtml" />
     <Content Include="Views\Home\Room.cshtml" />
-    <Content Include="Views\Home\Confirm.cshtml" />
     <Content Include="Views\Home\Reserve.cshtml" />
     <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.1.min.map" />
@@ -380,6 +379,7 @@
     <Content Include="Views\Staff\_Occupancy.cshtml" />
     <Content Include="Views\Shared\_CustomerLayout.cshtml" />
     <Content Include="Views\Home\Check.cshtml" />
+    <Content Include="Views\Home\Cancel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

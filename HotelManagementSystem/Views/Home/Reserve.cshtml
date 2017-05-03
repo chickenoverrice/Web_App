@@ -1,12 +1,26 @@
 ﻿@model HotelManagementSystem.Models.ReservationDetailViewModel
 @{
-    ViewBag.Title = "Reserve";
+    ViewBag.Title = "Make Reservation";
 }
 <div class="confirm-msg">
     <h3>Your booking at LXYZ Hotel is confirmed!</h3>
     <hr />
 </div>
-<h2>Reservation Confirmation #@Model.reservationId</h2>
+<h2>
+    Reservation Confirmation #@Model.reservationId
+</h2>
+
+<div style="float: right">
+    @using (Html.BeginForm("Cancel", "Home"))
+    {
+        @Html.AntiForgeryToken()
+        <input type="text" name="reservationId" value="@Model.reservationId" hidden />
+        <p><input id="deletebtn" class="btn" type="submit" value="Cancel Reservation" /></p>
+    }
+    <p><button class="btn" id="printbtn" title="Click to show Printer Friendly View" href="#" onclick="print(); return false;">Show Printer Friendly View</button></p>
+    <a id="unprintbtn" title="Click to show Original View" href="#" onclick="unprint(); return false;">Show Original View</a>
+</div>
+
 <table class="reservation-table">
     <tr>
         <th>
@@ -60,5 +74,3 @@
     </tr>
 </table>
 <br />
-<a id="printbtn" title="Click to show print view" href="javascript:window.print()" onclick="print(); return false;">Show Print Friendly View</a>
-<a id="unprintbtn" title="Click to show original view" href="#" onclick="unprint(); return false;">Show Original View</a>

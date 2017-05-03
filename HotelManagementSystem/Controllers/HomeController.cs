@@ -135,7 +135,7 @@ namespace HotelManagementSystem.Controllers
         public ActionResult Reserve()
         {
             System.Diagnostics.Debug.WriteLine("Reserve HttpGet");
-            Reservation r = getReservation(Int32.Parse(Request.Cookies["Reservation"]["Id"]), Request.Cookies["Reservation"]["Email"]);
+            Reservation r = getReservationById(Int32.Parse(Request.Cookies["Reservation"]["Id"]));
             ReservationDetailViewModel rvm = new ReservationDetailViewModel();
             rvm.reservationId = r.Id.ToString();
             RoomType room = new RoomType();
@@ -165,16 +165,17 @@ namespace HotelManagementSystem.Controllers
         {
             var current = DateTime.Now;
             string start = (string)Session["start"];
-            var startTime= DateTime.Parse(start);
+            var startTime = DateTime.Parse(start);
             if (current.Subtract(startTime) >= TimeSpan.FromMinutes(10))
             {
                 return RedirectToAction("Index");
             }
-            using (var reservationcontext = new DataModel.HotelDatabaseContainer())
+
+            try
             {
-                try
+                if (ModelState.IsValid)
                 {
-                    if (ModelState.IsValid)
+                    using (var reservationcontext = new DataModel.HotelDatabaseContainer())
                     {
                         DataModel.Reservation r = new DataModel.Reservation();
                         r.checkIn = rvm.checkIn;
@@ -188,35 +189,36 @@ namespace HotelManagementSystem.Controllers
                         r.state = rvm.state;
                         r.zip = rvm.zip;
                         r.bill = rvm.bill;
-                        r.guestsInfo = String.Join(";",rvm.guestInfoList.ToArray());
+                        r.guestsInfo = String.Join(";", rvm.guestInfoList.ToArray());
                         r.RoomTypeId = rvm.roomId;
                         // Chck if user has login id
                         r.PersonId = 1;
                         // Yes, r.PersonId = user.id
-                        // No, create a person for guest
                         reservationcontext.Reservations.Add(r);
                         reservationcontext.SaveChanges();
-                        System.Diagnostics.Debug.WriteLine("Reservation Made");
                         Response.Cookies["Reservation"]["Id"] = r.Id.ToString();
-                        Response.Cookies["Reservation"]["Email"] = r.email;
                         return RedirectToAction("Reserve");
                     }
                 }
-                catch (Exception e)
+                else
                 {
-                    System.Diagnostics.Debug.WriteLine("Catch: " + e);
-                    return View("Index");
+                    rvm.nights = BizLogic.Utilities.calculateNight(rvm.checkIn, rvm.checkOut);
+                    RoomType room = new RoomType();
+                    using (var roomcontext = new DataModel.HotelDatabaseContainer())
+                    {
+                        room = roomcontext.RoomTypes.Find(rvm.roomId);
+                    }
+                    rvm.roomType = room.type;
+                    rvm.roomGuest = room.maxGuests;
+                    return View("Book", rvm);
                 }
             }
-            rvm.nights = BizLogic.Utilities.calculateNight(rvm.checkIn, rvm.checkOut);
-            RoomType room = null;
-            using (var roomcontext = new DataModel.HotelDatabaseContainer())
+            catch (Exception e)
             {
-                room = roomcontext.RoomTypes.Find(rvm.roomId);
+                System.Diagnostics.Debug.WriteLine("Catch: " + e);
+                return View("Index");
             }
-            rvm.roomType = room.type;
-            rvm.roomGuest = room.maxGuests;
-            return View("Book", rvm);
+
         }
         [HttpGet]
         public ActionResult Check()
@@ -226,7 +228,7 @@ namespace HotelManagementSystem.Controllers
         [HttpPost]
         public ActionResult Check(String reservationId, String email)
         {
-            Reservation r = getReservation(Int32.Parse(reservationId), email);
+            Reservation r = getReservationByIdEmail(Int32.Parse(reservationId), email);
             if (r == null) {
                 return View("Index");
             }
@@ -254,10 +256,17 @@ namespace HotelManagementSystem.Controllers
             rvm.bill = r.bill;
             return View(rvm);
         }
-        [HttpGet]
-        public ActionResult Confirm()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Cancel(int reservationId)
         {
-            return View();
+            using (var context = new DataModel.HotelDatabaseContainer())
+            {
+                Reservation r = context.Reservations.Find(reservationId);
+                context.Reservations.Remove(r);
+                context.SaveChanges();
+            }
+            return RedirectToAction("Index");
         }
         public ActionResult Room()
         {
@@ -279,7 +288,7 @@ namespace HotelManagementSystem.Controllers
             ViewBag.Message = "Location";
             return View();
         }
-        public static Reservation getReservation(int id, String email)
+        public static Reservation getReservationByIdEmail(int id, String email)
         {
             Reservation r = new Reservation();
             using (var context = new DataModel.HotelDatabaseContainer())
@@ -293,6 +302,15 @@ namespace HotelManagementSystem.Controllers
                     r = query.First();
                     return r;
                 }
+            }
+        }
+
+        public static Reservation getReservationById(int id)
+        {
+            using (var context = new DataModel.HotelDatabaseContainer())
+            {
+                Reservation r = context.Reservations.Find(id);
+                return r;
             }
         }
     }

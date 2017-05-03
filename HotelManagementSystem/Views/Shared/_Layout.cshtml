@@ -63,7 +63,7 @@
                     @using (Html.BeginForm("Check", "Home"))
                     {
                         <font color="#FFFFFF">Check Reservation:&nbsp;</font>
-                        <input type="text" class="resizedTextbox" name="reservationId" placeholder="Confirmation#" oninvalid="this.setCustomValidity('Enter Reservation Number. Should only contain digits.')"
+                        <input type="text" class="resizedTextbox" name="reservationId" placeholder="Reservation#" oninvalid="this.setCustomValidity('Enter Reservation Number. Should only contain digits.')"
     oninput="setCustomValidity('')"  pattern="[0-9]+" required /><input type="email" class="resizedTextbox" name="email" placeholder="Email" pattern="[a-zA-Z0-9._%+-]+&#64;[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$" required />
                         <input class="btn" type="submit" value="Find" />
                     }
