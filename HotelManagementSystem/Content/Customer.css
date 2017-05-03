@@ -64,11 +64,11 @@
     background-color: #e5e4e2;
     color: red}
 
-.dropdown:hover .dropdown-content {
+.cdropdown:hover .dropdown-content {
     display: block;
 }
 
-.dropdown:hover .dropbtn {
+.cdropdown:hover .dropbtn {
     background-color: whitesmoke;
 }
 
@@ -82,11 +82,22 @@
   float: left;
   width: 15%;
   padding: 0;
-  margin: 0
+  margin: 0;
+  text-align: right;
 }
 .account>dd {
   float: left;
   width: 85%;
   padding: 0;
-  margin: 0
+  margin: 0;
+  padding-left: 12px
+}
+
+.form-horizontal .form-group:after{
+    display:none;
+}
+
+.form-control{
+
+    margin-bottom: 5px;
 }

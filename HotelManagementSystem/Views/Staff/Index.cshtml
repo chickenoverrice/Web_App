@@ -1,0 +1,114 @@
+﻿@model DataModel.Staff
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div>
+        <h4>Staff</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.firstName)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.firstName)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.lastName)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.lastName)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.email)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.email)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.sessionId)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.sessionId)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.address)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.address)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.phone)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.phone)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.city)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.city)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.state)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.state)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.zip)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.zip)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.sessionExpiration)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.sessionExpiration)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.password)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.password)
+            </dd>
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>
