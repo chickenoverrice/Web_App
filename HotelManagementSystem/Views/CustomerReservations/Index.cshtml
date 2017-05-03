@@ -9,13 +9,14 @@
 {
     <div class="right">
         <h4>Upcoming Reservations</h4>
+        <hr/>
         <table class="table">
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.checkIn)
+                    Check In
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.checkOut)
+                    Check Out
                 </th>
                 <th></th>
             </tr>
@@ -24,14 +25,12 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.checkIn)
+                        @item.checkIn.ToShortDateString()
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.checkOut)
+                        @item.checkOut.ToShortDateString()
                     </td>
                     <td>
-                        @Html.ActionLink("CheckIn", "CheckIn", new { id = item.Id }) |
-                        @Html.ActionLink("CheckOut", "CheckOut", new { id = item.Id })|
                         @Html.ActionLink("Details", "Details", new { id = item.Id }) |
                         @Html.ActionLink("Cancel", "Delete", new { id = item.Id })
                     </td>

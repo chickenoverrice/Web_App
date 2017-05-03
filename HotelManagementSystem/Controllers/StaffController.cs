@@ -11,6 +11,14 @@ namespace HotelManagementSystem.Controllers
 {
     public class StaffController : Controller
     {
+        public ActionResult Index()
+        {
+            var context = new HotelDatabaseContainer();
+            Staff staff = (from s in context.Staff
+                           where s.email == User.Identity.Name
+                           select s).FirstOrDefault();
+            return View(staff);
+        }
         // GET: Staff/Member/Id
         public ActionResult Member()
         {

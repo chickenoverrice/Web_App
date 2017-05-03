@@ -16,6 +16,7 @@ namespace HotelManagementSystem.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private HotelDatabaseContainer db = new HotelDatabaseContainer();
 
         public ManageController()
         {
@@ -55,8 +56,21 @@ namespace HotelManagementSystem.Controllers
         // GET: /Manage/Index
         public ActionResult Index()
         { 
+            var user = (from users in db.People
+                        where users.email == User.Identity.Name
+                        select users).FirstOrDefault();
+            if (user == null)
+                return HttpNotFound();
+            int staff = (from s in db.Staff
+                         where s.Id == user.Id
+                         select s).Count();
+            if(staff > 0)
+            {
+                return RedirectToAction("Index", "Staff");
+            }
             return RedirectToAction("Index", "Customers");
         }
+
 /*        public async Task<ActionResult> Index(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
