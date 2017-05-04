@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Helpers;
-
+using Microsoft.AspNet.Identity;
 using HotelManagementSystem.Models;
 using BizLogic;
 using DataModel;
@@ -192,7 +192,20 @@ namespace HotelManagementSystem.Controllers
                         r.guestsInfo = String.Join(";", rvm.guestInfoList.ToArray());
                         r.RoomTypeId = rvm.roomId;
                         // Chck if user has login id
-                        r.PersonId = 1;
+                        using (var context = new DataModel.HotelDatabaseContainer())
+                        {
+                            var query = (from p in context.People
+                                         where p.email == User.Identity.Name
+                                         select p).ToList();
+                            if (query.Count == 0)
+                            {
+                                r.PersonId = null;
+                            }
+                            else
+                            {
+                                r.PersonId = query.First().Id;
+                            }
+                        }
                         reservationcontext.Reservations.Add(r);
                         reservationcontext.SaveChanges();
                         Response.Cookies["Reservation"]["Id"] = r.Id.ToString();
