@@ -1,114 +1,62 @@
 ﻿@model DataModel.Staff
 
 @{
-    Layout = null;
+    ViewBag.Title = "Member";
 }
 
-<!DOCTYPE html>
+<br />
+<br />
+<h4>Staff Member Summary</h4>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
-<body>
-    <div>
-        <h4>Staff</h4>
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.firstName)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.firstName)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.lastName)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.lastName)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.email)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.email)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.sessionId)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.sessionId)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.address)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.address)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.phone)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.phone)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.city)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.city)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.state)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.state)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.zip)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.zip)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.sessionExpiration)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.sessionExpiration)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.password)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.password)
-            </dd>
-    
-        </dl>
+<div class="container well">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">@Model.firstName @Model.lastName</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="http://askpaulmedia.com/wp-content/uploads/2016/11/raf.png" class="img-circle img-responsive"> </div>
+
+                        <div class=" col-md-9 col-lg-9 ">
+                            <table class="table table-user-information">
+                                <tbody>
+                                    <tr>
+                                        <td>Name:</td>
+                                        <td>@Model.firstName @Model.lastName</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Email:</td>
+                                        <td>@Model.email</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Phone: </td>
+                                        <td>@Model.phone</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Address: </td>
+                                        <td>@Model.address</td>
+                                    </tr>
+                                    <tr>
+                                        <td>City: </td>
+                                        <td>@Model.city</td>
+                                    </tr>
+                                    <tr>
+                                        <td>State: </td>
+                                        <td>@Model.state</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Zip Code: </td>
+                                        <td>@Model.zip</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <p>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-        @Html.ActionLink("Back to List", "Index")
-    </p>
-</body>
-</html>
+</div>

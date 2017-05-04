@@ -220,11 +220,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\ReservationInfo.cs" />
+    <Compile Include="Models\StaffViewModels.cs" />
     <Compile Include="Models\ReservationViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\RoomInventoryInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -375,7 +374,6 @@
     <Content Include="Views\CustomerReservations\Index.cshtml" />
     <Content Include="Views\Staff\HotelStatus.cshtml" />
     <Content Include="Views\Staff\Inventory.cshtml" />
-    <Content Include="Views\Staff\Member.cshtml" />
     <Content Include="Views\Staff\_CheckIn.cshtml" />
     <Content Include="Views\Staff\_CheckOut.cshtml" />
     <Content Include="Views\Staff\_Occupancy.cshtml" />

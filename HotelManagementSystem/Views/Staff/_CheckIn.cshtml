@@ -20,14 +20,15 @@
                                                     grid.Column("Id", "Reservation Id"),
                                                     grid.Column("personName", "Booker Name"),
                                                     grid.Column("guestInfo", "Guest Info"),
-                                                    grid.Column("roomNumber", "Room Number"),
+                                                    grid.Column("roomNumber", "Room Number",
+                                                                    format: @<text><div id="RM_CheckIn_@item.Id">@item.roomNumber</div> </text>),
                                                     grid.Column("roomType", "Room Type"),
                                                     grid.Column("bill", "Bill"),
                                                     grid.Column("checkIn", "Check In Time"),
                                                     grid.Column("checkOut", "Check Out Time"),
-                                                    grid.Column(header: "Check In", canSort: false, style: "action",
+                                                    grid.Column(header: "Check In", style: "action",
                                                                     format: @<text>
-                                                        <button class="checkIn" id="@item.Id" @(item.roomOccupied ? "disabled" : "")>Check In</button>
+                                                        <button class="checkIn" id="@item.Id" @(String.Compare(item.roomOccupied,"*") != 0 ? "disabled" : "")>Check In</button>
                                                                     </text>)
 
     ));
@@ -41,7 +42,12 @@
                 url: "/Staff/checkIn",
                 data: { "resId": parseInt(button.id) },
                 type: "POST",
-                success: function () { button.disabled = true; },
+                success: function (data) {
+                    button.disabled = true;
+
+                    //Reload Room Number
+                    $("#RM_CheckIn_" + button.id)[0].innerText = data['roomNum'];
+                },
                 error: function () { console.log("Error"); }
             });
         });

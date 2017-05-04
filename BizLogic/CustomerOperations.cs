@@ -68,10 +68,10 @@ namespace BizLogic
                 customer.address = newCustomer.address;
         }
 
-        public static bool CheckIn(ref Customer customer, ref Reservation r, CurrentDateTime current)
+        public static bool CheckIn(ref Customer customer, ref Reservation r, DateTime current)
         {
             bool checkin = true;
-            if (DateTime.Compare(current.time, r.checkIn) < 0 || DateTime.Compare(current.time, r.checkOut) > 0)
+            if (DateTime.Compare(current, r.checkIn) < 0 || DateTime.Compare(current, r.checkOut) > 0)
             {
                 checkin = false;
                 return checkin;
@@ -186,16 +186,16 @@ namespace BizLogic
             return guests;
         }
 
-        public static void setLoyalty(Customer customer, CurrentDateTime now)
+        public static void setLoyalty(Customer customer, DateTime now)
         {
             if (!customer.member && customer.lastStay != null)
             {
-                if (customer.lastStay.Value.Year == now.time.Year)
+                if (customer.lastStay.Value.Year == now.Year)
                 {
                     if (customer.stays >= 5)
                     {
                         customer.member = true;
-                        customer.expirationDate = new DateTime(now.time.Year, 12, 31);
+                        customer.expirationDate = new DateTime(now.Year, 12, 31);
                     }
                 }
             }
