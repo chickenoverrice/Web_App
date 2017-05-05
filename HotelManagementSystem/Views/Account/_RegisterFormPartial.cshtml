@@ -1,0 +1,67 @@
+﻿@using HotelManagementSystem.Models
+@model RegisterViewModel
+
+@Html.AntiForgeryToken()
+<h4>Create a new account.</h4>
+<hr />
+@Html.ValidationSummary("", new { @class = "text-danger" })
+<div class="form-group">
+    @Html.LabelFor(m => m.FirstName, new { @class = "control-label" })
+    <div>
+        @Html.TextBoxFor(m => m.FirstName, new { @id = "FirstNameRegister", @class = "form-control" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.LastName, new { @class = "control-label" })
+    <div>
+        @Html.TextBoxFor(m => m.LastName, new { @id = "LastNameRegister", @class = "form-control" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Email, new { @class = "control-label" })
+    <div>
+        @Html.TextBoxFor(m => m.Email, new { @id = "EmailRegister", @class = "form-control" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Address, new { @class = "control-label" })
+    <div>
+        @Html.TextBoxFor(m => m.Address, new { @id = "AddressRegister", @class = "form-control" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.City, new { @class = "control-label" })
+    <div>
+        @Html.TextBoxFor(m => m.City, new { @id = "CityRegister", @class = "form-control" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.State, new { @class = "control-label" })
+    <div>
+        @Html.TextBoxFor(m => m.State, new { @id = "StateRegister", @class = "form-control" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Zip, new { @class = "control-label" })
+    <div>
+        @Html.TextBoxFor(m => m.Zip, new { @id = "ZipRegister", @class = "form-control" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Phone, new { @class = "control-label" })
+    <div>
+        @Html.TextBoxFor(m => m.Phone, new { @id = "PhoneRegister", @class = "form-control" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Password, new { @class = "control-label" })
+    <div>
+        @Html.PasswordFor(m => m.Password, new { @id = "PasswordRegister", @class = "form-control" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.ConfirmPassword, new { @class = "control-label" })
+    <div>
+        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+    </div>
+</div>

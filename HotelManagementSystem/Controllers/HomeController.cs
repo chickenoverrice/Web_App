@@ -123,13 +123,12 @@ namespace HotelManagementSystem.Controllers
             rvm.nights = BizLogic.Utilities.calculateNight(srm.checkIn, srm.checkOut);
             rvm.roomId = srm.roomId;
             rvm.listPrice = srm.listPrice;
-            RoomType room = new RoomType();
             using (var roomcontext = new DataModel.HotelDatabaseContainer())
             {
-                room = roomcontext.RoomTypes.Find(rvm.roomId);
+                var room = roomcontext.RoomTypes.Find(rvm.roomId);
+                rvm.roomType = room.type;
+                rvm.roomGuest = room.maxGuests;
             }
-            rvm.roomType = room.type;
-            rvm.roomGuest = room.maxGuests;
             return View(rvm);
         }
         [HttpGet]

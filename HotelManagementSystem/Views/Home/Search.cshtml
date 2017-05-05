@@ -35,17 +35,128 @@
             <td class="roomtype_m">@Model.roomTypes[i].maxGuests</td>
             <td class="roomtype_b">$@Model.listPrices[i].Average().ToString("0.##")</td>
             <td class="roomtype_s">
-                @using (Html.BeginForm("Book", "Home"))
+                @using (Html.BeginForm("Book", "Home", FormMethod.Post, new { @class = "submitRoom" }))
                 {
                     @Html.HiddenFor(model => model.checkIn, new { Value = Model.checkIn })
                     @Html.HiddenFor(model => model.checkOut, new { Value = Model.checkOut })
                     @Html.HiddenFor(model => model.roomId, new { Value = Model.roomTypes[i].Id })
-                    for (int j = 0; j < Model.nights.Count; j++) { 
+                    for (int j = 0; j < Model.nights.Count; j++) {
                         @Html.HiddenFor(model => model.listPrice[j], new { Value = Model.listPrices[i][j] })
                     }
-                    <input class="btn" type="submit" value="Select" />
+                    <input class="btn" value="Select" 
+                        @{ if (Request.IsAuthenticated) { 
+                                <text> type = "submit" </text>
+                            } else {
+                                <text> type = "button" data-toggle = "modal" data-target = "#validateModal" </text> 
+                            }
+                        }/>
                 }
                 </td>
                 </tr>
-    }
+                }
 </table>
+
+<!-- Modal for displaying the messages -->
+<div class="modal fade" id="validateModal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content panel-info">
+            <div class="modal-header panel-heading">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Validate</h4>
+            </div>
+
+            <div class="modal-body">
+                <div id="tabs">
+                    <ul>
+                        <li><a href="#tabs-1">Log In</a></li>
+                        <li><a href="#tabs-2">Register</a></li>
+                    </ul>
+                    <div id="tabs-1">
+                        @using (Html.BeginForm("", "")) //Super Hacky Dummy Form
+                        {
+                            <div id="LoginForm">@Html.Action("_LoginFormPartial_Search_Onload", "Account")</div>
+                        }
+                        <div class="form-group">
+                            <input id="SearchLogIn" type="button" value="Log in" class="btn btn-default" />
+                        </div>
+                    </div>
+                    <div id="tabs-2">
+                        @using (Html.BeginForm("", "")) //Super Hacky Dummy Form
+                        {
+                            <div id="RegisterForm">@Html.Action("_RegisterFormPartial_Search_Onload", "Account")</div>
+                        }
+                        <div class="form-group">
+                            <input id="SearchRegister" type="button" value="Register" class="btn btn-default" />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <div class="text-center">
+                    <a id="ContinueBookLink">Continue as Guest >></a>
+                </div>
+                <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#SearchLogIn').click(function () {
+        $.ajax({
+            url: "/Account/_LoginFormPartial_Search",
+            data: { "email": $('#EmailLogIn')[0].value, "password": $('#PasswordLogIn')[0].value, "remember": $('#RememberLogIn')[0].checked },
+            type: "POST",
+            success: function (result) {
+                if (result.hasOwnProperty('authenticated')) {
+                    $('.submitRoom').submit();
+                } else {
+                    //Issue
+                    $("#LoginForm").html(result);
+                }
+            },
+            error: function () {
+                console.log("Login Uh Oh");
+            }
+        });
+    });
+
+    $('#SearchRegister').click(function () {
+        $.ajax({
+            url: "/Account/_RegisterFormPartial_Search",
+            data: {
+                "firstName": $('#FirstNameRegister')[0].value,
+                "lastName": $('#LastNameRegister')[0].value,
+                "email": $('#EmailRegister')[0].value,
+                "address": $('#AddressRegister')[0].value,
+                "city": $('#CityRegister')[0].value,
+                "state": $('#StateRegister')[0].value,
+                "zip": $('#ZipRegister')[0].value,
+                "phone": $('#PhoneRegister')[0].value,
+                "password": $('#PasswordRegister')[0].value
+            },
+            type: "POST",
+            success: function (result) {
+                if (result.hasOwnProperty('registered')) {
+                    $('.submitRoom').submit();
+                } else {
+                    //Issue
+                    $("#RegisterForm").html(result);
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    });
+
+    $('#ContinueBookLink').click(function () {
+        $('.submitRoom').submit();
+    });
+
+    $("#tabs").tabs();
+</script>
