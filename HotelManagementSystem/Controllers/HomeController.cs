@@ -166,71 +166,75 @@ namespace HotelManagementSystem.Controllers
             var current = DateTime.Now;
             string start = (string)Session["start"];
             var startTime = DateTime.Parse(start);
-            if (current.Subtract(startTime) >= TimeSpan.FromMinutes(10))
+            if (current.Subtract(startTime) >= TimeSpan.FromMinutes(1))
             {
-                return RedirectToAction("Index");
+                ViewBag.message = "Your reservation time has expired. You will be redirected to the home page. Click 'OK' to continue.";
+                return View();
             }
-            try
+            else
             {
-                if (ModelState.IsValid)
+                try
                 {
-                    using (var reservationcontext = new DataModel.HotelDatabaseContainer())
+                    if (ModelState.IsValid)
                     {
-                        DataModel.Reservation r = new DataModel.Reservation();
-                        r.checkIn = rvm.checkIn;
-                        r.checkOut = rvm.checkOut;
-                        r.firstName = rvm.firstName;
-                        r.lastName = rvm.lastName;
-                        r.email = rvm.email;
-                        r.phone = rvm.phone;
-                        r.address = rvm.address;
-                        r.city = rvm.city;
-                        r.state = rvm.state;
-                        r.zip = rvm.zip;
-                        r.bill = rvm.bill;
-                        r.guestsInfo = String.Join(";", rvm.guestInfoList.ToArray());
-                        r.RoomTypeId = rvm.roomId;
-                        // Chck if user has login id
-                        using (var context = new DataModel.HotelDatabaseContainer())
+                        using (var reservationcontext = new DataModel.HotelDatabaseContainer())
                         {
-                            var query = (from p in context.People
-                                         where p.email == User.Identity.Name
-                                         select p).ToList();
-                            if (query.Count == 0)
+                            DataModel.Reservation r = new DataModel.Reservation();
+                            r.checkIn = rvm.checkIn;
+                            r.checkOut = rvm.checkOut;
+                            r.firstName = rvm.firstName;
+                            r.lastName = rvm.lastName;
+                            r.email = rvm.email;
+                            r.phone = rvm.phone;
+                            r.address = rvm.address;
+                            r.city = rvm.city;
+                            r.state = rvm.state;
+                            r.zip = rvm.zip;
+                            r.bill = rvm.bill;
+                            r.guestsInfo = String.Join(";", rvm.guestInfoList.ToArray());
+                            r.RoomTypeId = rvm.roomId;
+                            // Chck if user has login id
+                            using (var context = new DataModel.HotelDatabaseContainer())
                             {
-                                r.PersonId = null;
+                                var query = (from p in context.People
+                                             where p.email == User.Identity.Name
+                                             select p).ToList();
+                                if (query.Count == 0)
+                                {
+                                    r.PersonId = null;
+                                }
+                                else
+                                {
+                                    r.PersonId = query.First().Id;
+                                }
                             }
-                            else
-                            {
-                                r.PersonId = query.First().Id;
-                            }
+                            reservationcontext.Reservations.Add(r);
+                            reservationcontext.SaveChanges();
+                            Response.Cookies["Reservation"]["Id"] = r.Id.ToString();
+                            return RedirectToAction("Reserve");
                         }
-                        reservationcontext.Reservations.Add(r);
-                        reservationcontext.SaveChanges();
-                        Response.Cookies["Reservation"]["Id"] = r.Id.ToString();
-                        return RedirectToAction("Reserve");
                     }
-                }
-                else
-                {
-                    rvm.nights = BizLogic.Utilities.calculateNight(rvm.checkIn, rvm.checkOut);
-                    RoomType room = new RoomType();
-                    using (var roomcontext = new DataModel.HotelDatabaseContainer())
+                    else
                     {
-                        room = roomcontext.RoomTypes.Find(rvm.roomId);
+                        rvm.nights = BizLogic.Utilities.calculateNight(rvm.checkIn, rvm.checkOut);
+                        RoomType room = new RoomType();
+                        using (var roomcontext = new DataModel.HotelDatabaseContainer())
+                        {
+                            room = roomcontext.RoomTypes.Find(rvm.roomId);
+                        }
+                        rvm.roomType = room.type;
+                        rvm.roomGuest = room.maxGuests;
+                        return View("Book", rvm);
                     }
-                    rvm.roomType = room.type;
-                    rvm.roomGuest = room.maxGuests;
-                    return View("Book", rvm);
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Catch: " + e);
+                    return RedirectToAction("Index");
                 }
             }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine("Catch: " + e);
-                return RedirectToAction("Index");
-            }
-
         }
+
         [HttpGet]
         public ActionResult Check()
         {

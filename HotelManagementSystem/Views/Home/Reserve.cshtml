@@ -2,6 +2,9 @@
 @{
     ViewBag.Title = "Make Reservation";
 }
+
+@if (ViewBag.message == null)
+{
 <div class="confirm-msg">
     <h3>Your booking at LXYZ Hotel is confirmed!</h3>
     <hr />
@@ -74,3 +77,13 @@
     </tr>
 </table>
 <br />
+}
+else
+{
+    <script>
+        alert('@ViewBag.message');
+            window.setTimeout(function () {
+                window.location.href = "/Home/Index";
+            }, 5000);
+    </script>
+}

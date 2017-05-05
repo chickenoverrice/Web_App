@@ -1,0 +1,1 @@
+Dropdown list in _CustomerLayout was modified on https://www.w3schools.com/howto/howto_css_dropdown.asp.

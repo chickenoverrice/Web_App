@@ -243,6 +243,7 @@ namespace HotelManagementSystem.Controllers
 
                 if(customer != null) {
                     customer.stays++;
+                    customer.lastStay = reservation.checkIn;
                     CustomerOperations.setLoyalty(customer, DateTime.Now);
                 }
 

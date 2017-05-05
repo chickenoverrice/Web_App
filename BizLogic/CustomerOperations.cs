@@ -195,7 +195,7 @@ namespace BizLogic
                     if (customer.stays >= 5)
                     {
                         customer.member = true;
-                        customer.expirationDate = new DateTime(now.Year, 12, 31);
+                        customer.expirationDate = new DateTime(now.Year+1, 12, 31);
                     }
                 }
             }
