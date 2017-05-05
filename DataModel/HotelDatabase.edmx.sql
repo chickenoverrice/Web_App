@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 05/02/2017 16:13:57
--- Generated from EDMX file: C:\Users\Lihao\Documents\Project\hotelManagementSystem\DataModel\HotelDatabase.edmx
+-- Date Created: 05/04/2017 07:42:27
+-- Generated from EDMX file: C:\Users\Zhe Xu\Documents\Codes\NYU_web\project_v2\DataModel\HotelDatabase.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -25,9 +25,6 @@ IF OBJECT_ID(N'[dbo].[FK_RoomReservation]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_CustomerRoomType]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[People_Customer] DROP CONSTRAINT [FK_CustomerRoomType];
-GO
-IF OBJECT_ID(N'[dbo].[FK_ReservationPerson]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Reservations] DROP CONSTRAINT [FK_ReservationPerson];
 GO
 IF OBJECT_ID(N'[dbo].[FK_RoomTypeReservation]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Reservations] DROP CONSTRAINT [FK_RoomTypeReservation];

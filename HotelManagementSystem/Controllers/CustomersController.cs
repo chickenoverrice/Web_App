@@ -126,7 +126,7 @@ namespace HotelManagementSystem.Controllers
                 db.SaveChanges();
             }
            
-                return RedirectToAction("Index", new { id = customer.Id});
+                return RedirectToAction("Index");
         }
 
         // GET: Customers/Delete/5

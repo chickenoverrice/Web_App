@@ -38,10 +38,7 @@
         </dt>
 
         <dd>
-            @foreach (var guest in (List<string>)ViewBag.guests)
-            {
-                <p>@guest</p>
-            }
+            @Html.DisplayFor(model => model.guestsInfo)
         </dd>
 
     </dl>
