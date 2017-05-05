@@ -10,6 +10,11 @@
                 <a class="dropdown-toggle" role="button" aria-expanded="false" href="#" data-toggle="dropdown">@User.Identity.Name<span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                     <li>@Html.ActionLink("Main", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })</li>
+                    @if (User.IsInRole("Staff"))
+                    {
+                        <li>@Html.ActionLink("Inventory", "Inventory", "Staff")</li>
+                        <li>@Html.ActionLink("Hotel Status", "HotelStatus", "Staff")</li>
+                    }
                     <li>@Html.ActionLink("Change Password", "ChangePassword", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })</li>
                 </ul>
             </li>

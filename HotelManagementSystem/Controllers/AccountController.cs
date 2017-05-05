@@ -63,6 +63,52 @@ namespace HotelManagementSystem.Controllers
             return View();
         }
 
+        [AllowAnonymous]
+        public ActionResult _LoginFormPartial_Search_Onload()
+        {
+            return PartialView("_LoginFormPartial");
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult> _LoginFormPartial_Search(string email, string password, bool remember)
+        {
+            LoginViewModel model = new LoginViewModel { Email = email, Password = password, RememberMe = remember };
+
+            if (!ModelState.IsValid)
+            {
+                return PartialView("_LoginFormPartial", model);
+            }
+
+            // This doesn't count login failures towards account lockout
+            // To enable password failures to trigger account lockout, change to shouldLockout: true
+            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    return Json(new { authenticated="true" });
+                case SignInStatus.LockedOut:
+                case SignInStatus.RequiresVerification:
+                case SignInStatus.Failure:
+                default:
+                    ModelState.AddModelError("", "Invalid login attempt.");
+                    return PartialView("_LoginFormPartial", model);
+            }
+        }
+
+        [AllowAnonymous]
+        public ActionResult _LoginFormPartial() {
+            return PartialView("_LoginFormPartial");
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult _LoginFormPartial(LoginViewModel model)
+        {
+            ModelState.AddModelError("", "Invalid login attempt.");
+            return PartialView("_LoginFormPartial", model);
+        }
+
         //
         // POST: /Account/Login
         [HttpPost]
@@ -203,11 +249,118 @@ namespace HotelManagementSystem.Controllers
 
                     return RedirectToAction("Index", "Home");
                 }
-                AddErrors(result);
+                //AddErrors(result);
+                TempData["errors"] = result;
             }
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult _RegisterFormPartial_Search_Onload()
+        {
+            return PartialView("_RegisterFormPartial");
+        }
+
+        [AllowAnonymous]
+        public ActionResult _RegisterFormPartial()
+        {
+            return PartialView("_RegisterFormPartial");
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult _RegisterFormPartial(RegisterViewModel model)
+        {
+            if(TempData.ContainsKey("errors"))
+                AddErrors(TempData["errors"] as IdentityResult);
+                TempData.Remove("errors");
+            return PartialView("_RegisterFormPartial", model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult> _RegisterFormPartial_Search( string firstName,
+                                                                     string lastName,
+                                                                     string email,
+                                                                     string address,
+                                                                     string city,
+                                                                     string state,
+                                                                     string zip,
+                                                                     string phone,
+                                                                     string password)
+        {
+            RegisterViewModel model = new RegisterViewModel {
+                FirstName = firstName,
+                LastName = lastName,
+                Email = email,
+                Address = address,
+                City = city,
+                State = state,
+                Zip = zip,
+                Phone = phone,
+                Password = password
+            };
+
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var result = await UserManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    DataModel.Customer newUser = new DataModel.Customer
+                    {
+                        firstName = model.FirstName,
+                        lastName = model.LastName,
+                        email = model.Email,
+                        address = model.Address,
+                        city = model.City,
+                        state = model.State,
+                        zip = model.Zip,
+                        phone = model.Phone,
+                        sessionExpiration = System.DateTime.Now.AddMinutes(10),
+                        password = model.Password
+                    };
+
+                    using (var context = new DataModel.HotelDatabaseContainer())
+                    {
+                        context.People.Add(newUser);
+                        try
+                        {
+                            context.SaveChanges();
+                            System.Diagnostics.Debug.WriteLine("Added new customer account!");
+                        }
+                        catch (DbEntityValidationException e)
+                        {
+                            foreach (var eve in e.EntityValidationErrors)
+                            {
+                                System.Diagnostics.Debug.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                                    eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                                foreach (var ve in eve.ValidationErrors)
+                                {
+                                    System.Diagnostics.Debug.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                                        ve.PropertyName, ve.ErrorMessage);
+                                }
+                            }
+                            throw;
+                        }
+                    }
+                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+                    // Send an email with this link
+                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                    return Json(new { registered = "true" });
+                }
+                AddErrors(result);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return PartialView("_RegisterFormPartial");
         }
 
         //

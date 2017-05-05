@@ -165,7 +165,7 @@ namespace HotelManagementSystem.Controllers
             Reservation reservation = db.Reservations.Find(id);
             int customerId = (int)Session["customer"];
             Customer customer = db.Customers.Find(customerId);
-            var checkedIn = CustomerOperations.CheckIn(ref customer, ref reservation, curr);
+            var checkedIn = CustomerOperations.CheckIn(ref customer, ref reservation, curr.time);
             if(checkedIn)
                 db.SaveChanges();
             //TODO: else

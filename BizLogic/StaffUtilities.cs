@@ -22,18 +22,6 @@ namespace BizLogic
             return basePrice * Math.Pow(3, capacityFilled);
         }
 
-        //Check in
-        public static void checkIn(Reservation res)
-        {
-            res.Room.occupied = true;
-        }
-
-        //Check Out 
-        public static void checkOut(Reservation res)
-        {
-            res.Room.occupied = false;
-        }
-
         //Can Decrease Rooms
         //futRes = (from res in context.Reservations where res.checkIn > DateTime.Now and res.Room.RoomType.Id == rType select res)
         public static Boolean canDecreaseRooms(int newQuant, List<Reservation> futRes)

@@ -1,4 +1,5 @@
 ﻿using DataModel;
+using BizLogic;
 using HotelManagementSystem.Models;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Data.Entity;
 
 namespace HotelManagementSystem.Controllers
 {
+    [Authorize]
     public class StaffController : Controller
     {
         public ActionResult Index()
@@ -19,71 +21,50 @@ namespace HotelManagementSystem.Controllers
                            select s).FirstOrDefault();
             return View(staff);
         }
-        // GET: Staff/Member/Id
-        public ActionResult Member()
-        {
-            Session["user"] = "1"; //Testing Purposes
-
-            //If User was set
-            if (Session["user"] != null)
-            {
-
-                int userId = Int32.Parse((string)Session["user"]);
-
-                using (var context = new HotelDatabaseContainer())
-                {
-                    var member = from x in context.Staff where x.Id == userId select x;
-
-                    if (member.Any())
-                    {
-                        return View(member.First());
-                    }
-                }
-            }
-
-            return RedirectToAction("Login", "Account"); //Unauthenticated
-        }
 
         // GET: Staff/Inventory
         public ActionResult Inventory()
         {
-            //If Authenticated
-            if (Session["user"] != null)
+            var now = DateTime.Now;
+            List<RoomInventoryInfo> rmInfo = new List<RoomInventoryInfo>();
+            using (var context = new HotelDatabaseContainer())
             {
-
-                var now = DateTime.Now;
-                List<RoomInventoryInfo> rmInfo = new List<RoomInventoryInfo>();
-                using (var context = new HotelDatabaseContainer())
+                foreach (var rmType in context.RoomTypes)
                 {
-                    var roomTypes = from room in context.Rooms
-                                    group room by room.RoomType into roomGroups
-                                    select new
-                                    {
-                                        rmType = roomGroups.Key,
-                                        quantity = roomGroups.Count(),
-                                        occupied = (from res in context.Reservations
-                                                    where res.checkOut >= now &&
-                                                            res.Room.RoomType == roomGroups.Key
-                                                    group res by res.Room into uniqRooms
-                                                    select uniqRooms.Key).Count()
-                                    };
-
-                    foreach (var roomInfo in roomTypes)
+                    rmInfo.Add(new RoomInventoryInfo
                     {
-                        rmInfo.Add(new RoomInventoryInfo
-                        {
-                            rmType = roomInfo.rmType,
-                            quantity = roomInfo.quantity,
-                            occupiedRooms = roomInfo.occupied
-                        });
-                    }
+                        rmType = rmType,
+                        quantity = rmType.numberOfRooms,
+                        occupiedRooms = occupiedRooms(rmType, context)
+                    });
                 }
-
-                //Model Needs List<Custom RoomType/Quantity/Rooms Occupied Obj>
-                return View(rmInfo);
             }
 
-            return RedirectToAction("Login", "Account"); //Unauthenticated
+            //Model Needs List<Custom RoomType/Quantity/Rooms Occupied Obj>
+            return View(rmInfo);
+        }
+
+        private int occupiedRooms(RoomType rmType, HotelDatabaseContainer context)
+        {
+            var dates = from res in context.Reservations
+                        where res.RoomType.Id == rmType.Id
+                        select res.checkOut;
+
+            if (!dates.Any())
+                return 0;
+
+            var farthestDate = dates.Max();
+            var occupied = 0;
+            for (DateTime date = DateTime.Today; date.Date < farthestDate; date = date.AddDays(1))
+            {
+                var occupiedToday = (from res in context.Reservations
+                                     where res.RoomType.Id == rmType.Id &&
+                                     res.checkIn <= date && res.checkOut > date
+                                     select res).Count();
+                if (occupiedToday > occupied)
+                    occupied = occupiedToday;
+            }
+            return occupied;
         }
 
         [HttpPost]
@@ -104,53 +85,46 @@ namespace HotelManagementSystem.Controllers
                 var roomType = rTypeById.First();
 
                 //All Availible Rooms
-                var currRooms = from room in context.Rooms where room.RoomType.Id == roomTypeId select room;
+                var currRooms = roomType.numberOfRooms;
 
                 //Get Used Rooms
-                var usedRooms = from res in context.Reservations
-                                where res.checkOut >= now &&
-                                        res.Room.RoomType.Id == roomTypeId
-                                group res by res.Room into uniqRooms
-                                select uniqRooms.Key;
+                var usedRoomsCount = occupiedRooms(roomType, context);
 
-                if (currRooms.Count() > newValue)
+                if (currRooms > newValue)
                 { //Subtract Rooms
                     //Get Unused rooms with Left Outer Join
-                    var unusedRoomsRes = from curr in currRooms
-                                         join used in usedRooms on curr.Id equals used.Id into unuRms
-                                         from unused in unuRms.DefaultIfEmpty()
-                                         where unused == null
-                                         orderby curr.Id descending
-                                         select curr;
+                    var unusedRoomsRes = currRooms - usedRoomsCount;
 
-                    if (!unusedRoomsRes.Any() || currRooms.Count() - newValue > unusedRoomsRes.Count())
-                        return Json(new { errorMessage = "Not enough unused rooms to get rid of.", usedRooms = usedRooms.Count() });
+                    var unusedRooms = (from res in context.Rooms where !res.occupied select res).ToList();
 
-                    var unusedRooms = unusedRoomsRes.ToList();
+                    if (unusedRoomsRes < 0 || unusedRooms.Count() < unusedRoomsRes)
+                        return Json(new { errorMessage = "Not enough unused rooms to get rid of.", usedRooms = usedRoomsCount });
 
                     //Delete Rooms
-                    for (var i = 0; i < currRooms.Count() - newValue; i++)
+                    for (var i = 0; i < unusedRoomsRes; i++)
                     {
                         context.Rooms.Remove(unusedRooms[i]);
                     }
 
                 }
-                else if (currRooms.Count() < newValue)
+                else if (currRooms < newValue)
                 { //Add Rooms
-                    var newRooms = newValue - currRooms.Count();
+                    var newRooms = newValue - currRooms;
 
                     //Add Rooms
-                    for (var i = 0; i < newValue - currRooms.Count(); i++)
+                    for (var i = 0; i < newValue - currRooms; i++)
                     {
                         context.Rooms.Add(new Room { RoomType = roomType });
                     }
 
                 }
 
+                roomType.numberOfRooms = newValue;
+
                 //Update DB
                 context.SaveChanges();
 
-                return Json(new { usedRooms = usedRooms.Count() });
+                return Json(new { usedRooms = usedRoomsCount });
             }
 
         }
@@ -158,13 +132,7 @@ namespace HotelManagementSystem.Controllers
         // GET: Staff/HotelStatus
         public ActionResult HotelStatus()
         {
-            //If Authenticated
-            if (Session["user"] != null)
-            {
-                return View();
-            }
-
-            return RedirectToAction("Login", "Account"); //Unauthenticated
+            return View();
         }
 
         public List<ReservationInfo> ResInfoList(DateTime date, Boolean checkingIn)
@@ -196,10 +164,10 @@ namespace HotelManagementSystem.Controllers
                         checkOut = res.checkOut,
                         bill = res.bill,
                         guestInfo = res.guestsInfo,
-                        roomType = res.Room.RoomType.type,
-                        roomNumber = res.Room.Id,
+                        roomType = res.RoomType.type,
+                        roomNumber = res.Room == null ? "*" : res.Room.Id.ToString(),
                         personName = res.People.lastName + "," + res.People.firstName,
-                        roomOccupied = res.Room.occupied
+                        roomOccupied = res.Room == null ? "*" : res.Room.occupied.ToString()
                     });
                 }
             }
@@ -232,29 +200,25 @@ namespace HotelManagementSystem.Controllers
             List<RoomInventoryInfo> rmInventory = new List<RoomInventoryInfo>();
             using (var context = new HotelDatabaseContainer())
             {
+                if (!context.RoomTypes.Any())
+                    return new List<RoomInventoryInfo>();
 
-                var rmDate = from rm in context.RoomTypes
-                             select new
-                             {
-                                 rmType = rm,
-                                 quantity = rm.Rooms.Count(),
-                                 occupiedRooms = (from res in context.Reservations
-                                                  where res.Room.RoomType == rm &&
-                                                         DbFunctions.TruncateTime(res.checkIn) <= date &&
-                                                         DbFunctions.TruncateTime(res.checkOut) >= date
-                                                  group res by res.Room into uniqRooms
-                                                  select uniqRooms.Key).Count()
-                             };
+                var rmTypes =  from rm in context.RoomTypes
+                               select rm;
 
-                foreach (var res in rmDate)
+                foreach(var rmType in rmTypes)
                 {
                     rmInventory.Add(new RoomInventoryInfo
                     {
-                        rmType = res.rmType,
-                        quantity = res.quantity,
-                        occupiedRooms = res.occupiedRooms
+                        rmType = rmType,
+                        quantity = rmType.Rooms.Count(),
+                        occupiedRooms = (from res in context.Reservations
+                                         where res.RoomType.Id == rmType.Id &&
+                                         res.checkIn <= date && res.checkOut > date
+                                         select res).Count()
                     });
                 }
+
             }
             return rmInventory;
         }
@@ -269,15 +233,30 @@ namespace HotelManagementSystem.Controllers
             return PartialView("_Occupancy", roomInventory(newDate));
         }
 
-        public void CheckIn(int resId)
+        public JsonResult CheckIn(int resId)
         {
             using (var context = new HotelDatabaseContainer())
             {
                 var reservation = (from res in context.Reservations where res.Id == resId select res).First();
 
+                var customer = (from cus in context.Customers where cus.Id == reservation.PersonId select cus).FirstOrDefault();
+
+                if(customer != null) {
+                    customer.stays++;
+                    CustomerOperations.setLoyalty(customer, DateTime.Now);
+                }
+
+                //Assign Room
+                reservation.Room = (from room in context.Rooms
+                                    where !room.occupied && room.RoomType.Id == reservation.RoomType.Id
+                                    select room).First();
+
+                //Occupy Room
                 reservation.Room.occupied = true;
 
                 context.SaveChanges();
+
+                return Json(new { roomNum = reservation.Room.Id });
             }
         }
 
@@ -287,7 +266,11 @@ namespace HotelManagementSystem.Controllers
             {
                 var reservation = (from res in context.Reservations where res.Id == resId select res).First();
 
+                //Occupy Room
                 reservation.Room.occupied = false;
+
+                //UnAssign Room
+                reservation.Room = null;
 
                 context.SaveChanges();
             }
