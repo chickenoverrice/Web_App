@@ -166,7 +166,7 @@ namespace HotelManagementSystem.Controllers
             var current = DateTime.Now;
             string start = (string)Session["start"];
             var startTime = DateTime.Parse(start);
-            if (current.Subtract(startTime) >= TimeSpan.FromMinutes(1))
+            if (current.Subtract(startTime) >= TimeSpan.FromMinutes(10))
             {
                 ViewBag.message = "Your reservation time has expired. You will be redirected to the home page. Click 'OK' to continue.";
                 return View();
