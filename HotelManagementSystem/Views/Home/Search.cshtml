@@ -5,8 +5,8 @@
 
 <h2>Search Summary</h2>
 <div>You searched for: @Model.checkIn.ToString("MM/dd/yyyy (ddd)") - @Model.checkOut.ToString("MM/dd/yyyy (ddd)") (@Model.nights.Count Night(s))</div>
-<div>There are @Model.roomTypes.Count matching room(s)</div><br/>
-
+<div>There are @Model.roomTypes.Count matching room(s)</div>
+<br />
 <h4>Select Your Room</h4>
 <table class="searchtable">
     <tr>
@@ -19,8 +19,8 @@
     </tr>
     @for (int i = 0; i < Model.roomTypes.Count; i++)
     {
-        <tr>
-            <td class="roomtype_p">
+        <tr class="@(Model.prefRoom == Model.roomTypes[i].Id? "roomtype_favorite" : "" )">
+           <td class="roomtype_p">
                 @Model.roomTypes[i].type
                 <img class="room_img" src="@Model.roomTypes[i].picture">
             </td>
@@ -51,9 +51,9 @@
                             }
                         }/>
                 }
-                </td>
-                </tr>
-                }
+            </td>
+        </tr>
+    }
 </table>
 
 <!-- Modal for displaying the messages -->

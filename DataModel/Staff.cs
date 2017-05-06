@@ -14,6 +14,5 @@ namespace DataModel
     
     public partial class Staff : Person
     {
-        public string password { get; set; }
     }
 }

@@ -23,7 +23,6 @@ namespace DataModel
     
         public Nullable<System.DateTime> expirationDate { get; set; }
         public bool member { get; set; }
-        public string password { get; set; }
         public Nullable<int> loyaltyNum { get; set; }
         public int stays { get; set; }
         public Nullable<System.DateTime> lastStay { get; set; }

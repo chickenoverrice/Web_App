@@ -53,6 +53,15 @@ namespace HotelManagementSystem.Controllers
             srm.nights = BizLogic.Utilities.calculateNight(Arrival.Value, Departure.Value);
             srm.roomTypes = new List<RoomType>();
             srm.listPrices = new List<List<double>>();
+            // Find User Preference Room
+            if (getPersonByEmail() != null)
+            {
+                using (var context = new DataModel.HotelDatabaseContainer())
+                {
+                    Customer c = context.Customers.Find(getPersonByEmail().Id);
+                    srm.prefRoom = c.RoomPref.Id;
+                }
+            }
             // Find available rooms
             List<RoomType> roomTypes = new List<RoomType>();
             using (var roomtypecontext = new DataModel.HotelDatabaseContainer())
@@ -87,7 +96,7 @@ namespace HotelManagementSystem.Controllers
                         }
                         else
                         {
-                            // if available, calculate price
+                            // if available, calculate price for each day
                             double percentage = (double) reserved / roomNum;
                             if (percentage >= 0.75) {
                                 price = baseprice * 2;
@@ -117,6 +126,7 @@ namespace HotelManagementSystem.Controllers
         {
             Session["start"] = DateTime.Now.ToString();
 
+        
             ReservationDetailViewModel rvm = new ReservationDetailViewModel();
             rvm.checkIn = srm.checkIn;
             rvm.checkOut = srm.checkOut;
@@ -128,6 +138,19 @@ namespace HotelManagementSystem.Controllers
                 var room = roomcontext.RoomTypes.Find(rvm.roomId);
                 rvm.roomType = room.type;
                 rvm.roomGuest = room.maxGuests;
+            }
+            // Check if user is login
+            Person p = getPersonByEmail();
+            if (p != null)
+            {
+                rvm.firstName = p.firstName;
+                rvm.lastName = p.lastName;
+                rvm.email = p.email;
+                rvm.phone = p.phone;
+                rvm.address = p.address;
+                rvm.city = p.city;
+                rvm.state = p.state;
+                rvm.zip = p.zip;
             }
             return View(rvm);
         }
@@ -193,21 +216,7 @@ namespace HotelManagementSystem.Controllers
                             r.bill = rvm.bill;
                             r.guestsInfo = String.Join(";", rvm.guestInfoList.ToArray());
                             r.RoomTypeId = rvm.roomId;
-                            // Chck if user has login id
-                            using (var context = new DataModel.HotelDatabaseContainer())
-                            {
-                                var query = (from p in context.People
-                                             where p.email == User.Identity.Name
-                                             select p).ToList();
-                                if (query.Count == 0)
-                                {
-                                    r.PersonId = null;
-                                }
-                                else
-                                {
-                                    r.PersonId = query.First().Id;
-                                }
-                            }
+                            r.PersonId = getPersonByEmail().Id;
                             reservationcontext.Reservations.Add(r);
                             reservationcontext.SaveChanges();
                             Response.Cookies["Reservation"]["Id"] = r.Id.ToString();
@@ -244,7 +253,8 @@ namespace HotelManagementSystem.Controllers
         public ActionResult Check(String reservationId, String email)
         {
             Reservation r = getReservationByIdEmail(Int32.Parse(reservationId), email);
-            if (r == null) {
+            if (r == null)
+            {
                 // show not found for users
                 System.Windows.Forms.MessageBox.Show(
                     "Cannot Find This Reservation",
@@ -254,29 +264,32 @@ namespace HotelManagementSystem.Controllers
                     System.Windows.Forms.MessageBoxDefaultButton.Button1);
                 return RedirectToAction("Index");
             }
-            ReservationDetailViewModel rvm = new ReservationDetailViewModel();
-            rvm.reservationId = r.Id.ToString();
-            RoomType room = new RoomType();
-            using (var roomcontext = new DataModel.HotelDatabaseContainer())
+            else
             {
-                room = roomcontext.RoomTypes.Find(r.RoomTypeId);
+                ReservationDetailViewModel rvm = new ReservationDetailViewModel();
+                rvm.reservationId = r.Id.ToString();
+                RoomType room = new RoomType();
+                using (var roomcontext = new DataModel.HotelDatabaseContainer())
+                {
+                    room = roomcontext.RoomTypes.Find(r.RoomTypeId);
+                }
+                rvm.roomType = room.type;
+                rvm.roomGuest = room.maxGuests;
+                rvm.guestInfoList = r.guestsInfo.Split(';').ToList();
+                rvm.checkIn = r.checkIn;
+                rvm.checkOut = r.checkOut;
+                rvm.nights = BizLogic.Utilities.calculateNight(r.checkIn, r.checkOut);
+                rvm.firstName = r.firstName;
+                rvm.lastName = r.lastName;
+                rvm.email = r.email;
+                rvm.phone = r.phone;
+                rvm.address = r.address;
+                rvm.city = r.city;
+                rvm.state = r.state;
+                rvm.zip = r.zip;
+                rvm.bill = r.bill;
+                return View(rvm);
             }
-            rvm.roomType = room.type;
-            rvm.roomGuest = room.maxGuests;
-            rvm.guestInfoList = r.guestsInfo.Split(';').ToList();
-            rvm.checkIn = r.checkIn;
-            rvm.checkOut = r.checkOut;
-            rvm.nights = BizLogic.Utilities.calculateNight(r.checkIn, r.checkOut);
-            rvm.firstName = r.firstName;
-            rvm.lastName = r.lastName;
-            rvm.email = r.email;
-            rvm.phone = r.phone;
-            rvm.address = r.address;
-            rvm.city = r.city;
-            rvm.state = r.state;
-            rvm.zip = r.zip;
-            rvm.bill = r.bill;
-            return View(rvm);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -331,6 +344,26 @@ namespace HotelManagementSystem.Controllers
             {
                 Reservation r = context.Reservations.Find(id);
                 return r;
+            }
+        }
+
+        public Person getPersonByEmail()
+        {
+            Person person = new Person();
+            using (var context = new DataModel.HotelDatabaseContainer())
+            {
+                var query = (from p in context.People
+                             where p.email == User.Identity.Name
+                             select p).ToList();
+                if (query.Count == 0)
+                {
+                    return null;
+                }
+                else
+                {
+                    person = query.First();
+                    return person;
+                }
             }
         }
     }
