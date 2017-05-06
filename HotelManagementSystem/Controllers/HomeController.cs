@@ -222,7 +222,10 @@ namespace HotelManagementSystem.Controllers
                             r.bill = rvm.bill;
                             r.guestsInfo = String.Join(";", rvm.guestInfoList.ToArray());
                             r.RoomTypeId = rvm.roomId;
-                            r.PersonId = getPersonByEmail().Id;
+                            if (User.Identity.IsAuthenticated)
+                            {
+                                r.PersonId = getPersonByEmail().Id;
+                            }
                             reservationcontext.Reservations.Add(r);
                             reservationcontext.SaveChanges();
                             Response.Cookies["Reservation"]["Id"] = r.Id.ToString();
