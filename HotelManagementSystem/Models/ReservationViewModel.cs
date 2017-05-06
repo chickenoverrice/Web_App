@@ -19,9 +19,9 @@ namespace HotelManagementSystem.Models
         public List<DataModel.RoomType> roomTypes { get; set; }
         public List<double> listPrice { get; set; }
         public List<List<double>> listPrices { get; set; }
+        public int prefRoom { get; set; }
         // for parameters to Book
         public int roomId { get; set; }
-        //public List<double> listPrices { get; set; }
     }
     public class ReservationDetailViewModel
     {
