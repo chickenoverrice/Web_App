@@ -53,6 +53,15 @@ namespace HotelManagementSystem.Controllers
             srm.nights = BizLogic.Utilities.calculateNight(Arrival.Value, Departure.Value);
             srm.roomTypes = new List<RoomType>();
             srm.listPrices = new List<List<double>>();
+            // Find User Preference Room
+            if (User.Identity.IsAuthenticated)
+            {
+                using (var context = new DataModel.HotelDatabaseContainer())
+                {
+                    Customer c = context.Customers.Find(getPersonByEmail().Id);
+                    srm.prefRoom = c.RoomPref == null ? 0 : c.RoomPref.Id;
+                }
+            }
             // Find available rooms
             List<RoomType> roomTypes = new List<RoomType>();
             using (var roomtypecontext = new DataModel.HotelDatabaseContainer())
@@ -87,7 +96,7 @@ namespace HotelManagementSystem.Controllers
                         }
                         else
                         {
-                            // if available, calculate price
+                            // if available, calculate price for each day
                             double percentage = (double) reserved / roomNum;
                             if (percentage >= 0.75) {
                                 price = baseprice * 2;
@@ -244,7 +253,8 @@ namespace HotelManagementSystem.Controllers
         public ActionResult Check(String reservationId, String email)
         {
             Reservation r = getReservationByIdEmail(Int32.Parse(reservationId), email);
-            if (r == null) {
+            if (r == null)
+            {
                 // show not found for users
                 System.Windows.Forms.MessageBox.Show(
                     "Cannot Find This Reservation",
@@ -254,29 +264,32 @@ namespace HotelManagementSystem.Controllers
                     System.Windows.Forms.MessageBoxDefaultButton.Button1);
                 return RedirectToAction("Index");
             }
-            ReservationDetailViewModel rvm = new ReservationDetailViewModel();
-            rvm.reservationId = r.Id.ToString();
-            RoomType room = new RoomType();
-            using (var roomcontext = new DataModel.HotelDatabaseContainer())
+            else
             {
-                room = roomcontext.RoomTypes.Find(r.RoomTypeId);
+                ReservationDetailViewModel rvm = new ReservationDetailViewModel();
+                rvm.reservationId = r.Id.ToString();
+                RoomType room = new RoomType();
+                using (var roomcontext = new DataModel.HotelDatabaseContainer())
+                {
+                    room = roomcontext.RoomTypes.Find(r.RoomTypeId);
+                }
+                rvm.roomType = room.type;
+                rvm.roomGuest = room.maxGuests;
+                rvm.guestInfoList = r.guestsInfo.Split(';').ToList();
+                rvm.checkIn = r.checkIn;
+                rvm.checkOut = r.checkOut;
+                rvm.nights = BizLogic.Utilities.calculateNight(r.checkIn, r.checkOut);
+                rvm.firstName = r.firstName;
+                rvm.lastName = r.lastName;
+                rvm.email = r.email;
+                rvm.phone = r.phone;
+                rvm.address = r.address;
+                rvm.city = r.city;
+                rvm.state = r.state;
+                rvm.zip = r.zip;
+                rvm.bill = r.bill;
+                return View(rvm);
             }
-            rvm.roomType = room.type;
-            rvm.roomGuest = room.maxGuests;
-            rvm.guestInfoList = r.guestsInfo.Split(';').ToList();
-            rvm.checkIn = r.checkIn;
-            rvm.checkOut = r.checkOut;
-            rvm.nights = BizLogic.Utilities.calculateNight(r.checkIn, r.checkOut);
-            rvm.firstName = r.firstName;
-            rvm.lastName = r.lastName;
-            rvm.email = r.email;
-            rvm.phone = r.phone;
-            rvm.address = r.address;
-            rvm.city = r.city;
-            rvm.state = r.state;
-            rvm.zip = r.zip;
-            rvm.bill = r.bill;
-            return View(rvm);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

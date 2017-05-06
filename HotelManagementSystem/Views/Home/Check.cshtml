@@ -41,7 +41,7 @@
         <td>
             <div>Arrival: @Model.checkIn.ToString("dddd, dd MMMM yyyy")</div>
             <div>Departure: @Model.checkOut.ToString("dddd, dd MMMM yyyy")</div>
-            <div>1 room for @Model.nights.Count night(s)</div>
+            <div>1 @Model.roomType for @Model.nights.Count night(s)</div>
             <div>Total for stay: $@Model.bill</div>
         </td>
     </tr>

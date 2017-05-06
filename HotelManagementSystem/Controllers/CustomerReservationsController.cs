@@ -19,9 +19,6 @@ namespace HotelManagementSystem.Controllers
         // GET: CustomerReservations
         public ActionResult Index()
         {
-            //fix to get the current time!!!
-            CurrentDateTime curr = new CurrentDateTime();
-            curr.time = System.DateTime.Now;
             Customer customer = (from users in db.Customers
                                  where users.email == User.Identity.Name
                                  select users).FirstOrDefault();
@@ -31,8 +28,8 @@ namespace HotelManagementSystem.Controllers
             }
 
             List<Reservation> r = (from reservations in db.Reservations
-                                   where reservations.email == User.Identity.Name
-                                   && reservations.checkIn > curr.time
+                                   where reservations.PersonId == customer.Id
+                                   && reservations.checkIn > DateTime.Now
                                    select reservations).ToList();
             if (r.Count() == 0)
             {
