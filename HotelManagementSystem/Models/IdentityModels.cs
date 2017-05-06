@@ -20,6 +20,7 @@ namespace HotelManagementSystem.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
@@ -27,6 +28,7 @@ namespace HotelManagementSystem.Models
 
         public static ApplicationDbContext Create()
         {
+
             return new ApplicationDbContext();
         }
     }
