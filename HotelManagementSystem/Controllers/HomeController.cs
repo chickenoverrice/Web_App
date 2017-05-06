@@ -117,6 +117,7 @@ namespace HotelManagementSystem.Controllers
         {
             Session["start"] = DateTime.Now.ToString();
 
+        
             ReservationDetailViewModel rvm = new ReservationDetailViewModel();
             rvm.checkIn = srm.checkIn;
             rvm.checkOut = srm.checkOut;
@@ -128,6 +129,19 @@ namespace HotelManagementSystem.Controllers
                 var room = roomcontext.RoomTypes.Find(rvm.roomId);
                 rvm.roomType = room.type;
                 rvm.roomGuest = room.maxGuests;
+            }
+            // Check if user is login
+            Person p = getPersonByEmail();
+            if (p != null)
+            {
+                rvm.firstName = p.firstName;
+                rvm.lastName = p.lastName;
+                rvm.email = p.email;
+                rvm.phone = p.phone;
+                rvm.address = p.address;
+                rvm.city = p.city;
+                rvm.state = p.state;
+                rvm.zip = p.zip;
             }
             return View(rvm);
         }
@@ -193,21 +207,7 @@ namespace HotelManagementSystem.Controllers
                             r.bill = rvm.bill;
                             r.guestsInfo = String.Join(";", rvm.guestInfoList.ToArray());
                             r.RoomTypeId = rvm.roomId;
-                            // Chck if user has login id
-                            using (var context = new DataModel.HotelDatabaseContainer())
-                            {
-                                var query = (from p in context.People
-                                             where p.email == User.Identity.Name
-                                             select p).ToList();
-                                if (query.Count == 0)
-                                {
-                                    r.PersonId = null;
-                                }
-                                else
-                                {
-                                    r.PersonId = query.First().Id;
-                                }
-                            }
+                            r.PersonId = getPersonByEmail().Id;
                             reservationcontext.Reservations.Add(r);
                             reservationcontext.SaveChanges();
                             Response.Cookies["Reservation"]["Id"] = r.Id.ToString();
@@ -331,6 +331,26 @@ namespace HotelManagementSystem.Controllers
             {
                 Reservation r = context.Reservations.Find(id);
                 return r;
+            }
+        }
+
+        public Person getPersonByEmail()
+        {
+            Person person = new Person();
+            using (var context = new DataModel.HotelDatabaseContainer())
+            {
+                var query = (from p in context.People
+                             where p.email == User.Identity.Name
+                             select p).ToList();
+                if (query.Count == 0)
+                {
+                    return null;
+                }
+                else
+                {
+                    person = query.First();
+                    return person;
+                }
             }
         }
     }
