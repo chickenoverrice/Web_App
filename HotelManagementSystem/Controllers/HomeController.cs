@@ -54,12 +54,12 @@ namespace HotelManagementSystem.Controllers
             srm.roomTypes = new List<RoomType>();
             srm.listPrices = new List<List<double>>();
             // Find User Preference Room
-            if (getPersonByEmail() != null)
+            if (User.Identity.IsAuthenticated)
             {
                 using (var context = new DataModel.HotelDatabaseContainer())
                 {
                     Customer c = context.Customers.Find(getPersonByEmail().Id);
-                    srm.prefRoom = c.RoomPref.Id;
+                    srm.prefRoom = c.RoomPref == null ? 0 : c.RoomPref.Id;
                 }
             }
             // Find available rooms
@@ -79,13 +79,13 @@ namespace HotelManagementSystem.Controllers
 
                 for (int j = 0; j < srm.nights.Count; j++)
                 {
-                    DateTime date = srm.nights[j];
+                    DateTime date = srm.nights[j].AddDays(1);
                     double price = 0;
                     using (var availableContext = new DataModel.HotelDatabaseContainer())
                     {
                         var sqlstring =
                            "SELECT COUNT(*) FROM dbo.Reservations WHERE dbo.Reservations.RoomTypeId = "
-                           + roomId + " AND dbo.Reservations.checkIn <= '" + date + "' AND dbo.Reservations.checkOut > '" + date + "'";
+                           + roomId + " AND dbo.Reservations.checkIn < '" + date + "' AND dbo.Reservations.checkOut >= '" + date + "'";
                         int reserved = availableContext.Database.SqlQuery<int>(sqlstring).First();
                         //System.Diagnostics.Debug.WriteLine(roomId +"@"+ date +": "+reserved);
                         if (reserved == roomNum)

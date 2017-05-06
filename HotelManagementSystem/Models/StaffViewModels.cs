@@ -8,15 +8,16 @@ namespace HotelManagementSystem.Models
 {
     public class ReservationInfo
     {
-        public DateTime checkIn { get; set; }
-        public DateTime checkOut { get; set; }
+        public String checkIn { get; set; }
+        public String checkOut { get; set; }
         public int Id { get; set; }
         public Double bill { get; set; }
         public String guestInfo { get; set; }
         public String roomType { get; set; }
         public String roomNumber { get; set; }
         public String personName { get; set; }
-        public String roomOccupied { get; set; }
+        public Boolean checkInToday { get; set; }
+        public Boolean checkOutToday { get; set; }
     }
 
     public class RoomInventoryInfo

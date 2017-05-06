@@ -21,14 +21,16 @@
                                                     grid.Column("personName", "Booker Name"),
                                                     grid.Column("guestInfo", "Guest Info"),
                                                     grid.Column("roomNumber", "Room Number",
-                                                                    format: @<text><div id="RM_CheckOut_@item.Id">@item.roomNumber</div> </text>),
+                                                                    format: @<text><div id="RM_CheckOut_Room_@item.Id">@item.roomNumber</div> </text>),
                                                     grid.Column("roomType", "Room Type"),
                                                     grid.Column("bill", "Bill"),
-                                                    grid.Column("checkIn", "Check In Time"),
-                                                    grid.Column("checkOut", "Check Out Time"),
+                                                    grid.Column("checkIn", "Check In Time",
+                                                                    format: @<text><div id="RM_CheckIn_Time_@item.Id">@item.checkIn</div> </text>),
+                                                    grid.Column("checkOut", "Check Out Time",
+                                                                    format: @<text><div id="RM_CheckOut_Time_@item.Id">@item.checkOut</div> </text>),
                                                     grid.Column(header: "Check Out", canSort: false, style: "action",
                                                                     format: @<text>
-                                                        <button class="checkOut" id="@item.Id" @(String.Compare(item.roomOccupied,"*") != 0 ? "" : "disabled")>Check Out</button>
+                                                        <button class="checkOut" id="@item.Id" @(item.checkOutToday ? "" : "disabled")>Check Out</button>
                                                                     </text>)
 
     ));
@@ -42,12 +44,13 @@
                 url: "/Staff/checkOut",
                 data: { "resId": parseInt(button.id) },
                 type: "POST",
-                success: function () {
-                    button.disabled = true;
+                success: function (data) {
+                    if (data.hasOwnProperty('checkOutTime')) {
+                        button.disabled = true;
 
-                    //Reload Room Number
-                    console.log("Test");
-                    $("#RM_CheckOut_" + button.id)[0].innerText = "*";
+                        //Check Out Date
+                        $("#RM_CheckOut_Time_" + button.id)[0].innerText = data['checkOutTime'];
+                    }
                 },
                 error: function () { console.log("Error"); }
             });

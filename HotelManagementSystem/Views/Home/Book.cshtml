@@ -45,10 +45,14 @@
     <table>
         @for (int i = 0; i < Model.roomGuest; i++)
         {
+            if(User.Identity.IsAuthenticated && i == 0)
+            {
+
+            }
         <tr>
             <td><label>Guest @(i+1): </label></td>
             <td>
-                @Html.EditorFor(model => model.guestInfoList[i], new { htmlAttributes = new { @pattern = "[A-Za-z ]+", title = "Name should only contain letters", maxlength = "number" } })
+                @Html.EditorFor(model => model.guestInfoList[i], new { htmlAttributes = new { @pattern = "[A-Za-z ]+", title = "Name should only contain letters", maxlength = "30", Value = (User.Identity.IsAuthenticated && i == 0)? Model.firstName + " " + Model.lastName : "" } })
             </td>
         </tr>
         }
