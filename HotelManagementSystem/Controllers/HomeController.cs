@@ -54,12 +54,12 @@ namespace HotelManagementSystem.Controllers
             srm.roomTypes = new List<RoomType>();
             srm.listPrices = new List<List<double>>();
             // Find User Preference Room
-            if (getPersonByEmail() != null)
+            if (User.Identity.IsAuthenticated)
             {
                 using (var context = new DataModel.HotelDatabaseContainer())
                 {
                     Customer c = context.Customers.Find(getPersonByEmail().Id);
-                    srm.prefRoom = c.RoomPref.Id;
+                    srm.prefRoom = c.RoomPref == null ? 0 : c.RoomPref.Id;
                 }
             }
             // Find available rooms
