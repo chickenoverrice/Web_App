@@ -113,7 +113,6 @@
     </Key>
     <Property Name="expirationDate" Type="datetime" Nullable="true" />
     <Property Name="member" Type="bit" Nullable="false" DefaultValue="false" />
-    <Property Name="password" Type="nvarchar(max)" Nullable="false" />
     <Property Name="loyaltyNum" Type="int" Nullable="true" />
     <Property Name="stays" Type="int" Nullable="false" DefaultValue="0" />
     <Property Name="lastStay" Type="datetime" Nullable="true" />
@@ -124,7 +123,6 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="password" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Id" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="RoomTypeRoom">

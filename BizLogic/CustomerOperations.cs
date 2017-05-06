@@ -37,7 +37,7 @@ namespace BizLogic
             user.firstName = firstname;
             user.lastName = lastname;
             user.email = email;
-            user.password = Crypto.HashPassword(psw);
+            // user.password = Crypto.HashPassword(psw);
             user.member = false;
             user.phone = phone;
             user.sessionId = Guid.NewGuid().ToString();
