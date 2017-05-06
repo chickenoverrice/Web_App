@@ -55,11 +55,11 @@ namespace HotelManagementSystem.Controllers
 
             var farthestDate = dates.Max();
             var occupied = 0;
-            for (DateTime date = DateTime.Today; date.Date < farthestDate; date = date.AddDays(1))
+            for (DateTime date = DateTime.Today.AddDays(1); date.Date <= farthestDate; date = date.AddDays(1))
             {
                 var occupiedToday = (from res in context.Reservations
                                      where res.RoomType.Id == rmType.Id &&
-                                     res.checkIn <= date && res.checkOut > date
+                                     res.checkIn < date && res.checkOut >= date
                                      select res).Count();
                 if (occupiedToday > occupied)
                     occupied = occupiedToday;
@@ -160,14 +160,15 @@ namespace HotelManagementSystem.Controllers
                     resInfos.Add(new ReservationInfo
                     {
                         Id = res.Id,
-                        checkIn = res.checkIn,
-                        checkOut = res.checkOut,
+                        checkIn = res.Room == null ? "*" : res.checkIn.ToString("g"),
+                        checkOut = res.Room == null ? "*" : res.Room.occupied? "*": res.checkOut.ToString("g"),
                         bill = res.bill,
                         guestInfo = res.guestsInfo,
                         roomType = res.RoomType.type,
                         roomNumber = res.Room == null ? "*" : res.Room.Id.ToString(),
                         personName = res.People.lastName + "," + res.People.firstName,
-                        roomOccupied = res.Room == null ? "*" : res.Room.occupied.ToString()
+                        checkInToday = res.checkIn.Date == DateTime.Today,
+                        checkOutToday = res.checkOut.Date == DateTime.Today,
                     });
                 }
             }
@@ -197,6 +198,7 @@ namespace HotelManagementSystem.Controllers
 
         public List<RoomInventoryInfo> roomInventory(DateTime date)
         {
+            date = date.Date.AddDays(1);
             List<RoomInventoryInfo> rmInventory = new List<RoomInventoryInfo>();
             using (var context = new HotelDatabaseContainer())
             {
@@ -214,7 +216,7 @@ namespace HotelManagementSystem.Controllers
                         quantity = rmType.Rooms.Count(),
                         occupiedRooms = (from res in context.Reservations
                                          where res.RoomType.Id == rmType.Id &&
-                                         res.checkIn <= date && res.checkOut > date
+                                         res.checkIn < date && res.checkOut >= date
                                          select res).Count()
                     });
                 }
@@ -248,20 +250,28 @@ namespace HotelManagementSystem.Controllers
                 }
 
                 //Assign Room
-                reservation.Room = (from room in context.Rooms
+                var availibleRooms = from room in context.Rooms
                                     where !room.occupied && room.RoomType.Id == reservation.RoomType.Id
-                                    select room).First();
+                                    select room;
+
+                //Only hit if everyone still hasn't checkedout
+                if(!availibleRooms.Any()) {
+                    return Json(new { errorMessage = "Please wait for someone to check out later today." });
+                }
+
+                reservation.Room = availibleRooms.First();
 
                 //Occupy Room
                 reservation.Room.occupied = true;
+                reservation.checkIn = DateTime.Now;
 
                 context.SaveChanges();
 
-                return Json(new { roomNum = reservation.Room.Id });
+                return Json(new { roomNum = reservation.Room.Id, checkInTime = reservation.checkIn.ToString("g") });
             }
         }
 
-        public void CheckOut(int resId)
+        public JsonResult CheckOut(int resId)
         {
             using (var context = new HotelDatabaseContainer())
             {
@@ -269,12 +279,15 @@ namespace HotelManagementSystem.Controllers
 
                 //Occupy Room
                 reservation.Room.occupied = false;
-
-                //UnAssign Room
-                reservation.Room = null;
+                reservation.checkOut = DateTime.Now;
 
                 context.SaveChanges();
-            }
+
+                return Json(new
+                {
+                    checkOutTime = reservation.checkOut.ToString("g"),
+                });
+           }
         }
     }
 }

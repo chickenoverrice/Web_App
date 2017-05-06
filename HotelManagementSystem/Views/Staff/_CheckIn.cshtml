@@ -21,18 +21,43 @@
                                                     grid.Column("personName", "Booker Name"),
                                                     grid.Column("guestInfo", "Guest Info"),
                                                     grid.Column("roomNumber", "Room Number",
-                                                                    format: @<text><div id="RM_CheckIn_@item.Id">@item.roomNumber</div> </text>),
+                                                                    format: @<text><div id="RM_CheckIn_Room_@item.Id">@item.roomNumber</div> </text>),
                                                     grid.Column("roomType", "Room Type"),
                                                     grid.Column("bill", "Bill"),
-                                                    grid.Column("checkIn", "Check In Time"),
-                                                    grid.Column("checkOut", "Check Out Time"),
+                                                    grid.Column("checkIn", "Check In Time",
+                                                                    format: @<text><div id="RM_CheckIn_Time_@item.Id">@item.checkIn</div> </text>),
+                                                    grid.Column("checkOut", "Check Out Time",
+                                                                    format: @<text><div id="RM_CheckOut_Time_@item.Id">@item.checkOut</div> </text>),
                                                     grid.Column(header: "Check In", style: "action",
                                                                     format: @<text>
-                                                        <button class="checkIn" id="@item.Id" @(String.Compare(item.roomOccupied,"*") != 0 ? "disabled" : "")>Check In</button>
+                                                        <button class="checkIn" id="@item.Id" @(!item.checkInToday ? "disabled" : "")>Check In</button>
                                                                     </text>)
 
     ));
 }
+
+<!-- Modal for displaying the messages -->
+<div class="modal fade" id="checkInErrorModal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content panel-danger">
+            <div class="modal-header panel-heading">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Errors</h4>
+            </div>
+
+            <div class="modal-body">
+                <!-- The messages container -->
+                <div id="error"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     $(function () {
@@ -43,10 +68,17 @@
                 data: { "resId": parseInt(button.id) },
                 type: "POST",
                 success: function (data) {
-                    button.disabled = true;
+                    console.log(data);
+                    if (data.hasOwnProperty('errorMessage')) {
+                        $('#error').text(data['errorMessage']);
+                        $('#checkInErrorModal').modal('show');
+                    } else {
+                        button.disabled = true;
 
-                    //Reload Room Number
-                    $("#RM_CheckIn_" + button.id)[0].innerText = data['roomNum'];
+                        //Reload Room Number & Check In Date
+                        $("#RM_CheckIn_Room_" + button.id)[0].innerText = data['roomNum'];
+                        $("#RM_CheckIn_Time_" + button.id)[0].innerText = data['checkInTime'];
+                    }
                 },
                 error: function () { console.log("Error"); }
             });
