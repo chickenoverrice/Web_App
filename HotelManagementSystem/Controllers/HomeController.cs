@@ -253,7 +253,8 @@ namespace HotelManagementSystem.Controllers
         public ActionResult Check(String reservationId, String email)
         {
             Reservation r = getReservationByIdEmail(Int32.Parse(reservationId), email);
-            if (r == null) {
+            if (r == null)
+            {
                 // show not found for users
                 System.Windows.Forms.MessageBox.Show(
                     "Cannot Find This Reservation",
@@ -263,29 +264,32 @@ namespace HotelManagementSystem.Controllers
                     System.Windows.Forms.MessageBoxDefaultButton.Button1);
                 return RedirectToAction("Index");
             }
-            ReservationDetailViewModel rvm = new ReservationDetailViewModel();
-            rvm.reservationId = r.Id.ToString();
-            RoomType room = new RoomType();
-            using (var roomcontext = new DataModel.HotelDatabaseContainer())
+            else
             {
-                room = roomcontext.RoomTypes.Find(r.RoomTypeId);
+                ReservationDetailViewModel rvm = new ReservationDetailViewModel();
+                rvm.reservationId = r.Id.ToString();
+                RoomType room = new RoomType();
+                using (var roomcontext = new DataModel.HotelDatabaseContainer())
+                {
+                    room = roomcontext.RoomTypes.Find(r.RoomTypeId);
+                }
+                rvm.roomType = room.type;
+                rvm.roomGuest = room.maxGuests;
+                rvm.guestInfoList = r.guestsInfo.Split(';').ToList();
+                rvm.checkIn = r.checkIn;
+                rvm.checkOut = r.checkOut;
+                rvm.nights = BizLogic.Utilities.calculateNight(r.checkIn, r.checkOut);
+                rvm.firstName = r.firstName;
+                rvm.lastName = r.lastName;
+                rvm.email = r.email;
+                rvm.phone = r.phone;
+                rvm.address = r.address;
+                rvm.city = r.city;
+                rvm.state = r.state;
+                rvm.zip = r.zip;
+                rvm.bill = r.bill;
+                return View(rvm);
             }
-            rvm.roomType = room.type;
-            rvm.roomGuest = room.maxGuests;
-            rvm.guestInfoList = r.guestsInfo.Split(';').ToList();
-            rvm.checkIn = r.checkIn;
-            rvm.checkOut = r.checkOut;
-            rvm.nights = BizLogic.Utilities.calculateNight(r.checkIn, r.checkOut);
-            rvm.firstName = r.firstName;
-            rvm.lastName = r.lastName;
-            rvm.email = r.email;
-            rvm.phone = r.phone;
-            rvm.address = r.address;
-            rvm.city = r.city;
-            rvm.state = r.state;
-            rvm.zip = r.zip;
-            rvm.bill = r.bill;
-            return View(rvm);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

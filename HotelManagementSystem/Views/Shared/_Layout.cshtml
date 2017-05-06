@@ -34,7 +34,28 @@
         }
 
     </script>
-    
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzjAGuNzvO9IPpmC1X2jK7-Hyxfbcec7U&sensor=false"></script>  
+    <script type="text/javascript">
+
+   $(document).ready(function () {
+     initialize();
+   });
+   function initialize() {
+       var mapOptions = {
+           center: new google.maps.LatLng(40.728668, -73.995659),
+           zoom: 15,
+           mapTypeId: google.maps.MapTypeId.ROADMAP
+       };
+       var map = new google.maps.Map(document.getElementById("map_canvas"),
+       mapOptions);
+       var latlng = new google.maps.LatLng(40.728668, -73.995659);
+       var marker = new google.maps.Marker({
+           position: latlng,
+           map: map,
+           title: 'LXYZ Hotel'
+       });
+   }
+    </script>  
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
