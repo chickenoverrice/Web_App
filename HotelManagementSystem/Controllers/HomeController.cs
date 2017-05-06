@@ -53,6 +53,15 @@ namespace HotelManagementSystem.Controllers
             srm.nights = BizLogic.Utilities.calculateNight(Arrival.Value, Departure.Value);
             srm.roomTypes = new List<RoomType>();
             srm.listPrices = new List<List<double>>();
+            // Find User Preference Room
+            if (getPersonByEmail() != null)
+            {
+                using (var context = new DataModel.HotelDatabaseContainer())
+                {
+                    Customer c = context.Customers.Find(getPersonByEmail().Id);
+                    srm.prefRoom = c.RoomPref.Id;
+                }
+            }
             // Find available rooms
             List<RoomType> roomTypes = new List<RoomType>();
             using (var roomtypecontext = new DataModel.HotelDatabaseContainer())
@@ -87,7 +96,7 @@ namespace HotelManagementSystem.Controllers
                         }
                         else
                         {
-                            // if available, calculate price
+                            // if available, calculate price for each day
                             double percentage = (double) reserved / roomNum;
                             if (percentage >= 0.75) {
                                 price = baseprice * 2;
