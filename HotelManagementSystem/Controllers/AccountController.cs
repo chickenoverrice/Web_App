@@ -214,8 +214,7 @@ namespace HotelManagementSystem.Controllers
                         state = model.State,
                         zip = model.Zip,
                         phone = model.Phone,
-                        sessionExpiration = System.DateTime.Now.AddMinutes(10),
-                        password = model.Password
+                        sessionExpiration = DateTime.Now.AddMinutes(10)
                     };
 
                     using (var context = new DataModel.HotelDatabaseContainer())
@@ -321,8 +320,7 @@ namespace HotelManagementSystem.Controllers
                         state = model.State,
                         zip = model.Zip,
                         phone = model.Phone,
-                        sessionExpiration = System.DateTime.Now.AddMinutes(10),
-                        password = model.Password
+                        sessionExpiration = System.DateTime.Now.AddMinutes(10)
                     };
 
                     using (var context = new DataModel.HotelDatabaseContainer())

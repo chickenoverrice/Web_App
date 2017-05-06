@@ -266,14 +266,12 @@
         <EntityType Name="Customer" BaseType="HotelDatabase.Person">
           <Property Name="expirationDate" Type="DateTime" Nullable="true" />
           <Property Name="member" Type="Boolean" Nullable="false" DefaultValue="false" />
-          <Property Name="password" Type="String" Nullable="false" />
           <Property Name="loyaltyNum" Type="Int32" Nullable="true" />
           <NavigationProperty Name="RoomPref" Relationship="HotelDatabase.CustomerRoomType" FromRole="Customer" ToRole="RoomType" />
           <Property Name="stays" Type="Int32" Nullable="false" DefaultValue="0" />
           <Property Name="lastStay" Type="DateTime" Nullable="true" />
         </EntityType>
         <EntityType Name="Staff" BaseType="HotelDatabase.Person">
-          <Property Name="password" Type="String" Nullable="false" />
         </EntityType>
         <EntityType Name="Room">
           <Key>
@@ -392,7 +390,6 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="expirationDate" ColumnName="expirationDate" />
           <ScalarProperty Name="member" ColumnName="member" />
-          <ScalarProperty Name="password" ColumnName="password" />
           <ScalarProperty Name="loyaltyNum" ColumnName="loyaltyNum" />
           <ScalarProperty Name="stays" ColumnName="stays" />
           <ScalarProperty Name="lastStay" ColumnName="lastStay" />
@@ -401,7 +398,6 @@
       <EntityTypeMapping TypeName="IsTypeOf(HotelDatabase.Staff)">
         <MappingFragment StoreEntitySet="People_Staff">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="password" ColumnName="password" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
