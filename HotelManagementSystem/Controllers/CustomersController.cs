@@ -105,6 +105,12 @@ namespace HotelManagementSystem.Controllers
             {
                 return HttpNotFound();
             }
+
+            var roomtype = (from types in db.RoomTypes
+                            select types.type
+                            ).ToList<string>();
+            var selectList = new SelectList(roomtype);
+            ViewBag.type = selectList;
             return View(customer);
         }
 
@@ -113,21 +119,49 @@ namespace HotelManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,firstName,lastName, address,phone,city,state,zip")] Customer customer)
-               {
+        public ActionResult Edit(Customer customer, FormCollection fc)
+        {
             if (ModelState.IsValid)
             {
-                var dbcustomer = db.Customers.FirstOrDefault(c => c.Id == customer.Id);
+                var dbcustomer = db.Customers.FirstOrDefault(t => t.Id == customer.Id);
                 if (dbcustomer == null)
                 {
                     return HttpNotFound();
                 }
-                CustomerOperations.ChangeAccount(ref dbcustomer, customer);
+                Customer c = new Customer();
+                c.address = fc["address"];
+                c.city = fc["city"];
+                c.firstName = fc["firstName"];
+                c.zip = fc["zip"];
+                c.phone = fc["phone"];
+                c.state = fc["state"];
+                string rtype = fc["roomPref"];
+                var roomtype = (from types in db.RoomTypes
+                                where types.type == rtype
+                                select types).FirstOrDefault();
+                c.RoomPref = roomtype;
+                CustomerOperations.ChangeAccount(ref dbcustomer, c);
                 db.SaveChanges();
             }
-           
-                return RedirectToAction("Index");
+
+            return RedirectToAction("Index");
         }
+        /*       public ActionResult Edit([Bind(Include = "Id,firstName,lastName, address,phone,city,state,zip, RoomTypeId")] Customer customer)
+                      {
+                   if (ModelState.IsValid)
+                   {
+                       var dbcustomer = db.Customers.FirstOrDefault(c => c.Id == customer.Id);
+                       if (dbcustomer == null)
+                       {
+                           return HttpNotFound();
+                       }
+
+                       CustomerOperations.ChangeAccount(ref dbcustomer, customer);
+                       db.SaveChanges();
+                   }
+
+                       return RedirectToAction("Index");
+               }*/
 
         // GET: Customers/Delete/5
         public ActionResult Delete()

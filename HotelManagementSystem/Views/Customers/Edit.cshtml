@@ -73,6 +73,13 @@
                 </div>
             </div>
             <div class="form-group">
+                @Html.Label("Room Preference", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("Room Preference", (SelectList)ViewBag.type)
+                    @Html.ValidationMessageFor(model => model.RoomPref, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
                 </div>
             </div>

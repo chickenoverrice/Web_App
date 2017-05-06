@@ -66,6 +66,8 @@ namespace BizLogic
                 customer.city = newCustomer.city;
             if(newCustomer.address != null)
                 customer.address = newCustomer.address;
+            if (newCustomer.RoomPref != null)
+                customer.RoomPref = newCustomer.RoomPref;
         }
 
         public static bool CheckIn(ref Customer customer, ref Reservation r, DateTime current)
@@ -182,7 +184,7 @@ namespace BizLogic
 
         public static ICollection<string> getGuestNames(Reservation r)
         {
-            ICollection<string> guests = r.guestsInfo.Split(',').ToList<string>();
+            ICollection<string> guests = r.guestsInfo.Split(';').ToList<string>();
             return guests;
         }
 

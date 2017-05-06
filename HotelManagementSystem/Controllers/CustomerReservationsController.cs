@@ -30,6 +30,7 @@ namespace HotelManagementSystem.Controllers
             List<Reservation> r = (from reservations in db.Reservations
                                    where reservations.PersonId == customer.Id
                                    && reservations.checkIn > DateTime.Now
+                                   orderby reservations.checkIn
                                    select reservations).ToList();
             if (r.Count() == 0)
             {
@@ -51,7 +52,12 @@ namespace HotelManagementSystem.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.guests = CustomerOperations.getGuestNames(reservation).ToList<string>();
+            var roomtype = db.RoomTypes.Find(reservation.RoomTypeId);
+            ViewBag.roomtype = roomtype.type;
+            var night = (reservation.checkOut - reservation.checkIn).TotalDays;
+            ViewBag.night = night.ToString();
+            List<string> guests = CustomerOperations.getGuestNames(reservation).ToList<string>();
+            ViewBag.guests = guests;
             return View(reservation);
         }
 
