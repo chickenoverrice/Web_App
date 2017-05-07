@@ -1,1 +1,11 @@
 Dropdown list in _CustomerLayout was modified on https://www.w3schools.com/howto/howto_css_dropdown.asp.
+
+
+
+---Reservation---
+Button Style: http://www.bestcssbuttongenerator.com/
+Google map on Location page: http://dotnetdevtricks.blogspot.com/2012/10/google-map-api-v3-with-mvc4-razor.html
+Datepicker on Index page: http://dotnetdevtricks.blogspot.com/2012/10/google-map-api-v3-with-mvc4-razor.html
+Validation on Booking page: https://www.codeproject.com/articles/710702/asp-net-mvc-server-side-validation
+Query for getting customer data: https://msdn.microsoft.com/en-us/library/jj592907(v=vs.113).aspx
+Messagebox for reservation not found: https://www.dotnetperls.com/messagebox-show
