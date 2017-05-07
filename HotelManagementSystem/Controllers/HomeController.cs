@@ -58,8 +58,14 @@ namespace HotelManagementSystem.Controllers
             {
                 using (var context = new DataModel.HotelDatabaseContainer())
                 {
-                    Customer c = context.Customers.Find(getPersonByEmail().Id);
-                    srm.prefRoom = c.RoomPref == null ? 0 : c.RoomPref.Id;
+                    srm.prefRoom = context.RoomTypes.First().Id;
+                    if (!User.IsInRole("Staff")) //Is Customer
+                    {
+                        Customer c = context.Customers.Find(getPersonByEmail().Id);
+                        //If Customer has Room Preference
+                        if(c.RoomPref != null)
+                            srm.prefRoom = c.RoomPref.Id;
+                    }
                 }
             }
             // Find available rooms
@@ -216,7 +222,10 @@ namespace HotelManagementSystem.Controllers
                             r.bill = rvm.bill;
                             r.guestsInfo = String.Join(";", rvm.guestInfoList.ToArray());
                             r.RoomTypeId = rvm.roomId;
-                            r.PersonId = getPersonByEmail().Id;
+                            if (User.Identity.IsAuthenticated)
+                            {
+                                r.PersonId = getPersonByEmail().Id;
+                            }
                             reservationcontext.Reservations.Add(r);
                             reservationcontext.SaveChanges();
                             Response.Cookies["Reservation"]["Id"] = r.Id.ToString();
