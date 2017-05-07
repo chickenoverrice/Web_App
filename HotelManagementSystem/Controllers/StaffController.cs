@@ -22,6 +22,31 @@ namespace HotelManagementSystem.Controllers
             return View(staff);
         }
 
+        public ActionResult checkOutAllToday()
+        {
+            var context = new HotelDatabaseContainer();
+
+            var today = DateTime.Today;
+            var tomorrow = DateTime.Today.AddDays(1);
+
+            var reservations =  from res in context.Reservations
+                                where res.Room != null && !res.stayed &&
+                                res.checkOut >= today && res.checkOut < tomorrow
+                                select res;
+
+            foreach(var res in reservations)
+            {
+                res.Room.occupied = false;
+                res.stayed = true;
+                res.checkOut = DateTime.Now;
+            }
+
+            context.SaveChanges();
+
+            //Redirect to Hotel Status to see your results
+            return Redirect("HotelStatus");
+        }
+
         // GET: Staff/Inventory
         public ActionResult Inventory()
         {
@@ -160,13 +185,13 @@ namespace HotelManagementSystem.Controllers
                     resInfos.Add(new ReservationInfo
                     {
                         Id = res.Id,
-                        checkIn = res.Room == null ? "*" : res.checkIn.ToString("g"),
-                        checkOut = res.Room == null ? "*" : res.Room.occupied? "*": res.checkOut.ToString("g"),
+                        checkIn = res.roomAssigned == null ? "*" : res.checkIn.ToString("g"),
+                        checkOut = !res.stayed? "*": res.checkOut.ToString("g"),
                         bill = res.bill,
                         guestInfo = res.guestsInfo,
                         roomType = res.RoomType.type,
-                        roomNumber = res.Room == null ? "*" : res.Room.Id.ToString(),
-                        personName = res.People.lastName + "," + res.People.firstName,
+                        roomNumber = res.roomAssigned == null ? "*" : res.roomAssigned.ToString(),
+                        personName = res.lastName + "," + res.firstName,
                         checkInToday = res.checkIn.Date == DateTime.Today,
                         checkOutToday = res.checkOut.Date == DateTime.Today,
                     });
@@ -260,6 +285,7 @@ namespace HotelManagementSystem.Controllers
                 }
 
                 reservation.Room = availibleRooms.First();
+                reservation.roomAssigned = reservation.Room.Id;
 
                 //Occupy Room
                 reservation.Room.occupied = true;
@@ -280,6 +306,10 @@ namespace HotelManagementSystem.Controllers
                 //Occupy Room
                 reservation.Room.occupied = false;
                 reservation.checkOut = DateTime.Now;
+                reservation.stayed = true;
+
+                //Unassign Room
+                reservation.Room = null;
 
                 context.SaveChanges();
 

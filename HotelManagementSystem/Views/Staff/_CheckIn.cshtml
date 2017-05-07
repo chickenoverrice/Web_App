@@ -30,7 +30,7 @@
                                                                     format: @<text><div id="RM_CheckOut_Time_@item.Id">@item.checkOut</div> </text>),
                                                     grid.Column(header: "Check In", style: "action",
                                                                     format: @<text>
-                                                        <button class="checkIn" id="@item.Id" @(!item.checkInToday ? "disabled" : "")>Check In</button>
+                                                        <button class="checkIn" id="@item.Id" @(!item.checkInToday || String.Compare(item.roomNumber, "*") != 0 ? "disabled" : "")>Check In</button>
                                                                     </text>)
 
     ));
