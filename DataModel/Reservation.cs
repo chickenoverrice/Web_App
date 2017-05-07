@@ -14,6 +14,12 @@ namespace DataModel
     
     public partial class Reservation
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Reservation()
+        {
+            this.stayed = false;
+        }
+    
         public System.DateTime checkIn { get; set; }
         public System.DateTime checkOut { get; set; }
         public int Id { get; set; }
@@ -29,6 +35,8 @@ namespace DataModel
         public string zip { get; set; }
         public Nullable<int> RoomTypeId { get; set; }
         public Nullable<int> PersonId { get; set; }
+        public bool stayed { get; set; }
+        public Nullable<int> roomAssigned { get; set; }
     
         public virtual Room Room { get; set; }
         public virtual RoomType RoomType { get; set; }

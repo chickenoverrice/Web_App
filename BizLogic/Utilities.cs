@@ -32,7 +32,7 @@ namespace BizLogic
                 return dateList;
             }
             DateTime tmpDate = StartingDate;
-            while (tmpDate != EndingDate)
+            while (tmpDate < EndingDate)
             {
                 dateList.Add(tmpDate);
                 tmpDate = tmpDate.AddDays(1);

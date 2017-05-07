@@ -98,6 +98,8 @@
     <Property Name="zip" Type="nvarchar(max)" Nullable="true" />
     <Property Name="RoomTypeId" Type="int" Nullable="true" />
     <Property Name="PersonId" Type="int" Nullable="true" />
+    <Property Name="stayed" Type="bit" Nullable="false" DefaultValue="false" />
+    <Property Name="roomAssigned" Type="int" Nullable="true" />
     <Property Name="Room_Id" Type="int" Nullable="true" />
   </EntityType>
   <EntityType Name="CurrentDateTimes">
@@ -321,6 +323,8 @@
           <Property Name="RoomTypeId" Type="Int32" Nullable="true" />
           <NavigationProperty Name="People" Relationship="HotelDatabase.PersonReservation" FromRole="Reservation" ToRole="Person" />
           <Property Name="PersonId" Type="Int32" Nullable="true" />
+          <Property Name="stayed" Type="Boolean" Nullable="false" DefaultValue="False" />
+          <Property Name="roomAssigned" Type="Int32" Nullable="true" />
         </EntityType>
         <Association Name="RoomReservation">
           <End Type="HotelDatabase.Room" Role="Room" Multiplicity="0..1" />
@@ -439,6 +443,8 @@
           <ScalarProperty Name="zip" ColumnName="zip" />
           <ScalarProperty Name="RoomTypeId" ColumnName="RoomTypeId" />
           <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+          <ScalarProperty Name="stayed" ColumnName="stayed" />
+          <ScalarProperty Name="roomAssigned" ColumnName="roomAssigned" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
