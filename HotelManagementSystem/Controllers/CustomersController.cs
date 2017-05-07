@@ -38,7 +38,10 @@ namespace HotelManagementSystem.Controllers
                 return HttpNotFound();
             }
             string s = CustomerOperations.ViewLoyalty(customer);
+            string start = customer.lastStay.HasValue ? customer.lastStay.Value.ToShortDateString() : string.Empty;
             ViewBag.message = s;
+            ViewBag.start = start;
+
             return View(customer);
         }
 

@@ -178,7 +178,8 @@ namespace BizLogic
             }
             else
             {
-                return "membership expires on: " + customer.expirationDate;
+                string expire = customer.expirationDate.HasValue ? customer.expirationDate.Value.ToShortDateString() : string.Empty;
+                return expire;
             }
         }
 
@@ -197,6 +198,7 @@ namespace BizLogic
                     if (customer.stays >= 5)
                     {
                         customer.member = true;
+                        customer.loyaltyNum = customer.Id;
                         customer.expirationDate = new DateTime(now.Year+1, 12, 31);
                     }
                 }

@@ -75,7 +75,7 @@
             <div class="form-group">
                 @Html.Label("Room Preference", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.DropDownList("RoomPref", String.Empty)
+                    @Html.DropDownList("RoomPref")
                     @Html.ValidationMessageFor(model => model.RoomPref, "", new { @class = "text-danger" })
                 </div>
             </div>

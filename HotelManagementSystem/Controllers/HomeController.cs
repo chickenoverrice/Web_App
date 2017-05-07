@@ -15,21 +15,6 @@ namespace HotelManagementSystem.Controllers
     {
         public ActionResult Index()
         {
-            //NOT robust, will fix in spare time.
-            var today = DateTime.Now;
-            if (today.Month == 12 && today.Day == 31)
-            {
-                using (var context = new DataModel.HotelDatabaseContainer())
-                {
-                    var customer = from customers in context.Customers
-                                   select customers;
-                    foreach(var c in customer)
-                    {
-                        c.stays = 0;
-                    }
-                    context.SaveChanges();
-                }
-            }
             return View();
         }
         public ActionResult Search()

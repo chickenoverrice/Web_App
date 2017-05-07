@@ -8,7 +8,7 @@
 
 <div class="right">
     <div>
-        <h4>Are you sure you want to cancel this reservation?</h4>
+        <h4>Are you sure you want to cancel reservation #@Model.Id?</h4>
         <hr />
         <dl class="account">
             <dt>
@@ -32,15 +32,15 @@
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.bill)
+                $@Html.DisplayFor(model => model.bill)
             </dd>
 
             <dt>
-                Guest:
+                Room:
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.guestsInfo)
+                @Html.DisplayFor(model => model.RoomType.type)
             </dd>
 
         </dl>

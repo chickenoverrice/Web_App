@@ -74,11 +74,20 @@
                 @Html.DisplayFor(model => model.zip)
             </dd>
             <dt>
+                Room Preference:
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.RoomPref.type)
+            </dd>
+            <dt>
                 Loyalty Status:
             </dt>
 
             <dd>
-                @ViewBag.message
+                <p>Membership Id #@Model.loyaltyNum</p>
+                <p>Membership since @ViewBag.start</p>
+                <p>Membership expires @ViewBag.message</p>
             </dd>
 
         </dl>

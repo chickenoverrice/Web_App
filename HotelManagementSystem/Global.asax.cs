@@ -24,6 +24,7 @@ namespace HotelManagementSystem
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            ResetStayTimer.Start();
         }
     }
 }
