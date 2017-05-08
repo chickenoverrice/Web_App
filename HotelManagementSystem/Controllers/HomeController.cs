@@ -78,7 +78,6 @@ namespace HotelManagementSystem.Controllers
                            "SELECT COUNT(*) FROM dbo.Reservations WHERE dbo.Reservations.RoomTypeId = "
                            + roomId + " AND dbo.Reservations.checkIn < '" + date + "' AND dbo.Reservations.checkOut >= '" + date + "'";
                         int reserved = availableContext.Database.SqlQuery<int>(sqlstring).First();
-                        //System.Diagnostics.Debug.WriteLine(roomId +"@"+ date +": "+reserved);
                         if (reserved == roomNum)
                         {
                             // if not available, exit check loop
@@ -117,7 +116,6 @@ namespace HotelManagementSystem.Controllers
         {
             Session["start"] = DateTime.Now.ToString();
 
-        
             ReservationDetailViewModel rvm = new ReservationDetailViewModel();
             rvm.checkIn = srm.checkIn;
             rvm.checkOut = srm.checkOut;
