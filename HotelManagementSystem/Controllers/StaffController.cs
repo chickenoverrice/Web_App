@@ -117,10 +117,12 @@ namespace HotelManagementSystem.Controllers
 
                 if (currRooms > newValue)
                 { //Subtract Rooms
-                    //Get Unused rooms with Left Outer Join
-                    var unusedRoomsRes = currRooms - usedRoomsCount;
+                    var roomId = roomType.Id;
 
-                    var unusedRooms = (from res in context.Rooms where !res.occupied select res).ToList();
+                    var unusedRooms = (from res in context.Rooms where !res.occupied && res.RoomType.Id == roomId select res).ToList();
+
+                    //Get Unused rooms with Left Outer Join
+                    var unusedRoomsRes = unusedRooms.Count() - newValue;
 
                     if (unusedRoomsRes < 0 || unusedRooms.Count() < unusedRoomsRes)
                         return Json(new { errorMessage = "Not enough unused rooms to get rid of.", usedRooms = usedRoomsCount });
