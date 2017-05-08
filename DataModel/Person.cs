@@ -11,7 +11,8 @@ namespace DataModel
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Person
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -26,6 +27,7 @@ namespace DataModel
         public string email { get; set; }
         public string sessionId { get; set; }
         public string address { get; set; }
+        [Phone(ErrorMessage ="phone is invalid")]
         public string phone { get; set; }
         public string city { get; set; }
         public string state { get; set; }

@@ -93,6 +93,12 @@
   padding-left: 12px
 }
 
+    .account > dd > p {
+        margin:0;
+        padding:0;
+        border:none;
+    }
+
 .form-horizontal .form-group:after{
     display:none;
 }

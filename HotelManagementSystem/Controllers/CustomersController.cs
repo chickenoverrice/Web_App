@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using DataModel;
 using BizLogic;
+using System.Text.RegularExpressions;
 
 namespace HotelManagementSystem.Controllers
 {
@@ -117,31 +118,28 @@ namespace HotelManagementSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(FormCollection fc)
+        public ActionResult Edit([Bind(Include = "Id, firstName, lastName, city, address, zip, state,phone")]Customer customer, FormCollection fc)
         {
-            Customer c = new Customer();
-            c.address = fc["address"];
-            c.city = fc["city"];
-            c.firstName = fc["firstName"];
-            c.zip = fc["zip"];
-            c.phone = fc["phone"];
-            c.state = fc["state"];
+            ViewBag.RoomPref = new SelectList(db.RoomTypes, "Id", "type");
             int rtype = Convert.ToInt32(fc["roomPref"]);
             var roomtype = (from types in db.RoomTypes
                             where types.Id == rtype
                             select types).FirstOrDefault();
-            c.RoomPref = roomtype;
-
-            Customer dbcustomer = (from users in db.Customers
-                                 where users.email == User.Identity.Name
-                                 select users).FirstOrDefault();
-            if (dbcustomer == null)
+            if (ModelState.IsValid)
             {
-                return HttpNotFound();
-            }
-            CustomerOperations.ChangeAccount(ref dbcustomer, c);                
+                Customer dbcustomer = (from users in db.Customers
+                                       where users.email == User.Identity.Name
+                                       select users).FirstOrDefault();
+                if (dbcustomer == null)
+                {
+                    return HttpNotFound();
+                }
+                customer.RoomPref = roomtype;
+                CustomerOperations.ChangeAccount(ref dbcustomer, customer);
                 db.SaveChanges();
-           return RedirectToAction("Index");
+                return RedirectToAction("Index");
+            }
+           return View(customer);
         }
 
 
