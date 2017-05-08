@@ -1,6 +1,9 @@
+---Customers---
 Dropdown list in _CustomerLayout was modified on https://www.w3schools.com/howto/howto_css_dropdown.asp.
 
-
+---Staffs---
+Bootstrap Modal: https://www.w3schools.com/bootstrap/bootstrap_modal.asp
+WebGrid: https://www.codeproject.com/Tips/615776/WebGrid-in-ASP-NET-MVC
 
 ---Reservation---
 Button Style: http://www.bestcssbuttongenerator.com/
